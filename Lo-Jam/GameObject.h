@@ -18,6 +18,7 @@ public:
 	virtual void Update();
 	inline std::string getID() { return m_ID; }
 	void LoadTexture(std::string filename);
+	inline void updateCentre() { setOrigin(getTextureRect().width / 2, getTextureRect().height / 2); }
 };
 
 #endif

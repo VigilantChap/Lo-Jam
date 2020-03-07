@@ -22,8 +22,9 @@ GameScene::~GameScene()
 
 bool GameScene::Initialize() {
 	player = new Player("player");
-	player->LoadTexture("Assets/Player_Idle_Down00.png");
+	player->LoadTexture("Assets/PlayerSpriteSheet.png");
 	player->scale(3, 3);
+	player->updateCentre();
 
 
 	camera = new Camera(window);

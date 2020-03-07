@@ -10,7 +10,8 @@ Player::Player(std::string ID) : Entity::Entity(ID)
 	dog->scale(2.5, 2.5);
 	dog->setPosition(200, 200);
 
-	
+	sourceRectImg = sf::IntRect(0, 0, 100, 100);
+	setTextureRect(sourceRectImg);
 }
 
 

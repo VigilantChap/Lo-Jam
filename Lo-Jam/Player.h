@@ -14,6 +14,7 @@ public:
 private:
 	class Entity* dog;
 	sf::Clock clock;
+	sf::IntRect sourceRectImg;
 };
 
 

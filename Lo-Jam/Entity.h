@@ -10,6 +10,7 @@ protected:
 	sf::Vector2f destination;
 	float speed;
 	float maxSpeed;
+	float magnitude;
 
 public:
 	Entity(std::string ID);

@@ -18,7 +18,7 @@ void Entity::MoveTo(sf::Vector2f destination_) {
 }
 
 void Entity::Update() {
-	float magnitude = sqrt(pow((destination - getPosition()).x, 2) + pow((destination - getPosition()).y, 2));
+	magnitude = sqrt(pow((destination - getPosition()).x, 2) + pow((destination - getPosition()).y, 2));
 	sf::Vector2f direction;	
 	direction = destination - getPosition();
 	direction = direction / magnitude;
