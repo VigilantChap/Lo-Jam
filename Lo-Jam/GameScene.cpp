@@ -25,6 +25,9 @@ bool GameScene::Initialize() {
 	player = new Player("player");
 	player->LoadTexture("character_placeholder.png");
 
+	dog = new Entity("dog");
+	dog->LoadTexture("Assets/Doggo_Idle.png");
+	dog->setPosition(200, 200);
 	
 
 	camera = new Camera(window);
@@ -69,6 +72,7 @@ void GameScene::Render() {
 	window->clear();
 	camera->Render();
 	window->draw(backgroundSprite);
+	dog->draw(*window);
 	player->draw(*window);
 	window->display();
 }

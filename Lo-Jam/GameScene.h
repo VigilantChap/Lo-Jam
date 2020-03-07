@@ -9,6 +9,8 @@ class GameScene : public Scene
 private:
 	class Camera* camera;
 	class Player* player;
+	class Entity* dog;
+
 	sf::RenderWindow* window;
 
 	sf::Texture backgroundTexture;
