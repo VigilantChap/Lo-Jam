@@ -48,19 +48,20 @@ void GameScene::Destroy() {
 void GameScene::HandleEvents(sf::Event event) const {
 
 	camera->HandleEvents(event);
-	if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::S))
-		player->setPosition(player->getPosition() + sf::Vector2f(0.0f, 10.0f));
-	if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::W))
-		player->setPosition(player->getPosition() + sf::Vector2f(0.0f, -10.0f));
-	if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::A))
-		player->setPosition(player->getPosition() + sf::Vector2f(-10.0f, 0.0f));
-	if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::D))
-		player->setPosition(player->getPosition() + sf::Vector2f(10.0f, 0.0f));
+
+	if (event.type == sf::Event::MouseButtonPressed) {
+		if (event.mouseButton.button == sf::Mouse::Left) {
+			sf::Vector2i pixelPos = sf::Mouse::getPosition(*window);
+			player->MoveTo(window->mapPixelToCoords(pixelPos));
+		}
+
+	}	
+	
 }
 
 void GameScene::Update() {
 	camera->Update();
-	
+	player->Update();
 }
 
 void GameScene::Render() {
