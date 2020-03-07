@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "Entity.h"
 #include "Player.h"
+#include "Dog.h"
 #include <iostream>
 
 
@@ -11,9 +12,7 @@ GameScene::GameScene(sf::RenderWindow * window_) : GameScene(window, "")
 }
 
 GameScene::GameScene(sf::RenderWindow * window_, std::string backgroundTexture) : window(window_), backgroundTextureName(backgroundTexture)
-{
-
-	
+{	
 }
 
 
@@ -25,10 +24,7 @@ bool GameScene::Initialize() {
 	player = new Player("player");
 	player->LoadTexture("character_placeholder.png");
 
-	dog = new Entity("dog");
-	dog->LoadTexture("Assets/Doggo_Idle.png");
-	dog->scale(2, 2);
-	dog->setPosition(200, 200);
+
 
 	camera = new Camera(window);
 	camera->SetAsMainView();
@@ -72,7 +68,7 @@ void GameScene::Render() {
 	window->clear();
 	camera->Render();
 	window->draw(backgroundSprite);
-	window->draw(*dog);
+	window->draw(*player->getDog());
 	window->draw(*player);
 	window->display();
 	
@@ -84,6 +80,7 @@ bool GameScene::SetBackground(std::string textureName)
 		std::cout << "Could not load background image.";
 		return false;
 	}
+
 	backgroundTexture.setRepeated(true);
 	sf::FloatRect fBoundary(0.0f, 0.0f, 5000.0f, 5000.0f);
 	sf::IntRect iBoundary(fBoundary);

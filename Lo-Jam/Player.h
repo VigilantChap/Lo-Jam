@@ -8,8 +8,12 @@ public:
 	Player(std::string ID);
 	~Player();
 
+	void Update();
+	inline const Entity* getDog() { return dog; }
 
-
+private:
+	class Entity* dog;
+	sf::Clock clock;
 };
 
 

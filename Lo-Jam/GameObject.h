@@ -15,10 +15,7 @@ public:
 	GameObject(std::string ID);
 	~GameObject();
 	
-	// Inherited via Drawable
-	//virtual void draw(sf::RenderTarget & target, sf::RenderStates states) const override;
 	virtual void Update();
-	//void draw(sf::RenderTarget & target);
 	inline std::string getID() { return m_ID; }
 	void LoadTexture(std::string filename);
 };

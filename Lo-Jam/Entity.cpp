@@ -36,6 +36,4 @@ void Entity::Update() {
 	{
 		magnitude = 0.0f;
 	}
-
-	printf("%f\n", magnitude);
 }

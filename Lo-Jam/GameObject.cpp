@@ -16,17 +16,6 @@ GameObject::~GameObject()
 {
 }
 
-//void GameObject::draw(sf::RenderTarget & target, sf::RenderStates states) const
-//{
-//}
-
-//
-//void GameObject::draw(sf::RenderTarget & target)
-//{
-//	setPosition(getPosition());
-//	target.draw(sprite);
-//}
-
 void GameObject::Update() {
 
 }
