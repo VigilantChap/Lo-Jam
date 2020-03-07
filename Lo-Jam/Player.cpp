@@ -24,17 +24,78 @@ void Player::Update() {
 	static sf::Clock delayTimer;
 	static sf::Clock playerAnimTimer;
 	
-	if (playerAnimTimer.getElapsedTime().asSeconds() > 1.0f) {
-		if (sourceRectImg.left >= 300)
-			sourceRectImg.left = 0;
-		else
-			sourceRectImg.left += 100;
 
-		setTextureRect(sourceRectImg);
+	printf("%f\n", magnitude);
+
+	if (playerAnimTimer.getElapsedTime().asSeconds() > 0.5f) {
+
+		//idle
+		if (magnitude == 0) {
+			sourceRectImg.top = 0;
+
+			if (sourceRectImg.left >= 300)
+				sourceRectImg.left = 0;
+			else
+				sourceRectImg.left += 100;
+
+			setTextureRect(sourceRectImg);
+		}
+
+		//moving
+		else if (magnitude > 0) {
+			//  left/right movement 
+			if (direction.x > 0.0f || direction.x < 0.0f) {
+				sourceRectImg.top = 500;
+				if (sourceRectImg.left >= 500) sourceRectImg.left = 0;
+				else sourceRectImg.left += 100;
+
+				setTextureRect(sourceRectImg);
+			}
+
+			//  up movement
+			if (direction.y < 0.0f) {
+				sourceRectImg.top = 300;
+				if (sourceRectImg.left >= 800) sourceRectImg.left = 0;
+				else sourceRectImg.left += 100;
+
+				setTextureRect(sourceRectImg);
+			}
+
+			//  down movement
+			else if (direction.y > 0.0f) {
+				sourceRectImg.top = 100;
+				if (sourceRectImg.left >= 800) sourceRectImg.left = 0;
+				else sourceRectImg.left += 100;
+
+				setTextureRect(sourceRectImg);
+			}
+		}
+
+
 		playerAnimTimer.restart();
 	}
+
+
 	
-	//if dog is further than 200 pixels away
+	
+
+	static bool flipped = true;
+
+	//if moving, flip image
+	if (magnitude > 0) {
+		if (direction.x > 0.0f && !flipped) {
+			scale(-1.0f, 1.0f);
+			flipped = true;
+		}
+
+		else if (direction.x < 0.0f && flipped) {
+			scale(-1.0f, 1.0f);
+			flipped = false;
+		}
+
+	}
+
+	//if dog is further than 300 pixels away
 	if (sqrt(pow((getPosition() - dog->getPosition()).x, 2) + pow((getPosition() - dog->getPosition()).y, 2)) > 300.0f) {
 		if (delayTimer.getElapsedTime().asSeconds() >= 1.5f) {
 			dog->MoveTo(getPosition());

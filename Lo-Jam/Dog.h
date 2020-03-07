@@ -12,7 +12,6 @@ public:
 	void Update();
 
 private:
-	sf::Vector2f lastPosition;
 };
 
 #endif // !DOG_H

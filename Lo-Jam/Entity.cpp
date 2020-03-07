@@ -19,7 +19,7 @@ void Entity::MoveTo(sf::Vector2f destination_) {
 
 void Entity::Update() {
 	magnitude = sqrt(pow((destination - getPosition()).x, 2) + pow((destination - getPosition()).y, 2));
-	sf::Vector2f direction;	
+	
 	direction = destination - getPosition();
 	direction = direction / magnitude;
 
@@ -27,7 +27,7 @@ void Entity::Update() {
 	if (magnitude < 25) speed = maxSpeed / 4.0f;
 	else speed = maxSpeed;
 
-	if (magnitude > 0.5f) {
+	if (magnitude > 0.05f) {
 		direction.x = std::round(direction.x * speed);
 		direction.y = std::round(direction.y * speed);
 		move(direction);

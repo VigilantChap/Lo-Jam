@@ -11,6 +11,7 @@ protected:
 	float speed;
 	float maxSpeed;
 	float magnitude;
+	sf::Vector2f direction;
 
 public:
 	Entity(std::string ID);
