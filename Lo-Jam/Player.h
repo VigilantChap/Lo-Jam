@@ -5,6 +5,8 @@
 class Player : public Entity
 {
 public:
+	static sf::Clock delayTimer;
+	static sf::Clock playerAnimTimer;
 	Player(std::string ID);
 	~Player();
 

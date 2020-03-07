@@ -2,6 +2,14 @@
 #include <math.h>
 #include "Dog.h"
 
+//Declaration of Static Variables
+#ifndef CLOCK_PLAYER
+#define CLOCK_PLAYER
+
+sf::Clock Player::delayTimer;
+sf::Clock Player::playerAnimTimer;
+
+#endif // !CLOCK_PLAYER
 
 Player::Player(std::string ID) : Entity::Entity(ID)
 {
@@ -12,6 +20,7 @@ Player::Player(std::string ID) : Entity::Entity(ID)
 
 	sourceRectImg = sf::IntRect(0, 0, 100, 100);
 	setTextureRect(sourceRectImg);
+	
 }
 
 
@@ -21,13 +30,12 @@ Player::~Player()
 
 void Player::Update() {
 	Entity::Update();
-	static sf::Clock delayTimer;
-	static sf::Clock playerAnimTimer;
+	
 	
 
-	printf("%f\n", magnitude);
+	//printf("%f\n", magnitude);
 
-	if (playerAnimTimer.getElapsedTime().asSeconds() > 0.5f) {
+	if (Player::playerAnimTimer.getElapsedTime().asSeconds() > 0.5f) {
 
 		//idle
 		if (magnitude == 0) {
