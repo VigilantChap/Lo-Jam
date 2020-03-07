@@ -27,8 +27,8 @@ bool GameScene::Initialize() {
 
 	dog = new Entity("dog");
 	dog->LoadTexture("Assets/Doggo_Idle.png");
+	dog->scale(2, 2);
 	dog->setPosition(200, 200);
-	
 
 	camera = new Camera(window);
 	camera->SetAsMainView();
@@ -72,9 +72,10 @@ void GameScene::Render() {
 	window->clear();
 	camera->Render();
 	window->draw(backgroundSprite);
-	dog->draw(*window);
-	player->draw(*window);
+	window->draw(*dog);
+	window->draw(*player);
 	window->display();
+	
 }
 
 bool GameScene::SetBackground(std::string textureName)
