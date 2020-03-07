@@ -21,7 +21,7 @@ Enemy::~Enemy()
 void Enemy::Update()
 {
 	Entity::Update();
-	if (destination.x < 100 || destination.y < 100)
+	if (destination.x < 30|| destination.y < 30)
 	{
 		isTriggered = true;
 	}

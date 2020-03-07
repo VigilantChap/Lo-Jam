@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Player.h"
 #include "Dog.h"
+#include "Enemy.h"
 #include <iostream>
 
 
@@ -25,6 +26,12 @@ bool GameScene::Initialize() {
 	player->LoadTexture("Assets/PlayerSpriteSheet.png");
 	player->scale(3, 3);
 	player->updateCentre();
+
+	enemy = new Enemy("enemy00");
+	enemy->LoadTexture("Assets/EnemySpriteSheet.png");
+	enemy->scale(3, 3);
+	enemy->updateCentre();
+	
 
 
 	camera = new Camera(window);
@@ -62,6 +69,7 @@ void GameScene::HandleEvents(sf::Event event) const {
 void GameScene::Update() {
 	camera->Update();
 	player->Update();
+	enemy->Update();
 }
 
 void GameScene::Render() {
@@ -71,6 +79,7 @@ void GameScene::Render() {
 	window->draw(backgroundSprite);
 	window->draw(*player->getDog());
 	window->draw(*player);
+	window->draw(*enemy);
 	window->display();
 	
 }

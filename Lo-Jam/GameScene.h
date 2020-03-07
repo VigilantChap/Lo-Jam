@@ -10,6 +10,7 @@ private:
 	class Camera* camera;
 	class Player* player;
 	class Entity* dog;
+	class Enemy* enemy;
 
 	sf::RenderWindow* window;
 
