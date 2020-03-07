@@ -9,7 +9,7 @@ public:
 	~Player();
 
 	void Update();
-	inline const Entity* getDog() { return dog; }
+	inline const Entity* getDog() { if(dog != nullptr) return dog; }
 
 private:
 	class Entity* dog;

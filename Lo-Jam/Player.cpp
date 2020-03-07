@@ -36,6 +36,8 @@ void Player::Update() {
 		clock.restart();
 
 	}
+
+	else dog->MoveTo(dog->getPosition());
 	
 	dog->Update();
 }
