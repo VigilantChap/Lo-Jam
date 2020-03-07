@@ -19,7 +19,7 @@ bool GameManager::Initialize() {
 		return false;
 	}
 
-	scene = new GameScene(window->getRenderWindow(), "GrasslandTiles.png");
+	scene = new GameScene(window->getRenderWindow(), "Assets/backgroundv1.png");
 	if (!scene->Initialize()){
 		Destroy();
 		return false;

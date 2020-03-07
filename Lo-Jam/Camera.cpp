@@ -48,6 +48,13 @@ void Camera::SetAsMainView()
 	window->setView(view);
 }
 
+sf::View Camera::GetView()
+{
+	return view;
+}
+
+
+
 
 
 void Camera::SetFollowTarget(GameObject *target)

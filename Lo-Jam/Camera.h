@@ -18,6 +18,7 @@ public:
 	void Update();
 	void Render();
 	void SetAsMainView();
+	sf::View GetView();
 	
 };
 

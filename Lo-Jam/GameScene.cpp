@@ -84,7 +84,12 @@ bool GameScene::SetBackground(std::string textureName)
 		std::cout << "Could not load background image.";
 		return false;
 	}
+	backgroundTexture.setRepeated(true);
+	sf::FloatRect fBoundary(0.0f, 0.0f, 10000.0f, 10000.0f);
+	sf::IntRect iBoundary(fBoundary);
+	backgroundSprite = sf::Sprite(backgroundTexture, iBoundary);
+	backgroundSprite.setPosition(fBoundary.left - camera->GetView().getSize().x, fBoundary.top - 10000.0f + camera->GetView().getSize().y);
 
-	backgroundSprite.setTexture(backgroundTexture);
+	
 	return true;
 }
