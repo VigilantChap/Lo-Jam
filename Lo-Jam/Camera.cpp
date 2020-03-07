@@ -34,6 +34,7 @@ void Camera::HandleEvents(sf::Event event)
 void Camera::Update()
 {
 	if (followTarget) {
+		//TODO: Remove flickering by rounding values to int value.
 		view.setCenter(followTarget->getPosition());
 		SetAsMainView();
 	}
