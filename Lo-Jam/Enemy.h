@@ -11,8 +11,10 @@ public:
 	void Update();
 	
 	static sf::Clock timelapse;
+	void SetPlayerPosition(sf::Vector2<float>);
 private:
 	sf::IntRect sourceRectImage;
+	sf::Vector2<float> playerPosition;
 	bool isTriggered;
 };
 

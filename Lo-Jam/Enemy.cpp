@@ -1,5 +1,5 @@
 #include "Enemy.h"
-
+#include <cstdlib>
 #ifndef ENEMYSTATICVARIABLES
 #define ENEMYSTATICVARIABLES
 sf::Clock Enemy::timelapse;
@@ -21,7 +21,7 @@ Enemy::~Enemy()
 void Enemy::Update()
 {
 	Entity::Update();
-	if (destination.x < 30|| destination.y < 30)
+	if (abs(playerPosition.x) < 200|| abs(playerPosition.y) < 200)
 	{
 		isTriggered = true;
 	}
@@ -29,13 +29,14 @@ void Enemy::Update()
 	{
 		isTriggered = false;
 	}
+	
 	if (Enemy::timelapse.getElapsedTime().asSeconds() > 0.5f)
 	{
 		if (isTriggered)
 		{
 			sourceRectImage.top = 0;
 
-			if (sourceRectImage.left >= 600)
+			if (sourceRectImage.left >= 500)
 				sourceRectImage.left = 0;
 			else
 				sourceRectImage.left += 100;
@@ -44,16 +45,24 @@ void Enemy::Update()
 		}
 		else
 		{
-			sourceRectImage.top = 400;
-			if (sourceRectImage.left >= 500) 
+			sourceRectImage.top = 100;
+			if (sourceRectImage.left >= 300) 
 				sourceRectImage.left = 0;
 			else 
 				sourceRectImage.left += 100;
 
 			setTextureRect(sourceRectImage);
 		}
+		Enemy::timelapse.restart();
 	}
+	
+}
 
+void Enemy::SetPlayerPosition(sf::Vector2<float> position)
+{
+	playerPosition = position;
+	
+	printf("%f\n", playerPosition.x);
 }
 
 /*

@@ -31,6 +31,7 @@ bool GameScene::Initialize() {
 	enemy->LoadTexture("Assets/EnemySpriteSheet.png");
 	enemy->scale(3, 3);
 	enemy->updateCentre();
+	enemy->SetPlayerPosition(player->getPosition());
 	
 
 
@@ -69,6 +70,7 @@ void GameScene::HandleEvents(sf::Event event) const {
 void GameScene::Update() {
 	camera->Update();
 	player->Update();
+	enemy->SetPlayerPosition(player->getPosition());
 	enemy->Update();
 }
 
