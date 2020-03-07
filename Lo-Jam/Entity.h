@@ -7,12 +7,13 @@ class Entity :
 {
 private:
 	float health;
-
+	sf::Vector2f destination;
 
 public:
 	Entity(std::string ID);
 	~Entity();
 	void Update() override;
+	void MoveTo(sf::Vector2f destination_);
 };
 
 
