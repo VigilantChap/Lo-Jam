@@ -7,7 +7,7 @@ Player::Player(std::string ID) : Entity::Entity(ID)
 {
 	dog = new Dog("dog");
 	dog->LoadTexture("Assets/Doggo_Idle.png");
-	dog->scale(2, 2);
+	dog->scale(2.5, 2.5);
 	dog->setPosition(200, 200);
 
 	
@@ -25,9 +25,9 @@ void Player::Update() {
 	static float delay = 1.5f;
 	
 	//if dog is further than 200 pixels away
-	if (sqrt(pow((getPosition() - dog->getPosition()).x, 2) + pow((getPosition() - dog->getPosition()).y, 2)) > 200.0f) {
+	if (sqrt(pow((getPosition() - dog->getPosition()).x, 2) + pow((getPosition() - dog->getPosition()).y, 2)) > 300.0f) {
 		if (delay <= 0.1f) {
-			dog->MoveTo(getPosition() - sf::Vector2f(200, 200));
+			dog->MoveTo(getPosition());
 			delay = 1.5f;
 		}
 

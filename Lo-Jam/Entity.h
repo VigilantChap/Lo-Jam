@@ -5,16 +5,18 @@
 class Entity :
 	public GameObject
 {
-private:
+protected:
 	float health;
 	sf::Vector2f destination;
 	float speed;
+	float maxSpeed;
 
 public:
 	Entity(std::string ID);
 	~Entity();
 	void Update() override;
 	void MoveTo(sf::Vector2f destination_);
+	inline void setMaxSpeed(float speed_) { speed = speed_; }
 };
 
 

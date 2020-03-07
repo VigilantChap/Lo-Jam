@@ -4,7 +4,7 @@
 
 Entity::Entity(std::string ID) : GameObject::GameObject(ID) {
 	health = 100.0f;
-	speed = 3.0f;
+	maxSpeed = 3.0f;
 }
 
 
@@ -24,8 +24,8 @@ void Entity::Update() {
 	direction = direction / magnitude;
 
 
-	if (magnitude < 25) speed = 0.75f;
-	else speed = 3;
+	if (magnitude < 25) speed = maxSpeed / 4.0f;
+	else speed = maxSpeed;
 
 	if (magnitude > 0.5f) {
 		direction.x = std::round(direction.x * speed);
