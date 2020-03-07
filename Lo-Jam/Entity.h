@@ -8,6 +8,7 @@ class Entity :
 private:
 	float health;
 	sf::Vector2f destination;
+	float speed;
 
 public:
 	Entity(std::string ID);
