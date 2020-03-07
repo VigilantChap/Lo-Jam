@@ -28,7 +28,13 @@ void Entity::Update() {
 	else speed = 3;
 
 	if (magnitude > 0.5f) {
-		move(direction * speed);
+		direction.x = std::round(direction.x * speed);
+		direction.y = std::round(direction.y * speed);
+		move(direction);
+	}
+	else
+	{
+		magnitude = 0.0f;
 	}
 
 	printf("%f\n", magnitude);

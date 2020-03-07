@@ -1,13 +1,16 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 #include "SFML.h"
+#include "SFML/System/Vector2.hpp"
 
 class Camera {
 private:
 	class GameObject* followTarget;
 	sf::View view;
 	sf::RenderWindow* window;
+	sf::Vector2<float> imageBuffer;
 	inline void updateViewSize() { view.setSize(sf::Vector2f(window->getSize().x, window->getSize().y)); SetAsMainView(); view.zoom(4); }
+	int frame;
 
 public:
 	Camera(sf::RenderWindow * window_);
