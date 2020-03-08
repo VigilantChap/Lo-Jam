@@ -35,12 +35,11 @@ public:
 
 	bool Initialize();
 	void Destroy();
-	void HandleEvents(sf::Event event) const;
+	void HandleEvents(const sf::Event event);
 	void Update();
 	void Render();
 
 	bool SetBackground(std::string textureName);
-	bool changeScene;
 };
 
 #endif // !GAMESCENE_H

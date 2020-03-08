@@ -19,7 +19,7 @@ bool GameManager::Initialize() {
 		return false;
 	}
 
-	scene = new GameScene(window->getRenderWindow(), "Assets/backgroundv2.png");
+	scene = new Menu(window->getRenderWindow());
 	if (!scene->Initialize()){
 		Destroy();
 		return false;
@@ -62,6 +62,22 @@ void GameManager::Run() {
 
 		scene->Update();
 		scene->Render();
+
+		if (scene->changeScene) {
+			printf("Clicked play\n");
+			scene->Destroy();
+			scene = new GameScene(window->getRenderWindow(), "Assets/backgroundv2.png");
+			if (!scene->Initialize()) {
+				printf("Error loading game scene.\n");
+				Destroy();
+			}
+		}
+
+		if(scene->quit) {
+			scene->Destroy();
+			window->getRenderWindow()->close();
+			isRunning = false;
+		}
 		
 	}
 }

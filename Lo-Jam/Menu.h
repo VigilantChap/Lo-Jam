@@ -7,6 +7,8 @@ class Menu : public Scene
 {
 private:
 	sf::RenderWindow * window;
+	sf::RectangleShape backdrop;
+	sf::RectangleShape playButton, quitButton;
 
 public:
 	Menu(sf::RenderWindow * window_);
@@ -14,9 +16,10 @@ public:
 
 	bool Initialize();
 	void Destroy();
-	void HandleEvents(sf::Event event) const;
+	void HandleEvents(const sf::Event event);
 	void Update();
 	void Render();
+
 };
 
 

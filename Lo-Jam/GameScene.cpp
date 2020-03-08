@@ -100,7 +100,7 @@ void GameScene::Destroy() {
 	camera->Destroy();
 }
 
-void GameScene::HandleEvents(sf::Event event) const {
+void GameScene::HandleEvents(const sf::Event event) {
 
 	camera->HandleEvents(event);
 
