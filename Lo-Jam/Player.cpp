@@ -32,12 +32,12 @@ Player::~Player()
 void Player::Update() {
 	Entity::Update();
 	
-	AnimateUpDownMovement();
-	AnimateLeftRightMovement();
+	AnimateMovement();
+	HandleHorizontalFlipping();
 	MakeDogFollow();
 }
 
-void Player::AnimateUpDownMovement()
+void Player::AnimateMovement()
 {
 	if (Player::playerAnimTimer.getElapsedTime().asSeconds() > 0.5f) {
 
@@ -86,7 +86,7 @@ void Player::AnimateUpDownMovement()
 	}//--end if (Player::playerAnimTimer.getElapsedTime().asSeconds() > 0.5f)
 }
 
-void Player::AnimateLeftRightMovement()
+void Player::HandleHorizontalFlipping()
 {
 	//if moving, flip image
 	if (magnitude > 0) {

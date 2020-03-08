@@ -18,8 +18,8 @@ private:
 	class Entity* dog;
 	sf::IntRect sourceRectImg;
 
-	void AnimateUpDownMovement();
-	void AnimateLeftRightMovement();
+	void AnimateMovement();
+	void HandleHorizontalFlipping();
 	void MakeDogFollow();
 
 };
