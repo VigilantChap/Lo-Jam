@@ -38,8 +38,8 @@ void Entity::Update() {
 	}
 }
 
-bool Entity::Collided(GameObject *g) {
-	if (std::abs(sqrt((getPosition().x - g->getPosition().x) + (getPosition().y - g->getPosition().y))) < 5) {
+bool Entity::Collided(const GameObject *g) {
+	if (std::abs(sqrt((getPosition().x - g->getPosition().x) + (getPosition().y - g->getPosition().y))) < 1) {
 		return true;
 	}
 

@@ -113,10 +113,11 @@ void GameScene::Update() {
 
 	if (collisionTimer.getElapsedTime().asSeconds() >= 0.5f) {
 		for (Enemy * enemy : enemies) {
-			if (player->Collided(enemy)) {
+			if (player->Collided(enemy) && triggered) {
 				//testing player health --TEMPORARY--
 				if(player->getHealth() >= 10)
 				player->takeDamage(10);
+				else printf("You died!\n");
 				collisionTimer.restart();
 				//-- end test code
 			}
@@ -132,7 +133,7 @@ void GameScene::Update() {
 			}
 			printf("Triggered!!\n");
 			SetBackground("Assets/backgroundv4.png");
-			triggered != triggered;
+			triggered = true;
 		}
 
 		else {
@@ -140,7 +141,7 @@ void GameScene::Update() {
 				enemy->isTriggered = false;
 			}
 			SetBackground("Assets/backgroundv2.png");
-			triggered != triggered;
+			triggered = false;
 		}
 
 		worldTimer.restart();

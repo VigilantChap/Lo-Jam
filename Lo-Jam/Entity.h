@@ -22,7 +22,7 @@ public:
 	inline float getHealth() { return health; }
 	inline void takeDamage(float damage) { health -= damage; }
 
-	bool Collided(GameObject *g);
+	bool Collided(const GameObject *g);
 };
 
 
