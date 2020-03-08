@@ -25,7 +25,7 @@ void Dog::AnimateMovement()
 	if (magnitude == 0) {
 		sourceRectImg.top = 0;
 
-		if (sourceRectImg.left >= 900)
+		if (sourceRectImg.left >= 1000)
 			sourceRectImg.left = 0;
 		else {
 			if (AnimTimer.getElapsedTime().asSeconds() >= 0.5f) {
@@ -43,7 +43,7 @@ void Dog::AnimateMovement()
 		//  left/right movement 
 		
 			sourceRectImg.top = 100;
-			if (sourceRectImg.left >= 700) sourceRectImg.left = 0;
+			if (sourceRectImg.left >= 500) sourceRectImg.left = 0;
 			else {
 				if (AnimTimer.getElapsedTime().asSeconds() >= 0.5f) {
 					sourceRectImg.left += 100;
