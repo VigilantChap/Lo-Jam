@@ -8,6 +8,7 @@
 
 sf::Clock Player::delayTimer;
 sf::Clock Player::playerAnimTimer;
+bool Player::flipped = true;
 
 #endif // !CLOCK_PLAYER
 
@@ -31,10 +32,13 @@ Player::~Player()
 void Player::Update() {
 	Entity::Update();
 	
-	
+	AnimateUpDownMovement();
+	AnimateLeftRightMovement();
+	MakeDogFollow();
+}
 
-	//printf("%f\n", magnitude);
-
+void Player::AnimateUpDownMovement()
+{
 	if (Player::playerAnimTimer.getElapsedTime().asSeconds() > 0.5f) {
 
 		//idle
@@ -58,7 +62,7 @@ void Player::Update() {
 				else sourceRectImg.left += 100;
 
 				setTextureRect(sourceRectImg);
-			}
+			} //--end if magnitude conditions
 
 			//  up movement
 			if (direction.y < 0.0f) {
@@ -67,7 +71,7 @@ void Player::Update() {
 				else sourceRectImg.left += 100;
 
 				setTextureRect(sourceRectImg);
-			}
+			} //--end if (direction.y < 0.0f)
 
 			//  down movement
 			else if (direction.y > 0.0f) {
@@ -76,19 +80,14 @@ void Player::Update() {
 				else sourceRectImg.left += 100;
 
 				setTextureRect(sourceRectImg);
-			}
+			} //--end up movement
 		}
-
-
 		playerAnimTimer.restart();
-	}
+	}//--end if (Player::playerAnimTimer.getElapsedTime().asSeconds() > 0.5f)
+}
 
-
-	
-	
-
-	static bool flipped = true;
-
+void Player::AnimateLeftRightMovement()
+{
 	//if moving, flip image
 	if (magnitude > 0) {
 		if (direction.x > 0.0f && !flipped) {
@@ -103,6 +102,10 @@ void Player::Update() {
 
 	}
 
+}
+
+void Player::MakeDogFollow()
+{
 	//if dog is further than 300 pixels away
 	if (sqrt(pow((getPosition() - dog->getPosition()).x, 2) + pow((getPosition() - dog->getPosition()).y, 2)) > 300.0f) {
 		if (delayTimer.getElapsedTime().asSeconds() >= 1.5f) {
@@ -110,9 +113,8 @@ void Player::Update() {
 			delayTimer.restart();
 		}
 	}
-
 	else dog->MoveTo(dog->getPosition());
-	
+
 	dog->Update();
 }
 
