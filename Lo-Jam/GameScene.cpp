@@ -133,6 +133,17 @@ void GameScene::Update() {
 				//-- end test code
 			}
 		}
+		
+	}
+	if (collisionTimer.getElapsedTime().asSeconds() >= 5.0f) {
+		if (player->Collided(player->getDog()) && triggered) {
+			//testing player health --TEMPORARY--
+			if (player->getHealth() < 100)
+				player->takeDamage(-10);
+			printf("You Healed!\n");
+			collisionTimer.restart();
+			//-- end test code
+		}
 	}
 
 	if (worldTimer.getElapsedTime().asSeconds() >= 10) {
