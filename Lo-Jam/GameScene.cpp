@@ -6,6 +6,7 @@
 #include "Dog.h"
 #include "Enemy.h"
 #include <iostream>
+#include <vector>
 
 
 GameScene::GameScene(sf::RenderWindow * window_) : GameScene(window, "")
@@ -22,6 +23,8 @@ GameScene::~GameScene()
 }
 
 bool GameScene::Initialize() {
+	triggered = false;
+
 	player = new Player("player");
 	player->LoadTexture("Assets/PlayerSpriteSheet.png");
 	player->scale(3, 3);
@@ -45,12 +48,23 @@ bool GameScene::Initialize() {
 			return false;
 		}
 	}
+
+	
+	enemies.reserve(6);
 	
 	return true;
 }
 
 void GameScene::Destroy() {
+	for (Enemy* enemy : enemies)
+	{
+		delete enemy;
+		enemy = nullptr;
+	}
 
+	enemies.clear();
+
+	camera->Destroy();
 }
 
 void GameScene::HandleEvents(sf::Event event) const {
@@ -68,6 +82,26 @@ void GameScene::HandleEvents(sf::Event event) const {
 }
 
 void GameScene::Update() {
+
+
+	if (worldTimer.getElapsedTime().asSeconds() > 10) {
+		if (triggered) triggered = false;
+		else triggered = true;
+		worldTimer.restart();
+	}
+
+	if (triggered) {
+		for (Enemy* enemy : enemies) {
+			enemy->isTriggered = true;
+		}
+	}
+
+	else {
+		for (Enemy* enemy : enemies) {
+			enemy->isTriggered = false;
+		}
+	}
+
 	camera->Update();
 	player->Update();
 	enemy->SetPlayerPosition(player->getPosition());
