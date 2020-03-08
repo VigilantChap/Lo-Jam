@@ -4,7 +4,7 @@
 
 #ifndef ENEMYSTATICVARIABLES
 #define ENEMYSTATICVARIABLES
-
+ std::default_random_engine Enemy::pgenerator;
 #endif // !ENEMYSTATICVARIABLES
 
 Enemy::Enemy(std::string ID) : Entity::Entity(ID)
@@ -35,11 +35,11 @@ void Enemy::SetPlayerPosition(sf::Vector2<float> position)
 void Enemy::StartPatrolMovementTowardsTarget()
 {
 	//Distributes Values
-	std::normal_distribution<float> distributionX(playerPosition.x - getPosition().x, 100);
-	std::normal_distribution<float> distributionY(playerPosition.y - getPosition().y, 100);
+	std::normal_distribution<float> distributionX(playerPosition.x , 1000);
+	std::normal_distribution<float> distributionY(playerPosition.y , 1000);
 	//Ensures that destination is always towards target
-	destination.x = distributionX(pgenerator) + playerPosition.x - getPosition().x * 2;
-	destination.y = distributionY(pgenerator) + playerPosition.y - getPosition().y * 2;
+	destination.x = distributionX(pgenerator) + playerPosition.x - getPosition().x;
+	destination.y = distributionY(pgenerator) + playerPosition.y - getPosition().y;
 	
 	MoveTo(destination);
 }

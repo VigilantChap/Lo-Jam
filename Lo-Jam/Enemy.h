@@ -9,7 +9,7 @@ class Enemy : public Entity
 	/*Variables*/
 public:
 	sf::Clock timelapse;
-	std::default_random_engine pgenerator;
+	static std::default_random_engine pgenerator;
 	bool isTriggered;
 
 private:
