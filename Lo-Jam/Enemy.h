@@ -8,8 +8,8 @@ class Enemy : public Entity
 {
 	/*Variables*/
 public:
-	static sf::Clock timelapse;
-	static std::default_random_engine pgenerator;
+	sf::Clock timelapse;
+	std::default_random_engine pgenerator;
 	bool isTriggered;
 
 private:

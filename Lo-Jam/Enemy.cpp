@@ -4,8 +4,7 @@
 
 #ifndef ENEMYSTATICVARIABLES
 #define ENEMYSTATICVARIABLES
-sf::Clock Enemy::timelapse;
-std::default_random_engine Enemy::pgenerator;
+
 #endif // !ENEMYSTATICVARIABLES
 
 Enemy::Enemy(std::string ID) : Entity::Entity(ID)
@@ -15,6 +14,7 @@ Enemy::Enemy(std::string ID) : Entity::Entity(ID)
 	maxSpeed = 1;
 	speed = 1;
 	isTriggered = false;
+	
 }
 
 Enemy::~Enemy()
