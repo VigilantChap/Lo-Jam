@@ -32,7 +32,7 @@ bool GameScene::Initialize() {
 	window->setVerticalSyncEnabled(true);
 
 	changeScene = false;
-
+	dead = false;
 
 
 	triggered = false;
@@ -67,6 +67,7 @@ bool GameScene::Initialize() {
 	camera->SetAsMainView();
 	camera->SetFollowTarget(player);
 
+	//Health
 	healthBar.setSize(sf::Vector2f(camera->GetView().getSize().x / 2, 100));
 	healthBar.setOrigin(healthBar.getSize().x / 2, healthBar.getSize().y / 2);
 	healthBar.setOutlineColor(sf::Color::Black);
@@ -76,6 +77,23 @@ bool GameScene::Initialize() {
 	remainingHealth.setSize(healthBar.getSize());
 	remainingHealth.setOrigin(remainingHealth.getSize().x / 2, remainingHealth.getSize().y / 2);
 	remainingHealth.setFillColor(sf::Color::Red);
+	//-- End health
+
+	//Death Notification Box
+	deathNotif.setSize(sf::Vector2f(window->getSize().x / 1.25, window->getSize().y / 1.25));
+	deathNotif.setOrigin(deathNotif.getSize().x / 2, deathNotif.getSize().y / 2);
+	deathNotif.setOutlineColor(sf::Color::Black);
+	deathNotif.setOutlineThickness(15);
+	deathNotif.setFillColor(sf::Color::White);
+
+	if (!font.loadFromFile("arial.ttf")) printf("Error: cannot load font\n");
+
+	deathNotifText = sf::Text("You died!", font);
+	deathNotifText.setCharacterSize(50);
+	deathNotifText.setStyle(sf::Text::Bold);
+	deathNotifText.setFillColor(sf::Color::Black);
+	deathNotifText.setOrigin(deathNotifText.getLocalBounds().width / 2, deathNotifText.getLocalBounds().height / 2);
+	//-- End death notif 
 	
 	if (backgroundTextureName != "") {
 		if (!SetBackground(backgroundTextureName)) {
@@ -107,7 +125,7 @@ void GameScene::HandleEvents(const sf::Event event) {
 	camera->HandleEvents(event);
 
 	if (event.type == sf::Event::MouseButtonPressed) {
-		if (event.mouseButton.button == sf::Mouse::Left) {
+		if (event.mouseButton.button == sf::Mouse::Left && !dead) {
 			sf::Vector2i pixelPos = sf::Mouse::getPosition(*window);
 			player->MoveTo(window->mapPixelToCoords(pixelPos));
 		}
@@ -122,21 +140,31 @@ void GameScene::UpdateHealthBar() {
 
 void GameScene::Update() {
 
+	if (player->getHealth() > 0 && dead == false) {
+		deathNotif.setPosition(-1 * (window->getSize().x), 0);
+		deathNotifText.setPosition(deathNotif.getPosition());
+	}
+	else if (player->getHealth() <= 0 && dead == false)  {
+		deathNotif.setPosition(camera->GetView().getCenter());
+		deathNotifText.setPosition(deathNotif.getPosition());
+		printf("You died!");
+		dead = true;
+	}
+
 	if (collisionTimer.getElapsedTime().asSeconds() >= 0.5f) {
 		for (Enemy * enemy : enemies) {
-			if (player->Collided(enemy) && triggered) {
+			if (player->Collided(enemy) && triggered && player->getHealth() > 0) {
 				//testing player health --TEMPORARY--
 				if(player->getHealth() >= 10)
-				player->takeDamage(10);
-				else printf("You died!\n");
+					player->takeDamage(10);
 				collisionTimer.restart();
 				//-- end test code
 			}
 		}
 		
 	}
-	if (collisionTimer.getElapsedTime().asSeconds() >= 5.0f) {
-		if (player->Collided(player->getDog()) && triggered) {
+	if (collisionTimer.getElapsedTime().asSeconds() >= 1.0f) {
+		if (player->Collided(player->getDog()) && !triggered && !dead) {
 			//testing player health --TEMPORARY--
 			if (player->getHealth() < 100)
 				player->takeDamage(-10);
@@ -201,6 +229,8 @@ void GameScene::Render() {
 	//UI
 	window->draw(remainingHealth);
 	window->draw(healthBar);
+	window->draw(deathNotif);
+	window->draw(deathNotifText);
 	//------ end of UI
 
 	window->display();

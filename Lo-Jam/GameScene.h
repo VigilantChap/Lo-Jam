@@ -19,7 +19,9 @@ private:
 	std::string	backgroundTextureName;
 
 	//UI
-	sf::RectangleShape healthBar, remainingHealth;
+	sf::RectangleShape healthBar, remainingHealth, deathNotif;
+	sf::Font font;
+	sf::Text deathNotifText;
 	void UpdateHealthBar();
 
 	sf::RenderWindow* window;
@@ -27,6 +29,7 @@ private:
 	sf::Clock collisionTimer;
 
 	bool triggered;
+	bool dead;
 	
 public:
 	GameScene(sf::RenderWindow * window_);
