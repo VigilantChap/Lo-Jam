@@ -9,6 +9,8 @@ private:
 	sf::RenderWindow * window;
 	sf::RectangleShape backdrop;
 	sf::RectangleShape playButton, quitButton;
+	sf::Font font;
+	sf::Text title, playText, quitText;
 
 public:
 	Menu(sf::RenderWindow * window_);

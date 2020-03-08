@@ -12,6 +12,7 @@ public:
 
 	bool changeScene = false;
 	bool quit = false;
+	std::string sceneName;
 };
 
 

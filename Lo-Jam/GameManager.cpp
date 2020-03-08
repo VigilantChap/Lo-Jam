@@ -12,6 +12,7 @@ GameManager::GameManager()
 }
 
 bool GameManager::Initialize() {
+	
 	window = new SFWindow(800, 600, "HiJam");
 
 	if (!window->Initialize()) {
@@ -64,9 +65,14 @@ void GameManager::Run() {
 		scene->Render();
 
 		if (scene->changeScene) {
-			printf("Clicked play\n");
 			scene->Destroy();
-			scene = new GameScene(window->getRenderWindow(), "Assets/backgroundv2.png");
+			if (!scene->sceneName.compare("Menu")) {
+				scene = new GameScene(window->getRenderWindow(), "Assets/backgroundv2.png");
+			}
+			else if (!scene->sceneName.compare("GameScene")) {
+				scene = new Menu(window->getRenderWindow());
+			}
+
 			if (!scene->Initialize()) {
 				printf("Error loading game scene.\n");
 				Destroy();

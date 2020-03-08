@@ -26,6 +26,8 @@ GameScene::~GameScene()
 
 bool GameScene::Initialize() {
 
+	sceneName = "GameScene";
+
 	window->setFramerateLimit(60);
 	window->setVerticalSyncEnabled(true);
 
