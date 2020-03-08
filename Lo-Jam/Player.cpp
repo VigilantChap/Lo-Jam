@@ -15,8 +15,9 @@ bool Player::flipped = true;
 Player::Player(std::string ID) : Entity::Entity(ID)
 {
 	dog = new Dog("dog");
-	dog->LoadTexture("Assets/Doggo_Idle.png");
+	dog->LoadTexture("Assets/DoggoSpriteSheet.png");
 	dog->scale(2.5, 2.5);
+	dog->updateCentre();
 	dog->setPosition(200, 200);
 
 	sourceRectImg = sf::IntRect(0, 0, 100, 100);
