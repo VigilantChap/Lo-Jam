@@ -43,20 +43,18 @@ void Dog::AnimateMovement()
 		//  left/right movement 
 		
 			sourceRectImg.top = 100;
-			if (sourceRectImg.left >= 500) sourceRectImg.left = 0;
+			if (sourceRectImg.left >= 400)
+			{
+				sourceRectImg.left = 0;
+			}
 			else {
-				if (AnimTimer.getElapsedTime().asSeconds() >= 0.5f) {
+				if (AnimTimer.getElapsedTime().asSeconds() >= 0.175f) {
 					sourceRectImg.left += 100;
 					AnimTimer.restart();
 				}
-				if (sourceRectImg.left >= 300)
-				{
-					maxSpeed = 0.0f;
-				}
-				else
-				{
-					maxSpeed = 15.0f;
-				}
+				
+					maxSpeed = 15;
+				
 			}
 
 			setTextureRect(sourceRectImg);

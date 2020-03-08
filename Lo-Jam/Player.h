@@ -21,7 +21,7 @@ private:
 	void AnimateMovement();
 	void HandleHorizontalFlipping();
 	void MakeDogFollow();
-
+	bool isUp, isLeftRight, isDown;
 };
 
 
