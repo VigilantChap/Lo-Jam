@@ -10,12 +10,14 @@ class Enemy : public Entity
 public:
 	static sf::Clock timelapse;
 	static std::default_random_engine pgenerator;
+	bool isTriggered;
+
 private:
 	sf::IntRect sourceRectImage;
 	sf::Vector2<float> playerPosition;
-	bool isTriggered;
 	bool isVisible;
 	class Camera *camera;
+
 public:
 	Enemy(std::string ID);
 	~Enemy(); 
@@ -27,7 +29,7 @@ public:
 
 	void StartPatrolMovement();
 	void ToggleVisibility();
-
+	bool InView();
 
 private:
 	void Animate();

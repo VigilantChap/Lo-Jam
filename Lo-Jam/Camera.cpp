@@ -20,6 +20,14 @@ bool Camera::Initialize()
 
 void Camera::Destroy()
 {
+	delete followTarget;
+	followTarget = nullptr;
+	
+	window->close();
+	delete window;
+	window = nullptr;
+
+
 }
 
 void Camera::HandleEvents(sf::Event event)

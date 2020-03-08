@@ -11,14 +11,18 @@ private:
 	class Player* player;
 	class Entity* dog;
 	class Enemy* enemy;
+	std::vector<Enemy*> enemies;
 
-	sf::RenderWindow* window;
 
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
 	std::string	backgroundTextureName;
 
+	sf::RenderWindow* window;
 	sf::View view;
+	sf::Clock worldTimer;
+
+	bool triggered;
 	
 public:
 	GameScene(sf::RenderWindow * window_);
