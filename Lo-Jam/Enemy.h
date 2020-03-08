@@ -6,7 +6,7 @@
 
 class Enemy : public Entity
 {
-
+	/*Variables*/
 public:
 	static sf::Clock timelapse;
 	static std::default_random_engine pgenerator;
@@ -16,22 +16,16 @@ private:
 	sf::IntRect sourceRectImage;
 	sf::Vector2<float> playerPosition;
 	bool isVisible;
-	bool isPatrolling;
 	class Camera *camera;
 
+	/*Methods*/
 public:
 	Enemy(std::string ID);
 	~Enemy(); 
 
 	void Update();
-	
-	
 	void SetPlayerPosition(sf::Vector2<float>);
-
 	void StartPatrolMovementTowardsTarget();
-	
-	void ToggleVisibility();
-
 	bool InView(Camera &camera_);
 
 private:
