@@ -7,6 +7,7 @@
 #include "Enemy.h"
 #include <iostream>
 #include <vector>
+#include <random>
 
 
 GameScene::GameScene(sf::RenderWindow * window_) : GameScene(window, "")
@@ -37,12 +38,16 @@ bool GameScene::Initialize() {
 	tempEnemy->SetPlayerPosition(player->getPosition());*/
 	
 	enemies.reserve(6);
-
+	std::default_random_engine rgenerator;
+	std::normal_distribution<float> distributionX(player->getPosition().x, 400);
+	std::normal_distribution<float> distributionY(player->getPosition().y, 400);
+	//Ensures that destination is always towards target
+	
 	for (int i = 0; i < enemies.capacity(); i++) {
 		enemies.push_back(new Enemy("enemy" + i));
 		enemies[i]->LoadTexture("Assets/EnemySpriteSheet.png");
 		enemies[i]->scale(3, 3);
-		enemies[i]->updateCentre();
+		enemies[i]->setPosition(distributionX(rgenerator), distributionY(rgenerator));
 		enemies[i]->SetPlayerPosition(player->getPosition());
 	}
 	
@@ -108,6 +113,7 @@ void GameScene::Update() {
 
 	if (worldTimer.getElapsedTime().asSeconds() >= 10) {
 		//testing player health --TEMPORARY--
+		if(player->getHealth() >= 10)
 		player->takeDamage(10);
 
 

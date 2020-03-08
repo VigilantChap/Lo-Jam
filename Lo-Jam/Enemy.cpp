@@ -35,8 +35,8 @@ void Enemy::SetPlayerPosition(sf::Vector2<float> position)
 void Enemy::StartPatrolMovementTowardsTarget()
 {
 	//Distributes Values
-	std::normal_distribution<double> distributionX(playerPosition.x - getPosition().x, 100);
-	std::normal_distribution<double> distributionY(playerPosition.y - getPosition().y, 100);
+	std::normal_distribution<float> distributionX(playerPosition.x - getPosition().x, 100);
+	std::normal_distribution<float> distributionY(playerPosition.y - getPosition().y, 100);
 	//Ensures that destination is always towards target
 	destination.x = distributionX(pgenerator) + playerPosition.x - getPosition().x * 2;
 	destination.y = distributionY(pgenerator) + playerPosition.y - getPosition().y * 2;
