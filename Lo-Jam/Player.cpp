@@ -39,7 +39,9 @@ void Player::Update() {
 
 void Player::AnimateMovement()
 {
-	if (Player::playerAnimTimer.getElapsedTime().asSeconds() > 0.5f) {
+
+
+	(Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.5f);
 
 		//idle
 		if (magnitude == 0) {
@@ -47,43 +49,64 @@ void Player::AnimateMovement()
 
 			if (sourceRectImg.left >= 300)
 				sourceRectImg.left = 0;
-			else
-				sourceRectImg.left += 100;
+			else {
+				if (Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.5f) {
+					sourceRectImg.left += 100;
+					Player::playerAnimTimer.restart();
+				}
 
+			}
+				
 			setTextureRect(sourceRectImg);
 		}
 
 		//moving
 		else if (magnitude > 0) {
 			//  left/right movement 
-			if (direction.x > 0.0f || direction.x < 0.0f) {
+			if (direction.x != 0.0f && std::abs(direction.x) > std::abs(direction.y)) {
+				
 				sourceRectImg.top = 500;
 				if (sourceRectImg.left >= 500) sourceRectImg.left = 0;
-				else sourceRectImg.left += 100;
+				else {
+					if (Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.5f) {
+						sourceRectImg.left += 100;
+						Player::playerAnimTimer.restart();
+					}
+				}
 
 				setTextureRect(sourceRectImg);
-			} //--end if magnitude conditions
-
+			} 
+			
 			//  up movement
-			if (direction.y < 0.0f) {
+			if (direction.y < 0.0f && std::abs(direction.y) > std::abs(direction.x)) {
 				sourceRectImg.top = 300;
 				if (sourceRectImg.left >= 800) sourceRectImg.left = 0;
-				else sourceRectImg.left += 100;
+				else {
+					if (Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.5f) {
+						sourceRectImg.left += 100;
+						Player::playerAnimTimer.restart();
+					}
+				}
 
 				setTextureRect(sourceRectImg);
-			} //--end if (direction.y < 0.0f)
+			}
 
 			//  down movement
-			else if (direction.y > 0.0f) {
+			else if (direction.y > 0.0f && std::abs(direction.y) > std::abs(direction.x)) {
 				sourceRectImg.top = 100;
 				if (sourceRectImg.left >= 800) sourceRectImg.left = 0;
-				else sourceRectImg.left += 100;
+				else {
+					if (Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.5f) {
+						sourceRectImg.left += 100;
+						Player::playerAnimTimer.restart();
+					}
+				}
+
 
 				setTextureRect(sourceRectImg);
-			} //--end up movement
+			}
+			
 		}
-		playerAnimTimer.restart();
-	}//--end if (Player::playerAnimTimer.getElapsedTime().asSeconds() > 0.5f)
 }
 
 void Player::HandleHorizontalFlipping()
