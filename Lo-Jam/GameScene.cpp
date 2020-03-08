@@ -30,11 +30,21 @@ bool GameScene::Initialize() {
 	player->scale(3, 3);
 	player->updateCentre();
 
-	tempEnemy = new Enemy("enemy00");
+	/*tempEnemy = new Enemy("enemy00");
 	tempEnemy->LoadTexture("Assets/EnemySpriteSheet.png");
 	tempEnemy->scale(3, 3);
 	tempEnemy->updateCentre();
-	tempEnemy->SetPlayerPosition(player->getPosition());
+	tempEnemy->SetPlayerPosition(player->getPosition());*/
+	
+	enemies.reserve(6);
+
+	for (int i = 0; i < enemies.capacity(); i++) {
+		enemies.push_back(new Enemy("enemy" + i));
+		enemies[i]->LoadTexture("Assets/EnemySpriteSheet.png");
+		enemies[i]->scale(3, 3);
+		enemies[i]->updateCentre();
+		enemies[i]->SetPlayerPosition(player->getPosition());
+	}
 	
 	camera = new Camera(window);
 	camera->SetAsMainView();
@@ -58,15 +68,7 @@ bool GameScene::Initialize() {
 	}
 
 	
-	enemies.reserve(6);
-
-	for (int i = 0; i < enemies.size(); i++) {
-		enemies[i] = new Enemy("enemy" + i);
-		enemies[i]->LoadTexture("Assets/EnemySpriteSheet.png");
-		enemies[i]->scale(3, 3);
-		enemies[i]->updateCentre();
-		enemies[i]->SetPlayerPosition(player->getPosition());
-	}
+	
 	
 	return true;
 }
@@ -114,24 +116,19 @@ void GameScene::Update() {
 				enemy->isTriggered = true;
 			}
 			printf("Triggered!!\n");
-			//SetBackground("darkBackground.png");
+			SetBackground("Assets/backgroundv4.png");
+			triggered != triggered;
 		}
 
 		else {
 			for (Enemy* enemy : enemies) {
 				enemy->isTriggered = false;
 			}
-			//SetBackground("lightBackground.png");
+			SetBackground("Assets/backgroundv2.png");
+			triggered != triggered;
 		}
 
 		worldTimer.restart();
-	}
-
-
-
-	for (Enemy* enemy : enemies) {
-		enemy->SetPlayerPosition(player->getPosition());
-		enemy->Update();
 	}
 
 	healthBar.setPosition(
@@ -143,8 +140,13 @@ void GameScene::Update() {
 
 	camera->Update();
 	player->Update();
-	tempEnemy->SetPlayerPosition(player->getPosition());
-	tempEnemy->Update();
+
+	for (Enemy* enemy : enemies) {
+		enemy->SetPlayerPosition(player->getPosition());
+		enemy->Update();
+	}
+	/*tempEnemy->SetPlayerPosition(player->getPosition());
+	tempEnemy->Update();*/
 }
 
 void GameScene::Render() {
@@ -154,8 +156,10 @@ void GameScene::Render() {
 	window->draw(backgroundSprite);
 	window->draw(*player->getDog());
 	window->draw(*player);
-	window->draw(*tempEnemy);
-
+	//window->draw(*tempEnemy);
+	for (Enemy* enemy : enemies) {
+		window->draw(*enemy);
+	}
 	//UI
 	window->draw(remainingHealth);
 	window->draw(healthBar);
