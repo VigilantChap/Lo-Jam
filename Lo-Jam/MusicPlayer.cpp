@@ -22,7 +22,7 @@ MusicPlayer * MusicPlayer::GetInstance()
 
 void MusicPlayer::PlayBackgroundMusic()
 {
-	if (!music.openFromFile("Assets/the_field_of_dreams.mp3"))
+	if (!music.openFromFile("Assets/the_field_of_dreams.ogg"))
 		printf("Failed to Load Music\r\n");
 	music.play();
 }

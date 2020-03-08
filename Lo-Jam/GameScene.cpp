@@ -8,7 +8,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
-
+#include "MusicPlayer.h"
 
 GameScene::GameScene(sf::RenderWindow * window_) : GameScene(window, "")
 {
@@ -33,9 +33,11 @@ bool GameScene::Initialize() {
 
 	changeScene = false;
 	dead = false;
-
+	
 
 	triggered = false;
+
+	MusicPlayer::GetInstance()->PlayBackgroundMusic();
 
 	player = new Player("player");
 	player->LoadTexture("Assets/PlayerSpriteSheet.png");
@@ -161,8 +163,11 @@ void GameScene::Update() {
 		for (Enemy * enemy : enemies) {
 			if (player->Collided(enemy) && triggered && player->getHealth() > 0) {
 				//testing player health --TEMPORARY--
-				if(player->getHealth() >= 10)
+				if (player->getHealth() >= 10)
+				{
 					player->takeDamage(10);
+					MusicPlayer::GetInstance()->PlayHurtSound();
+				}
 				collisionTimer.restart();
 				//-- end test code
 			}
@@ -173,7 +178,10 @@ void GameScene::Update() {
 		if (player->Collided(player->getDog()) && !triggered && !dead) {
 			//testing player health --TEMPORARY--
 			if (player->getHealth() < 100)
+			{
 				player->takeDamage(-10);
+				MusicPlayer::GetInstance()->PlayPewSound();
+			}
 			printf("You Healed!\n");
 			collisionTimer.restart();
 			//-- end test code

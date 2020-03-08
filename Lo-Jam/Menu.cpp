@@ -1,5 +1,5 @@
 #include "Menu.h"
-
+#include "MusicPlayer.h"
 
 Menu::Menu(sf::RenderWindow * window_) : window(window_)
 {
@@ -73,6 +73,7 @@ void Menu::HandleEvents(const sf::Event event) {
 				&& pixelPos.y <= playButton.getPosition().y + (playButton.getSize().y / 2)
 				&& pixelPos.y >= playButton.getPosition().y - (playButton.getSize().y / 2))
 			{
+				MusicPlayer::GetInstance()->PlaySelectSound();
 				changeScene = true;
 			}
 
@@ -81,6 +82,7 @@ void Menu::HandleEvents(const sf::Event event) {
 				&& pixelPos.y <= quitButton.getPosition().y + (quitButton.getSize().y / 2)
 				&& pixelPos.y >= quitButton.getPosition().y - (quitButton.getSize().y / 2))
 			{
+				MusicPlayer::GetInstance()->PlaySelectSound();
 				quit = true;
 			}
 		}
