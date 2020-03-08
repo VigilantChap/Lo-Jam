@@ -18,8 +18,11 @@ private:
 	sf::Sprite backgroundSprite;
 	std::string	backgroundTextureName;
 
+	//UI
+	sf::RectangleShape healthBar, remainingHealth;
+	void UpdateHealthBar();
+
 	sf::RenderWindow* window;
-	sf::View view;
 	sf::Clock worldTimer;
 
 	bool triggered;

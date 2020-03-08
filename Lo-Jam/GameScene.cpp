@@ -36,11 +36,19 @@ bool GameScene::Initialize() {
 	tempEnemy->updateCentre();
 	tempEnemy->SetPlayerPosition(player->getPosition());
 	
-
-
 	camera = new Camera(window);
 	camera->SetAsMainView();
 	camera->SetFollowTarget(player);
+
+	healthBar.setSize(sf::Vector2f(camera->GetView().getSize().x / 2, 100));
+	healthBar.setOrigin(healthBar.getSize().x / 2, healthBar.getSize().y / 2);
+	healthBar.setOutlineColor(sf::Color::Black);
+	healthBar.setOutlineThickness(15);
+	healthBar.setFillColor(sf::Color::Transparent);
+
+	remainingHealth.setSize(healthBar.getSize());
+	remainingHealth.setOrigin(remainingHealth.getSize().x / 2, remainingHealth.getSize().y / 2);
+	remainingHealth.setFillColor(sf::Color::Red);
 	
 	if (backgroundTextureName != "") {
 		if (!SetBackground(backgroundTextureName)) {
@@ -89,31 +97,49 @@ void GameScene::HandleEvents(sf::Event event) const {
 	
 }
 
+void GameScene::UpdateHealthBar() {
+	remainingHealth.setSize(sf::Vector2f(player->getHealth() / 100.0f * healthBar.getSize().x, remainingHealth.getSize().y));
+}
+
 void GameScene::Update() {
 
 
 	if (worldTimer.getElapsedTime().asSeconds() >= 10) {
-		if (triggered) triggered = false;
-		else triggered = true;
+		//testing player health --TEMPORARY--
+		player->takeDamage(10);
+
+
+		if (!triggered) {
+			for (Enemy* enemy : enemies) {
+				enemy->isTriggered = true;
+			}
+			printf("Triggered!!\n");
+			//SetBackground("darkBackground.png");
+		}
+
+		else {
+			for (Enemy* enemy : enemies) {
+				enemy->isTriggered = false;
+			}
+			//SetBackground("lightBackground.png");
+		}
+
 		worldTimer.restart();
 	}
 
-	if (triggered) {
-		for (Enemy* enemy : enemies) {
-			enemy->isTriggered = true;			
-		}
-	}
 
-	else {
-		for (Enemy* enemy : enemies) {
-			enemy->isTriggered = false;
-		}
-	}
 
 	for (Enemy* enemy : enemies) {
 		enemy->SetPlayerPosition(player->getPosition());
 		enemy->Update();
 	}
+
+	healthBar.setPosition(
+		camera->GetView().getCenter().x,
+		camera->GetView().getCenter().y + camera->GetView().getSize().y / 3.5);
+
+	remainingHealth.setPosition(healthBar.getPosition());
+	UpdateHealthBar();
 
 	camera->Update();
 	player->Update();
@@ -129,6 +155,12 @@ void GameScene::Render() {
 	window->draw(*player->getDog());
 	window->draw(*player);
 	window->draw(*tempEnemy);
+
+	//UI
+	window->draw(remainingHealth);
+	window->draw(healthBar);
+	//------ end of UI
+
 	window->display();
 	
 }

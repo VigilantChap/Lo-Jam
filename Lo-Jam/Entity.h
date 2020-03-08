@@ -19,6 +19,8 @@ public:
 	void Update() override;
 	void MoveTo(sf::Vector2f destination_);
 	inline void setMaxSpeed(float speed_) { speed = speed_; }
+	inline float getHealth() { return health; }
+	inline void takeDamage(float damage) { health -= damage; }
 };
 
 
