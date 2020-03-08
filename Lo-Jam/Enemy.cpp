@@ -25,14 +25,7 @@ Enemy::~Enemy()
 void Enemy::Update()
 {
 	Entity::Update();
-	if (abs(playerPosition.x) < 200|| abs(playerPosition.y) < 200)
-	{
-		isTriggered = true;
-	}
-	else
-	{
-		isTriggered = false;
-	}
+	
 	
 	Animate();
 }
