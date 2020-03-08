@@ -67,13 +67,13 @@ bool Enemy::InView(Camera &camera_)
 	/*******************If Not In Visible Bounds**********************/
 	isVisible = false;
 	return isVisible;
-}//end InView()
+}//--end InView()
 
 void Enemy::Animate()
 {
 	if (Enemy::timelapse.getElapsedTime().asSeconds() > 0.5f)
 	{
-		if (isTriggered)
+		if (isTriggered) //Evil Mode
 		{
 			sourceRectImage.top = 0;
 
@@ -81,21 +81,22 @@ void Enemy::Animate()
 				sourceRectImage.left = 0;
 			else
 				sourceRectImage.left += 100;
-			//end if(sourceRectImage.left >= 500)
+			//--end if(sourceRectImage.left >= 500)
 			setTextureRect(sourceRectImage);
 			StartPatrolMovementTowardsTarget();
 		}
-		else
+		else // Good Mode 
 		{
 			sourceRectImage.top = 100;
 			if (sourceRectImage.left >= 300)
 				sourceRectImage.left = 0;
 			else
 				sourceRectImage.left += 100;
-			//end if(sourceRectImage.left >= 300)
+			//--end if(sourceRectImage.left >= 300)
 			setTextureRect(sourceRectImage);
-			MoveTo(getPosition());
-		}//end if(isTriggered)
-		Enemy::timelapse.restart();
-	}//end if(Enemy::timelapse.getElapsedTime().asSeconds() > 0.5f)
-}//end Anime()
+			MoveTo(getPosition()); //Stop Movement
+		}//--end if(isTriggered)
+
+		Enemy::timelapse.restart(); //Restart Clock for Frame Count
+	}//--end if(Enemy::timelapse.getElapsedTime().asSeconds() > 0.5f)
+}//--end Anime()
