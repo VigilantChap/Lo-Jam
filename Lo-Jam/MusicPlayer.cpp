@@ -22,14 +22,14 @@ MusicPlayer * MusicPlayer::GetInstance()
 
 void MusicPlayer::PlayBackgroundMusic()
 {
-	if (!music.openFromFile("the_field_of_dreams.mp3"))
+	if (!music.openFromFile("Assets/the_field_of_dreams.mp3"))
 		printf("Failed to Load Music\r\n");
 	music.play();
 }
 
 void MusicPlayer::PlayHurtSound()
 {
-	if (!soundBuffer.loadFromFile("Hit_Hurt.wav"))
+	if (!soundBuffer.loadFromFile("Assets/Hit_Hurt.wav"))
 		printf("Failed to Load Sound\r\n");
 	
 	sound.setBuffer(soundBuffer);
@@ -37,7 +37,7 @@ void MusicPlayer::PlayHurtSound()
 }
 void MusicPlayer::PlayPewSound()
 {
-	if (!soundBuffer.loadFromFile("Laser_Shoot.wav"))
+	if (!soundBuffer.loadFromFile("Assets/Laser_Shoot.wav"))
 		printf("Failed to Load Sound\r\n");
 
 	sound.setBuffer(soundBuffer);
@@ -46,7 +46,7 @@ void MusicPlayer::PlayPewSound()
 
 void MusicPlayer::PlaySelectSound()
 {
-	if (!soundBuffer.loadFromFile("Blip_Select.wav"))
+	if (!soundBuffer.loadFromFile("Assets/Blip_Select.wav"))
 		printf("Failed to Load Sound\r\n");
 
 	sound.setBuffer(soundBuffer);
