@@ -22,7 +22,8 @@ Player::Player(std::string ID) : Entity::Entity(ID)
 
 	sourceRectImg = sf::IntRect(0, 0, 100, 100);
 	setTextureRect(sourceRectImg);
-	
+	isUp = false;
+	isLeftRight = false;
 }
 
 
@@ -40,14 +41,15 @@ void Player::Update() {
 
 void Player::AnimateMovement()
 {
-
-
-	(Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.5f);
-
 		//idle
 		if (magnitude == 0) {
-			sourceRectImg.top = 0;
-
+			
+			//facing down
+			if (isDown) sourceRectImg.top = 0;
+			//facing up
+			if (isUp) sourceRectImg.top = 200;
+			//facing left or right
+			if (isLeftRight) sourceRectImg.top = 400;
 			if (sourceRectImg.left >= 300)
 				sourceRectImg.left = 0;
 			else {
@@ -65,11 +67,13 @@ void Player::AnimateMovement()
 		else if (magnitude > 0) {
 			//  left/right movement 
 			if (direction.x != 0.0f && std::abs(direction.x) > std::abs(direction.y)) {
-				
+				isUp = false;
+				isLeftRight = true;
+				isDown = false;
 				sourceRectImg.top = 500;
 				if (sourceRectImg.left >= 500) sourceRectImg.left = 0;
 				else {
-					if (Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.5f) {
+					if (Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.25f) {
 						sourceRectImg.left += 100;
 						Player::playerAnimTimer.restart();
 					}
@@ -80,10 +84,13 @@ void Player::AnimateMovement()
 			
 			//  up movement
 			if (direction.y < 0.0f && std::abs(direction.y) > std::abs(direction.x)) {
+				isUp = true;
+				isLeftRight = false;
+				isDown = false;
 				sourceRectImg.top = 300;
 				if (sourceRectImg.left >= 800) sourceRectImg.left = 0;
 				else {
-					if (Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.5f) {
+					if (Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.25f) {
 						sourceRectImg.left += 100;
 						Player::playerAnimTimer.restart();
 					}
@@ -94,10 +101,13 @@ void Player::AnimateMovement()
 
 			//  down movement
 			else if (direction.y > 0.0f && std::abs(direction.y) > std::abs(direction.x)) {
+				isUp = false;
+				isLeftRight = false;
+				isDown = true;
 				sourceRectImg.top = 100;
 				if (sourceRectImg.left >= 800) sourceRectImg.left = 0;
 				else {
-					if (Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.5f) {
+					if (Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.25f) {
 						sourceRectImg.left += 100;
 						Player::playerAnimTimer.restart();
 					}
