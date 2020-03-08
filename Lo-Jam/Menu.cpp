@@ -1,4 +1,5 @@
 #include "Menu.h"
+#include <SFML/Graphics/Text.hpp>
 
 
 Menu::Menu(sf::RenderWindow * window_) : window(window_)
