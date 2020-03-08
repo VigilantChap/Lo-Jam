@@ -26,7 +26,7 @@ public:
 	void SetPlayerPosition(sf::Vector2<float>);
 
 	void StartPatrolMovement();
-	void ToggleVisibility();
+	bool InView();
 
 
 private:
