@@ -1,5 +1,6 @@
 #include "MusicPlayer.h"
 
+std::unique_ptr<MusicPlayer> MusicPlayer::musicPlayerInstance = nullptr;
 
 MusicPlayer::MusicPlayer()
 {
@@ -8,6 +9,15 @@ MusicPlayer::MusicPlayer()
 
 MusicPlayer::~MusicPlayer()
 {
+}
+
+MusicPlayer * MusicPlayer::GetInstance()
+{
+	if (musicPlayerInstance.get() == nullptr)
+	{
+		musicPlayerInstance.reset(new MusicPlayer);
+	}
+	return musicPlayerInstance.get();
 }
 
 void MusicPlayer::PlayBackgroundMusic()
