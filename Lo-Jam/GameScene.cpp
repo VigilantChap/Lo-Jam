@@ -117,7 +117,7 @@ void GameScene::Destroy() {
 
 	enemies.clear();
 
-	camera->Destroy();
+	//camera->Destroy();
 }
 
 void GameScene::HandleEvents(const sf::Event event) {
@@ -131,6 +131,12 @@ void GameScene::HandleEvents(const sf::Event event) {
 		}
 
 	}	
+
+	if (event.type == sf::Event::KeyPressed) {
+		if (event.key.code == sf::Keyboard::Backspace) {
+			changeScene = true;
+		}
+	}
 	
 }
 

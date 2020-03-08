@@ -22,7 +22,7 @@ bool Menu::Initialize() {
 	title.setStyle(sf::Text::Bold);
 	title.setFillColor(sf::Color::Cyan);
 	title.setOrigin(title.getLocalBounds().width / 2, title.getLocalBounds().height / 2);
-	title.setPosition(window->getSize().x / 2, window->getSize().y / 5);
+	title.setPosition(window->getView().getCenter().x, window->getView().getCenter().y / 3);
 
 	backdrop = sf::RectangleShape(sf::Vector2f(window->getSize()));
 	backdrop.setPosition(0, 0);
