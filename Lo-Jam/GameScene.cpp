@@ -30,11 +30,11 @@ bool GameScene::Initialize() {
 	player->scale(3, 3);
 	player->updateCentre();
 
-	enemy = new Enemy("enemy00");
-	enemy->LoadTexture("Assets/EnemySpriteSheet.png");
-	enemy->scale(3, 3);
-	enemy->updateCentre();
-	enemy->SetPlayerPosition(player->getPosition());
+	tempEnemy = new Enemy("enemy00");
+	tempEnemy->LoadTexture("Assets/EnemySpriteSheet.png");
+	tempEnemy->scale(3, 3);
+	tempEnemy->updateCentre();
+	tempEnemy->SetPlayerPosition(player->getPosition());
 	
 
 
@@ -51,6 +51,14 @@ bool GameScene::Initialize() {
 
 	
 	enemies.reserve(6);
+
+	for (int i = 0; i < enemies.size(); i++) {
+		enemies[i] = new Enemy("enemy" + i);
+		enemies[i]->LoadTexture("Assets/EnemySpriteSheet.png");
+		enemies[i]->scale(3, 3);
+		enemies[i]->updateCentre();
+		enemies[i]->SetPlayerPosition(player->getPosition());
+	}
 	
 	return true;
 }
@@ -84,7 +92,7 @@ void GameScene::HandleEvents(sf::Event event) const {
 void GameScene::Update() {
 
 
-	if (worldTimer.getElapsedTime().asSeconds() > 10) {
+	if (worldTimer.getElapsedTime().asSeconds() >= 10) {
 		if (triggered) triggered = false;
 		else triggered = true;
 		worldTimer.restart();
@@ -92,7 +100,7 @@ void GameScene::Update() {
 
 	if (triggered) {
 		for (Enemy* enemy : enemies) {
-			enemy->isTriggered = true;
+			enemy->isTriggered = true;			
 		}
 	}
 
@@ -102,10 +110,15 @@ void GameScene::Update() {
 		}
 	}
 
+	for (Enemy* enemy : enemies) {
+		enemy->SetPlayerPosition(player->getPosition());
+		enemy->Update();
+	}
+
 	camera->Update();
 	player->Update();
-	enemy->SetPlayerPosition(player->getPosition());
-	enemy->Update();
+	tempEnemy->SetPlayerPosition(player->getPosition());
+	tempEnemy->Update();
 }
 
 void GameScene::Render() {
@@ -115,7 +128,7 @@ void GameScene::Render() {
 	window->draw(backgroundSprite);
 	window->draw(*player->getDog());
 	window->draw(*player);
-	window->draw(*enemy);
+	window->draw(*tempEnemy);
 	window->display();
 	
 }
