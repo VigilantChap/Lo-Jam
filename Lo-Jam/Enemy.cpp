@@ -24,51 +24,56 @@ Enemy::~Enemy()
 void Enemy::Update()
 {
 	Entity::Update();
-	if (abs(playerPosition.x) < 200|| abs(playerPosition.y) < 200)
-	{
-		isTriggered = true;
-	}
-	else
-	{
-		isTriggered = false;
-	}
-	
 	Animate();
 }
 
 void Enemy::SetPlayerPosition(sf::Vector2<float> position)
 {
 	playerPosition = position;
-	
-	//printf("%f\n", playerPosition.x);
 }
 
-void Enemy::StartPatrolMovement()
+void Enemy::StartPatrolMovementTowardsTarget()
 {
 	//Distributes Values
-	std::normal_distribution<double> distributionX(playerPosition.x - getPosition().x, 10000);
-	std::normal_distribution<double> distributionY(playerPosition.y - getPosition().y, 10000);
-
-	destination.x = distributionX(pgenerator);
-	destination.y = distributionY(pgenerator);
-
+	std::normal_distribution<double> distributionX(playerPosition.x - getPosition().x, 100);
+	std::normal_distribution<double> distributionY(playerPosition.y - getPosition().y, 100);
+	//Ensures that destination is always towards target
+	destination.x = distributionX(pgenerator) + playerPosition.x - getPosition().x * 2;
+	destination.y = distributionY(pgenerator) + playerPosition.y - getPosition().y * 2;
+	
 	MoveTo(destination);
-	
 }
 
-bool Enemy::InView()
+bool Enemy::InView(Camera &camera_)
 {
+	/*Setting Boundaries for InView*/
+	camera = &camera_;
+	sf::Vector2<float> cameraPosition;
 
-	
-	return false;
-}
+	cameraPosition.x = camera->GetView().getCenter().x - camera->GetView().getSize().x / 2.0f;
+	cameraPosition.y = camera->GetView().getCenter().y - camera->GetView().getSize().y / 2.0f;
+
+	sf::FloatRect cameraBounds(cameraPosition,camera->GetView().getSize());
+
+	/***********************If In Visible Bounds**********************/
+	if (getPosition().x > cameraBounds.left && getPosition().x < cameraBounds.left + cameraBounds.width)
+	{
+		if (getPosition().y > cameraBounds.top && getPosition().y < cameraBounds.top + cameraBounds.height)
+		{
+			isVisible = true;
+			return isVisible;
+		}
+	}
+	/*******************If Not In Visible Bounds**********************/
+	isVisible = false;
+	return isVisible;
+}//--end InView()
 
 void Enemy::Animate()
 {
-
 	if (Enemy::timelapse.getElapsedTime().asSeconds() > 0.5f)
 	{
-		if (isTriggered)
+		if (isTriggered) //Evil Mode
 		{
 			sourceRectImage.top = 0;
 
@@ -76,19 +81,22 @@ void Enemy::Animate()
 				sourceRectImage.left = 0;
 			else
 				sourceRectImage.left += 100;
-
+			//--end if(sourceRectImage.left >= 500)
 			setTextureRect(sourceRectImage);
+			StartPatrolMovementTowardsTarget();
 		}
-		else
+		else // Good Mode 
 		{
 			sourceRectImage.top = 100;
 			if (sourceRectImage.left >= 300)
 				sourceRectImage.left = 0;
 			else
 				sourceRectImage.left += 100;
-
+			//--end if(sourceRectImage.left >= 300)
 			setTextureRect(sourceRectImage);
-		}
-		Enemy::timelapse.restart();
-	}
-}
+			MoveTo(getPosition()); //Stop Movement
+		}//--end if(isTriggered)
+
+		Enemy::timelapse.restart(); //Restart Clock for Frame Count
+	}//--end if(Enemy::timelapse.getElapsedTime().asSeconds() > 0.5f)
+}//--end Anime()
