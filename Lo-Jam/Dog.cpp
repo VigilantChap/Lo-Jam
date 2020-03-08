@@ -2,7 +2,7 @@
 
 Dog::Dog(std::string ID) : Entity::Entity(ID)
 {
-	maxSpeed = 15.0f; 
+	maxSpeed = 10.0f; 
 	sourceRectImg = sf::IntRect(0, 0, 100, 100);
 	setTextureRect(sourceRectImg);
 
