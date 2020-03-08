@@ -2,7 +2,7 @@
 
 Dog::Dog(std::string ID) : Entity::Entity(ID)
 {
-	maxSpeed = 10.0f; 
+	maxSpeed = 15.0f; 
 	sourceRectImg = sf::IntRect(0, 0, 100, 100);
 	setTextureRect(sourceRectImg);
 
@@ -48,6 +48,14 @@ void Dog::AnimateMovement()
 				if (AnimTimer.getElapsedTime().asSeconds() >= 0.5f) {
 					sourceRectImg.left += 100;
 					AnimTimer.restart();
+				}
+				if (sourceRectImg.left >= 300)
+				{
+					maxSpeed = 0.0f;
+				}
+				else
+				{
+					maxSpeed = 15.0f;
 				}
 			}
 
