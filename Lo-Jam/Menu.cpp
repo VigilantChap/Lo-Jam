@@ -12,7 +12,9 @@ Menu::~Menu()
 }
 
 bool Menu::Initialize() {
-	
+	changeScene = false;
+
+
 	return true;
 }
 

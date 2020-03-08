@@ -40,6 +40,7 @@ public:
 	void Render();
 
 	bool SetBackground(std::string textureName);
+	bool changeScene;
 };
 
 #endif // !GAMESCENE_H

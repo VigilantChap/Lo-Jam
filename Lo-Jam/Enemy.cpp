@@ -11,8 +11,8 @@ Enemy::Enemy(std::string ID) : Entity::Entity(ID)
 {
 	sourceRectImage = sf::IntRect(0, 0, 100, 100);
 	setTextureRect(sourceRectImage);
-	maxSpeed = 1;
-	speed = 1;
+	maxSpeed = 15;
+	speed = 15;
 	isTriggered = false;
 	
 }

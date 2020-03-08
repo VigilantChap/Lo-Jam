@@ -4,7 +4,7 @@
 
 Entity::Entity(std::string ID) : GameObject::GameObject(ID) {
 	health = 100.0f;
-	maxSpeed = 3.0f;
+	maxSpeed = 30.0f;
 }
 
 
@@ -27,7 +27,7 @@ void Entity::Update() {
 	if (magnitude < 25) speed = maxSpeed / 4.0f;
 	else speed = maxSpeed;
 
-	if (magnitude > 0.05f) {
+	if (magnitude > 10) {
 		direction.x = std::round(direction.x * speed);
 		direction.y = std::round(direction.y * speed);
 		move(direction);
@@ -36,10 +36,11 @@ void Entity::Update() {
 	{
 		magnitude = 0.0f;
 	}
+
 }
 
 bool Entity::Collided(const GameObject *g) {
-	if (std::abs(sqrt((getPosition().x - g->getPosition().x) + (getPosition().y - g->getPosition().y))) < 1) {
+	if (sqrt(pow((getPosition().x - g->getPosition().x), 2) + pow((getPosition().y - g->getPosition().y), 2)) < 100) {
 		return true;
 	}
 

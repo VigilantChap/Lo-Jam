@@ -2,7 +2,7 @@
 
 Dog::Dog(std::string ID) : Entity::Entity(ID)
 {
-	maxSpeed = 1.5f;
+	maxSpeed = 15.0f;
 
 	
 }

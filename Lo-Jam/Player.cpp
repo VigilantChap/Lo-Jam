@@ -31,7 +31,7 @@ Player::~Player()
 
 void Player::Update() {
 	Entity::Update();
-	
+
 	AnimateMovement();
 	HandleHorizontalFlipping();
 	MakeDogFollow();

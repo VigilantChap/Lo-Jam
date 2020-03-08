@@ -12,6 +12,7 @@
 
 GameScene::GameScene(sf::RenderWindow * window_) : GameScene(window, "")
 {
+
 }
 
 GameScene::GameScene(sf::RenderWindow * window_, std::string backgroundTexture) : window(window_), backgroundTextureName(backgroundTexture)
@@ -24,6 +25,14 @@ GameScene::~GameScene()
 }
 
 bool GameScene::Initialize() {
+
+	window->setFramerateLimit(60);
+	window->setVerticalSyncEnabled(true);
+
+	changeScene = false;
+
+
+
 	triggered = false;
 
 	player = new Player("player");
