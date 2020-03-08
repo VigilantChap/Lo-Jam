@@ -47,6 +47,7 @@ bool GameScene::Initialize() {
 		enemies.push_back(new Enemy("enemy" + i));
 		enemies[i]->LoadTexture("Assets/EnemySpriteSheet.png");
 		enemies[i]->scale(3, 3);
+		enemies[i]->updateCentre();
 		enemies[i]->setPosition(distributionX(rgenerator), distributionY(rgenerator));
 		enemies[i]->SetPlayerPosition(player->getPosition());
 	}
@@ -110,11 +111,19 @@ void GameScene::UpdateHealthBar() {
 
 void GameScene::Update() {
 
+	if (collisionTimer.getElapsedTime().asSeconds() >= 0.5f) {
+		for (Enemy * enemy : enemies) {
+			if (player->Collided(enemy)) {
+				//testing player health --TEMPORARY--
+				if(player->getHealth() >= 10)
+				player->takeDamage(10);
+				collisionTimer.restart();
+				//-- end test code
+			}
+		}
+	}
 
 	if (worldTimer.getElapsedTime().asSeconds() >= 10) {
-		//testing player health --TEMPORARY--
-		if(player->getHealth() >= 10)
-		player->takeDamage(10);
 
 
 		if (!triggered) {

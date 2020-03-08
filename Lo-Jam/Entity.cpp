@@ -37,3 +37,11 @@ void Entity::Update() {
 		magnitude = 0.0f;
 	}
 }
+
+bool Entity::Collided(GameObject *g) {
+	if (std::abs(sqrt((getPosition().x - g->getPosition().x) + (getPosition().y - g->getPosition().y))) < 5) {
+		return true;
+	}
+
+	return false;
+}

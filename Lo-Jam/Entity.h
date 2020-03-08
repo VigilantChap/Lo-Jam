@@ -21,6 +21,8 @@ public:
 	inline void setMaxSpeed(float speed_) { speed = speed_; }
 	inline float getHealth() { return health; }
 	inline void takeDamage(float damage) { health -= damage; }
+
+	bool Collided(GameObject *g);
 };
 
 

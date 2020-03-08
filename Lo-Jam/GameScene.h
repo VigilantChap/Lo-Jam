@@ -24,6 +24,7 @@ private:
 
 	sf::RenderWindow* window;
 	sf::Clock worldTimer;
+	sf::Clock collisionTimer;
 
 	bool triggered;
 	
