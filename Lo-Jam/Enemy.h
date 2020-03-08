@@ -16,6 +16,7 @@ private:
 	sf::IntRect sourceRectImage;
 	sf::Vector2<float> playerPosition;
 	bool isVisible;
+	bool isPatrolling;
 	class Camera *camera;
 
 public:
@@ -27,9 +28,11 @@ public:
 	
 	void SetPlayerPosition(sf::Vector2<float>);
 
-	void StartPatrolMovement();
+	void StartPatrolMovementTowardsTarget();
+	
 	void ToggleVisibility();
-	bool InView();
+
+	bool InView(Camera &camera_);
 
 private:
 	void Animate();

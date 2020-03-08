@@ -15,6 +15,7 @@ Enemy::Enemy(std::string ID) : Entity::Entity(ID)
 	maxSpeed = 1;
 	speed = 1;
 	isTriggered = false;
+	isPatrolling = false;
 }
 
 Enemy::~Enemy()
@@ -43,24 +44,40 @@ void Enemy::SetPlayerPosition(sf::Vector2<float> position)
 	//printf("%f\n", playerPosition.x);
 }
 
-void Enemy::StartPatrolMovement()
+void Enemy::StartPatrolMovementTowardsTarget()
 {
 	//Distributes Values
-	std::normal_distribution<double> distributionX(playerPosition.x - getPosition().x, 10000);
-	std::normal_distribution<double> distributionY(playerPosition.y - getPosition().y, 10000);
-
-	destination.x = distributionX(pgenerator);
-	destination.y = distributionY(pgenerator);
-
+	std::normal_distribution<double> distributionX(playerPosition.x - getPosition().x, 100);
+	std::normal_distribution<double> distributionY(playerPosition.y - getPosition().y, 100);
+	//Ensures that destination is always towards target
+		destination.x = distributionX(pgenerator) + playerPosition.x - getPosition().x * 2;
+		destination.y = distributionY(pgenerator) + playerPosition.y - getPosition().y * 2;
+	
 	MoveTo(destination);
 	
 }
 
-bool Enemy::InView()
+bool Enemy::InView(Camera &camera_)
 {
+	/*Setting Boundaries for InView*/
+	camera = &camera_;
 
+	sf::Vector2<float> cameraPosition;
+	cameraPosition.x = camera->GetView().getCenter().x - camera->GetView().getSize().x / 2.0f;
+	cameraPosition.y = camera->GetView().getCenter().y - camera->GetView().getSize().y / 2.0f;
+
+	sf::FloatRect cameraBounds(cameraPosition,camera->GetView().getSize());
+	if (getPosition().x > cameraBounds.left && getPosition().x < cameraBounds.left + cameraBounds.width)
+	{
+		if (getPosition().y > cameraBounds.top && getPosition().y < cameraBounds.top + cameraBounds.height)
+		{
+			isVisible = true;
+			return isVisible;
+		}
+	}
 	
-	return false;
+	isVisible = false;
+	return isVisible;
 }
 
 void Enemy::Animate()
@@ -78,6 +95,8 @@ void Enemy::Animate()
 				sourceRectImage.left += 100;
 
 			setTextureRect(sourceRectImage);
+			
+			StartPatrolMovementTowardsTarget();
 		}
 		else
 		{
@@ -88,6 +107,8 @@ void Enemy::Animate()
 				sourceRectImage.left += 100;
 
 			setTextureRect(sourceRectImage);
+
+			MoveTo(getPosition());
 		}
 		Enemy::timelapse.restart();
 	}
