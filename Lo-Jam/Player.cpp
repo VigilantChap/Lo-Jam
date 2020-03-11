@@ -37,6 +37,7 @@ void Player::Update() {
 	AnimateMovement();
 	HandleHorizontalFlipping();
 	MakeDogFollow();
+	destination = direction;
 }
 
 void Player::AnimateMovement()

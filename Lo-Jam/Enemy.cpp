@@ -11,8 +11,8 @@ Enemy::Enemy(std::string ID) : Entity::Entity(ID)
 {
 	sourceRectImage = sf::IntRect(0, 0, 100, 100);
 	setTextureRect(sourceRectImage);
-	maxSpeed = 15;
-	speed = 15;
+	maxSpeed = 60;
+	speed = 60;
 	isTriggered = false;
 	
 }
@@ -21,10 +21,12 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::Update()
+void Enemy::Update(sf::Vector2<float> destination_)
 {
+	destination = destination_;
 	Entity::Update();
 	Animate();
+	
 }
 
 void Enemy::SetPlayerPosition(sf::Vector2<float> position)
@@ -38,8 +40,8 @@ void Enemy::StartPatrolMovementTowardsTarget()
 	std::normal_distribution<float> distributionX(playerPosition.x , 1000);
 	std::normal_distribution<float> distributionY(playerPosition.y , 1000);
 	//Ensures that destination is always towards target
-	destination.x = distributionX(pgenerator) + playerPosition.x - getPosition().x;
-	destination.y = distributionY(pgenerator) + playerPosition.y - getPosition().y;
+	destination.x = distributionX(pgenerator) + playerPosition.x - getPosition().x + destination.x;
+	destination.y = distributionY(pgenerator) + playerPosition.y - getPosition().y + destination.y;
 	
 	MoveTo(destination);
 }

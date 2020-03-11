@@ -13,6 +13,7 @@ public:
 
 	void Update();
 	inline const Entity* getDog() { if(dog != nullptr) return dog; }
+	sf::Vector2<float> destination;
 
 private:
 	class Entity* dog;

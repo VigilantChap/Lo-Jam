@@ -76,11 +76,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\GameDev\SFML-2.5.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)SFML-2.5.1\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\GameDev\SFML-2.5.1\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>C:\GameDev\SFML-2.5.1\lib\sfml-window-d.lib;C:\GameDev\SFML-2.5.1\lib\sfml-system-d.lib;C:\GameDev\SFML-2.5.1\lib\sfml-graphics-d.lib;C:\GameDev\SFML-2.5.1\lib\sfml-main-d.lib;C:\GameDev\SFML-2.5.1\lib\sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)SFML-2.5.1\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(ProjectDir)SFML-2.5.1\lib\sfml-window-d.lib;$(ProjectDir)SFML-2.5.1\lib\sfml-system-d.lib;$(ProjectDir)SFML-2.5.1\lib\sfml-graphics-d.lib;$(ProjectDir)SFML-2.5.1\lib\sfml-main-d.lib;$(ProjectDir)SFML-2.5.1\lib\sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

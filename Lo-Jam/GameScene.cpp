@@ -52,8 +52,8 @@ bool GameScene::Initialize() {
 	
 	enemies.reserve(6);
 	std::default_random_engine rgenerator;
-	std::normal_distribution<float> distributionX(player->getPosition().x, 400);
-	std::normal_distribution<float> distributionY(player->getPosition().y, 400);
+	std::normal_distribution<float> distributionX(player->getPosition().x, 600);
+	std::normal_distribution<float> distributionY(player->getPosition().y, 600);
 	//Ensures that destination is always towards target
 	
 	for (int i = 0; i < enemies.capacity(); i++) {
@@ -174,12 +174,14 @@ void GameScene::Update() {
 		}
 		
 	}
-	if (collisionTimer.getElapsedTime().asSeconds() >= 1.0f) {
+	if (collisionTimer.getElapsedTime().asSeconds() >= 5.0f) {
+		MusicPlayer::GetInstance()->PlayPewSound();
+		MusicPlayer::GetInstance()->PlayPewSound();
 		if (player->Collided(player->getDog()) && !triggered && !dead) {
 			//testing player health --TEMPORARY--
 			if (player->getHealth() < 100)
 			{
-				player->takeDamage(-10);
+				player->takeDamage(-30);
 				MusicPlayer::GetInstance()->PlayPewSound();
 			}
 			printf("You Healed!\n");
@@ -223,7 +225,7 @@ void GameScene::Update() {
 
 	for (Enemy* enemy : enemies) {
 		enemy->SetPlayerPosition(player->getPosition());
-		enemy->Update();
+		enemy->Update(player->destination);
 	}
 	/*tempEnemy->SetPlayerPosition(player->getPosition());
 	tempEnemy->Update();*/
