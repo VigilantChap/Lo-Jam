@@ -23,7 +23,7 @@ public:
 	Enemy(std::string ID);
 	~Enemy(); 
 
-	void Update(sf::Vector2<float> destination_);
+	void Update();
 	void SetPlayerPosition(sf::Vector2<float>);
 	void StartPatrolMovementTowardsTarget();
 	bool InView(Camera &camera_);
