@@ -14,6 +14,12 @@ protected:
 	float magnitude;
 	sf::Vector2f direction;
 
+	//states
+	bool GoingToDestination;
+	bool Idling;
+
+	void HandleState();
+
 public:
 	Entity(std::string ID);
 	~Entity();
@@ -21,6 +27,7 @@ public:
 	void MoveTo(sf::Vector2f destination_);
 	inline void setMaxSpeed(float speed_) { speed = speed_; }
 	inline float getHealth() { return health; }
+	inline float getMaxHealth() { return maxHealth; }
 
 	inline void takeDamage(float value) { 
 		if (health >= value) {

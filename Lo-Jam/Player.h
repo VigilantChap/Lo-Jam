@@ -5,8 +5,8 @@
 class Player : public Entity
 {
 public:
-	static sf::Clock delayTimer;
-	static sf::Clock playerAnimTimer;
+
+
 	static bool flipped;
 	Player(std::string ID);
 	~Player();
@@ -18,6 +18,8 @@ public:
 private:
 	class Entity* dog;
 	sf::IntRect sourceRectImg;
+	static sf::Clock playerAnimTimer;
+	static sf::Clock delayTimer;
 
 	void AnimateMovement();
 	void HandleHorizontalFlipping();

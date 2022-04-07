@@ -15,7 +15,8 @@ public:
 private:
 	sf::IntRect sourceRectImg;
 
-	void AnimateMovement();
+	void Animate();
+
 };
 
 #endif // !DOG_H

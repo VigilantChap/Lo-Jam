@@ -171,7 +171,7 @@ void GameScene::Update() {
 		
 	}
 	if (collisionTimer.getElapsedTime().asSeconds() >= 1.0f) {
-		if (player->Collided(player->getDog()) && !triggered && !dead) {
+		if (player->Collided(player->getDog()) && !triggered && !dead && player->getHealth() < player->getMaxHealth()) {
 			//testing player health --TEMPORARY--
 			player->heal(7);
 			MusicPlayer::GetInstance()->PlayPewSound();

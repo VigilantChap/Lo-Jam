@@ -37,13 +37,14 @@ void Player::Update() {
 	AnimateMovement();
 	HandleHorizontalFlipping();
 	MakeDogFollow();
+	dog->Update();
 	//destination = direction;
 }
 
 void Player::AnimateMovement()
 {
 		//idle
-		if (magnitude == 0) {
+		if (Idling) {
 			
 			//facing down
 			if (isDown) sourceRectImg.top = 0;
@@ -54,9 +55,9 @@ void Player::AnimateMovement()
 			if (sourceRectImg.left >= 300)
 				sourceRectImg.left = 0;
 			else {
-				if (Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.5f) {
+				if (playerAnimTimer.getElapsedTime().asSeconds() >= 0.5f) {
 					sourceRectImg.left += 100;
-					Player::playerAnimTimer.restart();
+					playerAnimTimer.restart();
 				}
 
 			}
@@ -65,7 +66,7 @@ void Player::AnimateMovement()
 		}
 
 		//moving
-		else if (magnitude > 0) {
+		else {
 			//  left/right movement 
 			if (direction.x != 0.0f && std::abs(direction.x) > std::abs(direction.y)) {
 				isUp = false;
@@ -74,9 +75,9 @@ void Player::AnimateMovement()
 				sourceRectImg.top = 500;
 				if (sourceRectImg.left >= 500) sourceRectImg.left = 0;
 				else {
-					if (Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.25f) {
+					if (playerAnimTimer.getElapsedTime().asSeconds() >= 0.25f) {
 						sourceRectImg.left += 100;
-						Player::playerAnimTimer.restart();
+						playerAnimTimer.restart();
 					}
 				}
 
@@ -91,9 +92,9 @@ void Player::AnimateMovement()
 				sourceRectImg.top = 300;
 				if (sourceRectImg.left >= 800) sourceRectImg.left = 0;
 				else {
-					if (Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.25f) {
+					if (playerAnimTimer.getElapsedTime().asSeconds() >= 0.25f) {
 						sourceRectImg.left += 100;
-						Player::playerAnimTimer.restart();
+						playerAnimTimer.restart();
 					}
 				}
 
@@ -108,9 +109,9 @@ void Player::AnimateMovement()
 				sourceRectImg.top = 100;
 				if (sourceRectImg.left >= 800) sourceRectImg.left = 0;
 				else {
-					if (Player::playerAnimTimer.getElapsedTime().asSeconds() >= 0.25f) {
+					if (playerAnimTimer.getElapsedTime().asSeconds() >= 0.25f) {
 						sourceRectImg.left += 100;
-						Player::playerAnimTimer.restart();
+						playerAnimTimer.restart();
 					}
 				}
 
@@ -148,8 +149,7 @@ void Player::MakeDogFollow()
 			delayTimer.restart();
 		}
 	}
-	else dog->MoveTo(dog->getPosition());
+	
 
-	dog->Update();
 }
 

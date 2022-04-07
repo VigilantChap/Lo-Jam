@@ -15,14 +15,18 @@ Dog::~Dog()
 
 void Dog::Update() {
 	Entity::Update();
-	AnimateMovement();
+	Animate();
+
+
 }
 
-void Dog::AnimateMovement()
+
+
+void Dog::Animate()
 {
 	static bool flipped = false;
 	//idle
-	if (magnitude == 0) {
+	if (Idling) {
 		sourceRectImg.top = 0;
 
 		if (sourceRectImg.left >= 1000)
@@ -39,7 +43,7 @@ void Dog::AnimateMovement()
 	}
 
 	//moving
-	else if (magnitude > 0) {
+	else {
 		//  left/right movement 
 		
 			sourceRectImg.top = 100;
