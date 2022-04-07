@@ -33,8 +33,6 @@ bool GameScene::Initialize() {
 
 	changeScene = false;
 	dead = false;
-	
-
 	triggered = false;
 
 	MusicPlayer::GetInstance()->PlayBackgroundMusic();
@@ -52,8 +50,8 @@ bool GameScene::Initialize() {
 	
 	enemies.reserve(6);
 	std::default_random_engine rgenerator;
-	std::normal_distribution<float> distributionX(player->getPosition().x, 400);
-	std::normal_distribution<float> distributionY(player->getPosition().y, 400);
+	std::normal_distribution<float> distributionX(player->getPosition().x, 600);
+	std::normal_distribution<float> distributionY(player->getPosition().y, 600);
 	//Ensures that destination is always towards target
 	
 	for (int i = 0; i < enemies.capacity(); i++) {
@@ -82,7 +80,7 @@ bool GameScene::Initialize() {
 	//-- End health
 
 	//Death Notification Box
-	deathNotif.setSize(sf::Vector2f(window->getSize().x / 1.25, window->getSize().y / 1.25));
+	deathNotif.setSize(sf::Vector2f(window->getSize().x / 1.25f, window->getSize().y / 1.25f));
 	deathNotif.setOrigin(deathNotif.getSize().x / 2, deathNotif.getSize().y / 2);
 	deathNotif.setOutlineColor(sf::Color::Black);
 	deathNotif.setOutlineThickness(15);
@@ -134,11 +132,11 @@ void GameScene::HandleEvents(const sf::Event event) {
 
 	}	
 
-	if (event.type == sf::Event::KeyPressed) {
-		if (event.key.code == sf::Keyboard::Backspace) {
-			changeScene = true;
-		}
-	}
+	//if (event.type == sf::Event::KeyPressed) {
+	//	if (event.key.code == sf::Keyboard::Backspace) {
+	//		changeScene = true;
+	//	}
+	//}
 	
 }
 
@@ -157,17 +155,15 @@ void GameScene::Update() {
 		deathNotifText.setPosition(deathNotif.getPosition());
 		printf("You died!");
 		dead = true;
+		//add code to disable input
 	}
 
 	if (collisionTimer.getElapsedTime().asSeconds() >= 0.5f) {
 		for (Enemy * enemy : enemies) {
 			if (player->Collided(enemy) && triggered && player->getHealth() > 0) {
 				//testing player health --TEMPORARY--
-				if (player->getHealth() >= 10)
-				{
-					player->takeDamage(10);
-					MusicPlayer::GetInstance()->PlayHurtSound();
-				}
+				player->takeDamage(10);
+				MusicPlayer::GetInstance()->PlayHurtSound();
 				collisionTimer.restart();
 				//-- end test code
 			}
@@ -177,19 +173,16 @@ void GameScene::Update() {
 	if (collisionTimer.getElapsedTime().asSeconds() >= 1.0f) {
 		if (player->Collided(player->getDog()) && !triggered && !dead) {
 			//testing player health --TEMPORARY--
-			if (player->getHealth() < 100)
-			{
-				player->takeDamage(-10);
-				MusicPlayer::GetInstance()->PlayPewSound();
-			}
-			printf("You Healed!\n");
+			player->heal(7);
+			MusicPlayer::GetInstance()->PlayPewSound();
 			collisionTimer.restart();
 			//-- end test code
 		}
 	}
 
-	if (worldTimer.getElapsedTime().asSeconds() >= 10) {
 
+	//every 10 seconds the world changes states between triggered(aggressive creatures) and peaceful
+	if (worldTimer.getElapsedTime().asSeconds() >= 10) {
 
 		if (!triggered) {
 			for (Enemy* enemy : enemies) {
@@ -223,6 +216,7 @@ void GameScene::Update() {
 
 	for (Enemy* enemy : enemies) {
 		enemy->SetPlayerPosition(player->getPosition());
+
 		enemy->Update();
 	}
 	/*tempEnemy->SetPlayerPosition(player->getPosition());
@@ -263,7 +257,6 @@ bool GameScene::SetBackground(std::string textureName)
 	sf::IntRect iBoundary(fBoundary);
 	backgroundSprite = sf::Sprite(backgroundTexture, iBoundary);
 	backgroundSprite.setPosition(fBoundary.left - camera->GetView().getSize().x, fBoundary.top - 5000.0f + camera->GetView().getSize().y);
-
 	
 	return true;
 }

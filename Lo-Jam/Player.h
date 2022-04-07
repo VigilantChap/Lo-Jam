@@ -12,7 +12,8 @@ public:
 	~Player();
 
 	void Update();
-	inline const Entity* getDog() { if(dog != nullptr) return dog; }
+	inline const Entity* getDog() { return dog; }
+	//sf::Vector2<float> destination;
 
 private:
 	class Entity* dog;

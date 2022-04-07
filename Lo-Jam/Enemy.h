@@ -14,7 +14,7 @@ public:
 
 private:
 	sf::IntRect sourceRectImage;
-	sf::Vector2<float> playerPosition;
+	sf::Vector2<float> playerPosition, destination;
 	bool isVisible;
 	class Camera *camera;
 
