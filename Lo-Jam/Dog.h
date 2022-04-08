@@ -5,16 +5,21 @@
 
 class Dog : public Entity
 {
+
 public:
-	sf::Clock AnimTimer;
-	Dog(std::string ID);
+
+	Dog(std::string ID, Entity *owner_);
 	~Dog();
 
 	void Update();
+	void Follow();
 
 private:
+	bool following;
+	Entity *owner;
 	sf::IntRect sourceRectImg;
-
+	sf::Clock AnimTimer;
+	sf::Clock delayTimer;
 	void Animate();
 
 };

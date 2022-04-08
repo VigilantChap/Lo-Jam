@@ -41,12 +41,6 @@ bool GameScene::Initialize() {
 	player->LoadTexture("Assets/PlayerSpriteSheet.png");
 	player->scale(3, 3);
 	player->updateCentre();
-
-	/*tempEnemy = new Enemy("enemy00");
-	tempEnemy->LoadTexture("Assets/EnemySpriteSheet.png");
-	tempEnemy->scale(3, 3);
-	tempEnemy->updateCentre();
-	tempEnemy->SetPlayerPosition(player->getPosition());*/
 	
 	enemies.reserve(6);
 	std::default_random_engine rgenerator;
@@ -146,16 +140,15 @@ void GameScene::UpdateHealthBar() {
 
 void GameScene::Update() {
 
-	if (player->getHealth() > 0 && dead == false) {
+	if (player->getHealth() > 0 && !dead) {
 		deathNotif.setPosition(-1 * (window->getSize().x), 0);
 		deathNotifText.setPosition(deathNotif.getPosition());
 	}
-	else if (player->getHealth() <= 0 && dead == false)  {
+	else if (player->getHealth() <= 0 && !dead)  {
 		deathNotif.setPosition(camera->GetView().getCenter());
 		deathNotifText.setPosition(deathNotif.getPosition());
 		printf("You died!");
 		dead = true;
-		//add code to disable input
 	}
 
 	if (collisionTimer.getElapsedTime().asSeconds() >= 0.5f) {

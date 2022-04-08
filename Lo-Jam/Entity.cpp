@@ -51,6 +51,8 @@ void Entity::HandleState() {
 	if (Idling) {
 
 	}
+
+	if (health <= 0) GoingToDestination = false;
 }
 
 void Entity::Update() {

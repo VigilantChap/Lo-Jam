@@ -8,7 +8,6 @@ class GameObject: public sf::Sprite
 public:
 	std::string m_ID;
 	sf::Texture texture;
-	//sf::Sprite sprite;
 
 public:
 	virtual void InteractWith(GameObject &otherObject);

@@ -6,7 +6,7 @@
 #ifndef CLOCK_PLAYER
 #define CLOCK_PLAYER
 
-sf::Clock Player::delayTimer;
+//sf::Clock Player::delayTimer;
 sf::Clock Player::playerAnimTimer;
 bool Player::flipped = true;
 
@@ -14,7 +14,7 @@ bool Player::flipped = true;
 
 Player::Player(std::string ID) : Entity::Entity(ID)
 {
-	dog = new Dog("dog");
+	dog = new Dog("dog", this);
 	dog->LoadTexture("Assets/DoggoSpriteSheet.png");
 	dog->scale(2.5, 2.5);
 	dog->updateCentre();
@@ -36,7 +36,7 @@ void Player::Update() {
 
 	AnimateMovement();
 	HandleHorizontalFlipping();
-	MakeDogFollow();
+	//MakeDogFollow();
 	dog->Update();
 	//destination = direction;
 }
@@ -142,14 +142,14 @@ void Player::HandleHorizontalFlipping()
 
 void Player::MakeDogFollow()
 {
-	//if dog is further than 300 pixels away
-	if (sqrt(pow((getPosition() - dog->getPosition()).x, 2) + pow((getPosition() - dog->getPosition()).y, 2)) > 300.0f) {
-		if (delayTimer.getElapsedTime().asSeconds() >= 1.5f) {
-			dog->MoveTo(getPosition());
-			delayTimer.restart();
-		}
-	}
-	
+	////if dog is further than 300 pixels away
+	//if (sqrt(pow((getPosition() - dog->getPosition()).x, 2) + pow((getPosition() - dog->getPosition()).y, 2)) > 300.0f) {
+	//	if (delayTimer.getElapsedTime().asSeconds() >= 1.5f) {
+	//		dog->MoveTo(getPosition());
+	//		delayTimer.restart();
+	//	}
+	//}
+	//
 
 }
 

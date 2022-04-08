@@ -43,7 +43,7 @@ public:
 		}
 
 		else health = maxHealth;
-		printf("You Healed!\n");
+		printf("%s healed!\n", m_ID.c_str());
 	}
 
 	bool Collided(const GameObject *g);

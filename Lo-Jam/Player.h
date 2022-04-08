@@ -4,6 +4,8 @@
 
 class Player : public Entity
 {
+	friend class Dog;
+
 public:
 
 
@@ -19,7 +21,7 @@ private:
 	class Entity* dog;
 	sf::IntRect sourceRectImg;
 	static sf::Clock playerAnimTimer;
-	static sf::Clock delayTimer;
+	/*static sf::Clock delayTimer;*/
 
 	void AnimateMovement();
 	void HandleHorizontalFlipping();
