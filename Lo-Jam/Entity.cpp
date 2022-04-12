@@ -1,63 +1,46 @@
 #include "Entity.h"
 
-
-
 Entity::Entity(std::string ID) : GameObject::GameObject(ID) {
 	health = 100.0f;
 	maxHealth = 100.0f;
 	maxSpeed = 30.0f;
 
-	GoingToDestination = false;
-	Idling = true;
+	states = std::map<std::string, Script*>();
+
+	addState(Moving_Entity(this));
+	addState(Idle_Entity());
+	setState("idle");
 }
 
 
 
 Entity::~Entity()
 {
+	delete currentState;
+	currentState = nullptr;
 }
 
 void Entity::MoveTo(sf::Vector2f destination_) {
 	destination = destination_;
-	Idling = false;
-	GoingToDestination = true;
+	setState("moving");
 }
 
 void Entity::HandleState() {
 
-	if (GoingToDestination) {
-		magnitude = sqrtf(powf((destination - getPosition()).x, 2.0f) + powf((destination - getPosition()).y, 2.0f));
-
-		direction = destination - getPosition();
-		direction = direction / magnitude;
-
-
-		if (magnitude < 25) speed = maxSpeed / 4.0f;
-		else speed = maxSpeed;
-
-		if (magnitude > 10) {
-			direction.x = std::round(direction.x * speed);
-			direction.y = std::round(direction.y * speed);
-			move(direction);
-		}
-		else
-		{
-			magnitude = 0.0f;
-			GoingToDestination = false;
-			Idling = true;
-		}
+	if (health <= 0) setState("idle");
+	
+	updateState;
+	
+	if (!currentState) 
+	{
+		setState("idle");
 	}
-
-	if (Idling) {
-
-	}
-
-	if (health <= 0) GoingToDestination = false;
 }
 
 void Entity::Update() {
 
-	HandleState();
+	HandleState(); 
+
 }
 
 bool Entity::Collided(const GameObject *g) {

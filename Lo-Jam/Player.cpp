@@ -12,6 +12,9 @@ bool Player::flipped = true;
 
 #endif // !CLOCK_PLAYER
 
+
+
+
 Player::Player(std::string ID) : Entity::Entity(ID)
 {
 	dog = new Dog("dog", this);
@@ -24,8 +27,9 @@ Player::Player(std::string ID) : Entity::Entity(ID)
 	setTextureRect(sourceRectImg);
 	isUp = false;
 	isLeftRight = false;
-}
 
+	addState(Dead_Player());
+}
 
 Player::~Player()
 {
@@ -44,7 +48,7 @@ void Player::Update() {
 void Player::AnimateMovement()
 {
 		//idle
-		if (Idling) {
+		if (checkState("idle")) {
 			
 			//facing down
 			if (isDown) sourceRectImg.top = 0;

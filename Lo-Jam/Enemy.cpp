@@ -23,14 +23,14 @@ Enemy::~Enemy()
 
 void Enemy::Update()
 {
-
 	Entity::Update();
-	Animate();
-	HandleState();
 
+	Animate();
+	//HandleState();
 }
 
 void Enemy::HandleState() {
+	Entity::HandleState();
 	if (isTriggered && AIdelay.getElapsedTime().asSeconds() >= 0.5f) {
 		StartPatrolMovementTowardsTarget();
 		AIdelay.restart();

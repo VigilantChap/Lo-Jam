@@ -1,7 +1,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 #include "SFML.h"
-#include "SFML/System/Vector2.hpp"
 
 class Camera {
 private:

@@ -36,7 +36,7 @@ void Dog::Animate()
 {
 	static bool flipped = false;
 	//idle
-	if (Idling) {
+	if (checkState("idle")) {
 		sourceRectImg.top = 0;
 
 		if (sourceRectImg.left >= 1000)

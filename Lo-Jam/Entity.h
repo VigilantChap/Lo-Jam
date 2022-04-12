@@ -2,9 +2,18 @@
 #define ENTITY_H
 
 #include "GameObject.h"
-class Entity :
-	public GameObject
+#include "Script.h"
+
+#define addState(x) states.insert_or_assign(x.getName(), new x)
+#define setState(x) currentState = states.find(x)->second
+#define updateState currentState->Update();
+
+
+
+class Entity : public GameObject
 {
+	friend class Moving_Entity;
+
 protected:
 	float health;
 	float maxHealth;
@@ -18,18 +27,24 @@ protected:
 	bool GoingToDestination;
 	bool Idling;
 
-	void HandleState();
+	std::map<std::string, Script*> states;
+	Script* currentState = nullptr;
+	
+
+	virtual void HandleState();
+	inline bool checkState(const std::string &x) { return x.compare(currentState->getName()) == 0; }
 
 public:
 	Entity(std::string ID);
 	~Entity();
-	void Update() override;
+	virtual void Update() override;
 	void MoveTo(sf::Vector2f destination_);
+
 	inline void setMaxSpeed(float speed_) { speed = speed_; }
 	inline float getHealth() { return health; }
 	inline float getMaxHealth() { return maxHealth; }
 
-	inline void takeDamage(float value) { 
+	virtual inline void takeDamage(float value) { 
 		if (health >= value) {
 			health -= value;
 		}
@@ -37,7 +52,7 @@ public:
 		else health = 0;	
 	}
 
-	inline void heal(float value) {
+	virtual inline void heal(float value) {
 		if (health <= maxHealth - value) {
 			health += value;
 		}
@@ -48,6 +63,64 @@ public:
 
 	bool Collided(const GameObject *g);
 };
-
-
 #endif // !ENTITY_H
+
+#ifndef MOVING_ENTITY_H
+#define MOVING_ENTITY_H
+#include "Script.h"
+
+
+struct Moving_Entity : public Script
+{
+public:
+
+	Entity* refEntity;
+
+	Moving_Entity(Entity* ref) : refEntity(ref) {}
+
+	inline const std::string getName() override { return "moving"; }
+
+	inline void Update() override {
+		refEntity->magnitude = sqrtf(powf((refEntity->destination - refEntity->getPosition()).x, 2.0f)
+			+ powf((refEntity->destination - refEntity->getPosition()).y, 2.0f));
+
+		refEntity->direction = refEntity->destination - refEntity->getPosition();
+		refEntity->direction = refEntity->direction / refEntity->magnitude;
+
+
+		if (refEntity->magnitude < 25) refEntity->speed = refEntity->maxSpeed / 4.0f;
+		else refEntity->speed = refEntity->maxSpeed;
+
+		if (refEntity->magnitude > 10) {
+			refEntity->direction.x = std::round(refEntity->direction.x * refEntity->speed);
+			refEntity->direction.y = std::round(refEntity->direction.y * refEntity->speed);
+			refEntity->move(refEntity->direction);
+		}
+		else
+		{
+			refEntity->currentState = nullptr;
+		}
+	}
+
+	~Moving_Entity() { }
+};
+#endif // !
+
+#ifndef IDLE_ENTITY_H
+#define IDLE_ENTITY_H
+#include "Script.h"
+struct Idle_Entity : public Script
+{
+public:
+
+	Idle_Entity() {}
+
+	const std::string getName() override { return "idle"; }
+
+	void Update() override {
+
+	}
+
+	~Idle_Entity() {}
+};
+#endif // !IDLE_ENTITY_H
