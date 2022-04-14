@@ -8,9 +8,9 @@
 class MusicPlayer
 {
 private:
-	sf::Music music;
-	sf::SoundBuffer soundBuffer;
-	sf::Sound sound;
+	static sf::Music music;
+	static sf::SoundBuffer soundBuffer;
+	static sf::Sound sound;
 
 
 public:
@@ -19,18 +19,17 @@ public:
 	MusicPlayer& operator=(const MusicPlayer&) = delete;
 	MusicPlayer& operator=(MusicPlayer&&) = delete;
 	
-	static MusicPlayer * GetInstance();
-	
-	void PlayBackgroundMusic();
-	void PlayHurtSound();
-	void PlayPewSound();
-	void PlaySelectSound();
-private:
-	MusicPlayer();
-	~MusicPlayer();
 
-	static std::unique_ptr<MusicPlayer> musicPlayerInstance;
-	friend std::default_delete<MusicPlayer>;
+	
+	static void PlayBackgroundMusic();
+	static void PauseBackgroundMusic();
+	static void StopBackgroundMusic();
+	static void PlayHurtSound();
+	static void PlayPewSound();
+	static void PlaySelectSound();
+
+private:
+
 };
 
 #endif // !MUSICPLAYER_H

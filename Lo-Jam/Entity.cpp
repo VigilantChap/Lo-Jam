@@ -43,10 +43,4 @@ void Entity::Update() {
 
 }
 
-bool Entity::Collided(const GameObject *g) {
-	if (sqrtf(powf((getPosition().x - g->getPosition().x), 2.0f) + powf((getPosition().y - g->getPosition().y), 2.0f)) < 100.0f) {
-		return true;
-	}
 
-	return false;
-}

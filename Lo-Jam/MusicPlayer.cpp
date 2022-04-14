@@ -1,30 +1,25 @@
 #include "MusicPlayer.h"
 
-std::unique_ptr<MusicPlayer> MusicPlayer::musicPlayerInstance = nullptr;
 
-MusicPlayer::MusicPlayer()
-{
-}
+sf::Music MusicPlayer::music;
+sf::SoundBuffer MusicPlayer::soundBuffer;
+sf::Sound MusicPlayer::sound;
 
-
-MusicPlayer::~MusicPlayer()
-{
-}
-
-MusicPlayer * MusicPlayer::GetInstance()
-{
-	if (musicPlayerInstance.get() == nullptr)
-	{
-		musicPlayerInstance.reset(new MusicPlayer);
-	}
-	return musicPlayerInstance.get();
-}
 
 void MusicPlayer::PlayBackgroundMusic()
 {
 	if (!music.openFromFile("Assets/the_field_of_dreams.ogg"))
 		printf("Failed to Load Music\r\n");
-	music.play();
+
+	else music.play();
+}
+
+void MusicPlayer::PauseBackgroundMusic() {
+	music.pause();
+}
+
+void MusicPlayer::StopBackgroundMusic() {
+	music.stop();
 }
 
 void MusicPlayer::PlayHurtSound()

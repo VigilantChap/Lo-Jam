@@ -12,7 +12,7 @@
 
 class Entity : public GameObject
 {
-	friend class Moving_Entity;
+	//friend class Moving_Entity;
 
 protected:
 	float health;
@@ -61,66 +61,56 @@ public:
 		printf("%s healed!\n", m_ID.c_str());
 	}
 
-	bool Collided(const GameObject *g);
+	struct Moving_Entity : Script
+	{
+
+		Entity* refEntity;
+
+		Moving_Entity(Entity* ref) : refEntity(ref) {}
+
+		inline const std::string getName() override { return "moving"; }
+
+		inline void Update() override {
+			refEntity->magnitude = sqrtf(powf((refEntity->destination - refEntity->getPosition()).x, 2.0f)
+				+ powf((refEntity->destination - refEntity->getPosition()).y, 2.0f));
+
+			refEntity->direction = refEntity->destination - refEntity->getPosition();
+			refEntity->direction = refEntity->direction / refEntity->magnitude;
+
+
+			if (refEntity->magnitude < 25) refEntity->speed = refEntity->maxSpeed / 4.0f;
+			else refEntity->speed = refEntity->maxSpeed;
+
+			if (refEntity->magnitude > 10) {
+				refEntity->direction.x = std::round(refEntity->direction.x * refEntity->speed);
+				refEntity->direction.y = std::round(refEntity->direction.y * refEntity->speed);
+				refEntity->move(refEntity->direction);
+			}
+			else
+			{
+				refEntity->currentState = nullptr;
+			}
+		}
+
+		~Moving_Entity() { }
+	};
+
+	struct Idle_Entity : public Script
+	{
+	public:
+
+		Idle_Entity() {}
+
+		const std::string getName() override { return "idle"; }
+
+		void Update() override {
+
+		}
+
+		~Idle_Entity() {}
+	};
+
 };
 #endif // !ENTITY_H
 
-#ifndef MOVING_ENTITY_H
-#define MOVING_ENTITY_H
-#include "Script.h"
 
-
-struct Moving_Entity : public Script
-{
-public:
-
-	Entity* refEntity;
-
-	Moving_Entity(Entity* ref) : refEntity(ref) {}
-
-	inline const std::string getName() override { return "moving"; }
-
-	inline void Update() override {
-		refEntity->magnitude = sqrtf(powf((refEntity->destination - refEntity->getPosition()).x, 2.0f)
-			+ powf((refEntity->destination - refEntity->getPosition()).y, 2.0f));
-
-		refEntity->direction = refEntity->destination - refEntity->getPosition();
-		refEntity->direction = refEntity->direction / refEntity->magnitude;
-
-
-		if (refEntity->magnitude < 25) refEntity->speed = refEntity->maxSpeed / 4.0f;
-		else refEntity->speed = refEntity->maxSpeed;
-
-		if (refEntity->magnitude > 10) {
-			refEntity->direction.x = std::round(refEntity->direction.x * refEntity->speed);
-			refEntity->direction.y = std::round(refEntity->direction.y * refEntity->speed);
-			refEntity->move(refEntity->direction);
-		}
-		else
-		{
-			refEntity->currentState = nullptr;
-		}
-	}
-
-	~Moving_Entity() { }
-};
-#endif // !
-
-#ifndef IDLE_ENTITY_H
-#define IDLE_ENTITY_H
-#include "Script.h"
-struct Idle_Entity : public Script
-{
-public:
-
-	Idle_Entity() {}
-
-	const std::string getName() override { return "idle"; }
-
-	void Update() override {
-
-	}
-
-	~Idle_Entity() {}
-};
-#endif // !IDLE_ENTITY_H

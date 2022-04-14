@@ -2,17 +2,9 @@
 #include <math.h>
 #include "Dog.h"
 
-//Declaration of Static Variables
-#ifndef CLOCK_PLAYER
-#define CLOCK_PLAYER
 
-//sf::Clock Player::delayTimer;
 sf::Clock Player::playerAnimTimer;
 bool Player::flipped = true;
-
-#endif // !CLOCK_PLAYER
-
-
 
 
 Player::Player(std::string ID) : Entity::Entity(ID)
@@ -27,12 +19,15 @@ Player::Player(std::string ID) : Entity::Entity(ID)
 	setTextureRect(sourceRectImg);
 	isUp = false;
 	isLeftRight = false;
+	flipped = true;
 
 	addState(Dead_Player());
 }
 
 Player::~Player()
 {
+	delete dog;
+	dog = nullptr;
 }
 
 void Player::Update() {
@@ -144,16 +139,5 @@ void Player::HandleHorizontalFlipping()
 
 }
 
-void Player::MakeDogFollow()
-{
-	////if dog is further than 300 pixels away
-	//if (sqrt(pow((getPosition() - dog->getPosition()).x, 2) + pow((getPosition() - dog->getPosition()).y, 2)) > 300.0f) {
-	//	if (delayTimer.getElapsedTime().asSeconds() >= 1.5f) {
-	//		dog->MoveTo(getPosition());
-	//		delayTimer.restart();
-	//	}
-	//}
-	//
 
-}
 

@@ -9,9 +9,7 @@ class GameScene : public Scene
 private:
 	class Camera* camera;
 	class Player* player;
-	class Entity* dog;
-	class Enemy* tempEnemy;
-	std::vector<Enemy*> enemies;
+	std::vector<class Enemy*> enemies;
 
 
 	sf::Texture backgroundTexture;

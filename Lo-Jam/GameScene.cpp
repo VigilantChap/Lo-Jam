@@ -35,7 +35,7 @@ bool GameScene::Initialize() {
 	dead = false;
 	triggered = false;
 
-	MusicPlayer::GetInstance()->PlayBackgroundMusic();
+	MusicPlayer::PlayBackgroundMusic();
 
 	player = new Player("player");
 	player->LoadTexture("Assets/PlayerSpriteSheet.png");
@@ -43,10 +43,9 @@ bool GameScene::Initialize() {
 	player->updateCentre();
 	
 	enemies.reserve(6);
-	std::default_random_engine rgenerator;
+	std::default_random_engine rgenerator(time(nullptr));
 	std::normal_distribution<float> distributionX(player->getPosition().x, 600);
 	std::normal_distribution<float> distributionY(player->getPosition().y, 600);
-	//Ensures that destination is always towards target
 	
 	for (int i = 0; i < enemies.capacity(); i++) {
 		enemies.push_back(new Enemy("enemy" + i));
@@ -57,25 +56,26 @@ bool GameScene::Initialize() {
 		enemies[i]->SetPlayerPosition(player->getPosition());
 	}
 	
+
 	camera = new Camera(window);
 	camera->SetAsMainView();
 	camera->SetFollowTarget(player);
 
 	//Health
-	healthBar.setSize(sf::Vector2f(camera->GetView().getSize().x / 2, 100));
-	healthBar.setOrigin(healthBar.getSize().x / 2, healthBar.getSize().y / 2);
+	healthBar.setSize(sf::Vector2f(camera->GetView().getSize().x / 2.0f, 100.0f));
+	healthBar.setOrigin(healthBar.getSize().x / 2.0f, healthBar.getSize().y / 2.0f);
 	healthBar.setOutlineColor(sf::Color::Black);
 	healthBar.setOutlineThickness(15);
 	healthBar.setFillColor(sf::Color::Transparent);
 
 	remainingHealth.setSize(healthBar.getSize());
-	remainingHealth.setOrigin(remainingHealth.getSize().x / 2, remainingHealth.getSize().y / 2);
+	remainingHealth.setOrigin(remainingHealth.getSize().x / 2.0f, remainingHealth.getSize().y / 2.0f);
 	remainingHealth.setFillColor(sf::Color::Red);
 	//-- End health
 
 	//Death Notification Box
-	deathNotif.setSize(sf::Vector2f(window->getSize().x / 1.25f, window->getSize().y / 1.25f));
-	deathNotif.setOrigin(deathNotif.getSize().x / 2, deathNotif.getSize().y / 2);
+	deathNotif.setSize(sf::Vector2f(camera->GetView().getSize().x / 3.0f, camera->GetView().getSize().y / 3.0f));
+	deathNotif.setOrigin(deathNotif.getSize().x / 2.0f, deathNotif.getSize().y / 2.0f);
 	deathNotif.setOutlineColor(sf::Color::Black);
 	deathNotif.setOutlineThickness(15);
 	deathNotif.setFillColor(sf::Color::White);
@@ -86,7 +86,7 @@ bool GameScene::Initialize() {
 	deathNotifText.setCharacterSize(50);
 	deathNotifText.setStyle(sf::Text::Bold);
 	deathNotifText.setFillColor(sf::Color::Black);
-	deathNotifText.setOrigin(deathNotifText.getLocalBounds().width / 2, deathNotifText.getLocalBounds().height / 2);
+	deathNotifText.setOrigin(deathNotifText.getLocalBounds().width / 2.0f, deathNotifText.getLocalBounds().height / 2.0f);
 	//-- End death notif 
 	
 	if (backgroundTextureName != "") {
@@ -111,7 +111,14 @@ void GameScene::Destroy() {
 
 	enemies.clear();
 
-	//camera->Destroy();
+	delete camera;
+	camera = nullptr;
+
+	delete player;
+	player = nullptr;
+
+	MusicPlayer::StopBackgroundMusic();
+
 }
 
 void GameScene::HandleEvents(const sf::Event event) {
@@ -126,11 +133,11 @@ void GameScene::HandleEvents(const sf::Event event) {
 
 	}	
 
-	//if (event.type == sf::Event::KeyPressed) {
-	//	if (event.key.code == sf::Keyboard::Backspace) {
-	//		changeScene = true;
-	//	}
-	//}
+	if (event.type == sf::Event::KeyPressed) {
+		if (event.key.code == sf::Keyboard::Backspace) {
+			changeScene = true;
+		}
+	}
 	
 }
 
@@ -156,7 +163,7 @@ void GameScene::Update() {
 			if (player->Collided(enemy) && triggered && player->getHealth() > 0) {
 				//testing player health --TEMPORARY--
 				player->takeDamage(10);
-				MusicPlayer::GetInstance()->PlayHurtSound();
+				MusicPlayer::PlayHurtSound();
 				collisionTimer.restart();
 				//-- end test code
 			}
@@ -167,7 +174,7 @@ void GameScene::Update() {
 		if (player->Collided(player->getDog()) && !triggered && !dead && player->getHealth() < player->getMaxHealth()) {
 			//testing player health --TEMPORARY--
 			player->heal(7);
-			MusicPlayer::GetInstance()->PlayPewSound();
+			MusicPlayer::PlayPewSound();
 			collisionTimer.restart();
 			//-- end test code
 		}
@@ -246,10 +253,10 @@ bool GameScene::SetBackground(std::string textureName)
 	}
 
 	backgroundTexture.setRepeated(true);
-	sf::FloatRect fBoundary(0.0f, 0.0f, 5000.0f, 5000.0f);
+	sf::FloatRect fBoundary(0.0f, 0.0f, camera->GetView().getSize().x * 3.0f, camera->GetView().getSize().y * 3.0f);
 	sf::IntRect iBoundary(fBoundary);
 	backgroundSprite = sf::Sprite(backgroundTexture, iBoundary);
-	backgroundSprite.setPosition(fBoundary.left - camera->GetView().getSize().x, fBoundary.top - 5000.0f + camera->GetView().getSize().y);
+	backgroundSprite.setOrigin(backgroundSprite.getLocalBounds().width / 2.0f, backgroundSprite.getLocalBounds().height / 2.0f);
 	
 	return true;
 }

@@ -7,15 +7,13 @@ private:
 	class GameObject* followTarget;
 	sf::View view;
 	sf::RenderWindow* window;
-	sf::Vector2<float> imageBuffer;
-	inline void updateViewSize() { view.setSize(sf::Vector2f(window->getSize().x, window->getSize().y)); SetAsMainView(); view.zoom(4); }
-	int frame;
+	sf::Vector2f imageBuffer;
+	inline void updateViewSize() { view.setSize(window->getView().getSize()); SetAsMainView(); view.zoom(4); }
 
 public:
 	Camera(sf::RenderWindow * window_);
+	~Camera();
 	void SetFollowTarget(GameObject *target);
-	bool Initialize();
-	void Destroy();
 	void HandleEvents(sf::Event event);
 	void Update();
 	void Render();

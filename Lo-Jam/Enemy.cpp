@@ -26,7 +26,6 @@ void Enemy::Update()
 	Entity::Update();
 
 	Animate();
-	//HandleState();
 }
 
 void Enemy::HandleState() {
@@ -51,7 +50,6 @@ void Enemy::StartPatrolMovementTowardsTarget()
 	std::normal_distribution<float> distributionX(playerPosition.x, 500);
 	std::normal_distribution<float> distributionY(playerPosition.y, 500);
 
-	
 	//Ensures that destination is always towards target
 	destination.x = distributionX(pgenerator) + playerPosition.x - getPosition().x;
 	destination.y = distributionY(pgenerator) + playerPosition.y - getPosition().y;
@@ -61,30 +59,30 @@ void Enemy::StartPatrolMovementTowardsTarget()
 
 }
 
-bool Enemy::InView(Camera &camera_)
-{
-	/*Setting Boundaries for InView*/
-	camera = &camera_;
-	sf::Vector2<float> cameraPosition;
-
-	cameraPosition.x = camera->GetView().getCenter().x - camera->GetView().getSize().x / 2.0f;
-	cameraPosition.y = camera->GetView().getCenter().y - camera->GetView().getSize().y / 2.0f;
-
-	sf::FloatRect cameraBounds(cameraPosition,camera->GetView().getSize());
-
-	/***********************If In Visible Bounds**********************/
-	if (getPosition().x > cameraBounds.left && getPosition().x < cameraBounds.left + cameraBounds.width)
-	{
-		if (getPosition().y > cameraBounds.top && getPosition().y < cameraBounds.top + cameraBounds.height)
-		{
-			isVisible = true;
-			return isVisible;
-		}
-	}
-	/*******************If Not In Visible Bounds**********************/
-	isVisible = false;
-	return isVisible;
-}//--end InView()
+//bool Enemy::InView(Camera &camera_)
+//{
+//	/*Setting Boundaries for InView*/
+//	camera = &camera_;
+//	sf::Vector2<float> cameraPosition;
+//
+//	cameraPosition.x = camera->GetView().getCenter().x - camera->GetView().getSize().x / 2.0f;
+//	cameraPosition.y = camera->GetView().getCenter().y - camera->GetView().getSize().y / 2.0f;
+//
+//	sf::FloatRect cameraBounds(cameraPosition,camera->GetView().getSize());
+//
+//	/***********************If In Visible Bounds**********************/
+//	if (getPosition().x > cameraBounds.left && getPosition().x < cameraBounds.left + cameraBounds.width)
+//	{
+//		if (getPosition().y > cameraBounds.top && getPosition().y < cameraBounds.top + cameraBounds.height)
+//		{
+//			isVisible = true;
+//			return isVisible;
+//		}
+//	}
+//	/*******************If Not In Visible Bounds**********************/
+//	isVisible = false;
+//	return isVisible;
+//}//--end InView()
 
 void Enemy::Animate()
 {

@@ -13,10 +13,9 @@ private:
 	sf::IntRect sourceRectImage;
 	sf::Clock timelapse;
 	sf::Clock AIdelay;
-	sf::Vector2<float> playerPosition;
+	sf::Vector2f playerPosition;
 	static std::default_random_engine pgenerator;
 	bool isVisible;
-	class Camera *camera;
 
 	/*Methods*/
 public:
@@ -26,7 +25,7 @@ public:
 	void Update();
 	void SetPlayerPosition(sf::Vector2f position);
 	void StartPatrolMovementTowardsTarget();
-	bool InView(Camera &camera_);
+	
 
 private:
 	void Animate();

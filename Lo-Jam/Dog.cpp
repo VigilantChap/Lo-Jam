@@ -1,11 +1,14 @@
 #include "Dog.h"
 
+static bool flipped = false;
+
 Dog::Dog(std::string ID, Entity *owner_) : Entity::Entity(ID), owner(owner_)
 {
 	maxSpeed = 15.0f; 
 	sourceRectImg = sf::IntRect(0, 0, 100, 100);
 	setTextureRect(sourceRectImg);
 	following = true;
+	flipped = false;
 }
 
 
@@ -34,7 +37,6 @@ void Dog::Follow() {
 
 void Dog::Animate()
 {
-	static bool flipped = false;
 	//idle
 	if (checkState("idle")) {
 		sourceRectImg.top = 0;

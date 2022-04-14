@@ -2,7 +2,7 @@
 
 
 
-void GameObject::InteractWith(GameObject & otherObject)
+void GameObject::InteractWith(GameObject *otherObject)
 {
 }
 
@@ -18,6 +18,14 @@ GameObject::~GameObject()
 
 void GameObject::Update() {
 
+}
+
+bool GameObject::Collided(const GameObject* g) {
+	if (sqrtf(powf((getPosition().x - g->getPosition().x), 2.0f) + powf((getPosition().y - g->getPosition().y), 2.0f)) < 100.0f) {
+		return true;
+	}
+
+	return false;
 }
 
 void GameObject::LoadTexture(std::string filename) {
