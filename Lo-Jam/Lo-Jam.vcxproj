@@ -125,13 +125,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Animator.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Dog.cpp" />
+    <ClCompile Include="Door.cpp" />
+    <ClCompile Include="DoorMachine.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="InterfaceButton.cpp" />
+    <ClCompile Include="InterfacePanel.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MusicPlayer.cpp" />
@@ -139,13 +144,22 @@
     <ClCompile Include="SFWindow.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Animator.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Dog.h" />
+    <ClInclude Include="Door.h" />
+    <ClInclude Include="DoorMachine.h" />
+    <ClInclude Include="DoorState.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="GameEvent.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="InterfaceButton.h" />
+    <ClInclude Include="InterfacePanel.h" />
+    <ClInclude Include="IObservable.h" />
+    <ClInclude Include="IObserver.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="MusicPlayer.h" />
     <ClInclude Include="Player.h" />

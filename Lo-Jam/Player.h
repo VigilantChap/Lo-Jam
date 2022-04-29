@@ -15,13 +15,24 @@ public:
 
 	void Update();
 	inline const Entity* getDog() { return dog; }
-	//sf::Vector2<float> destination;
+	
+	inline void doThing(int x) { 
+		if (x == 1) {
+			printf("Player says: I'm doing Thing1\n");
+			Notify(GameEvent(GameEvent::Thing1).makeWithSource(this));
+		}
+
+		else if (x == 2) {
+			printf("Player says: I'm doing Thing2\n");
+			Notify(GameEvent(GameEvent::Thing2).makeWithSource(this));
+		}
+
+	}
 
 private:
 	class Entity* dog;
 	sf::IntRect sourceRectImg;
 	static sf::Clock playerAnimTimer;
-	/*static sf::Clock delayTimer;*/
 
 	void AnimateMovement();
 	void HandleHorizontalFlipping();

@@ -2,6 +2,7 @@
 #define SCENE_H
 #include "SFML.h"
 
+
 class Scene {
 public:
 	virtual bool Initialize() = 0;

@@ -14,7 +14,7 @@ Enemy::Enemy(std::string ID) : Entity::Entity(ID)
 	maxSpeed = 30;
 	speed = 30;
 	isTriggered = false;
-	
+	isVisible = false;
 }
 
 Enemy::~Enemy()

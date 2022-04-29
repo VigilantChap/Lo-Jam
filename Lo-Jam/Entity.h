@@ -2,7 +2,8 @@
 #define ENTITY_H
 
 #include "GameObject.h"
-#include "Script.h"
+#include "IObservable.h"
+#include <list>
 
 #define addState(x) states.insert_or_assign(x.getName(), new x)
 #define setState(x) currentState = states.find(x)->second
@@ -10,10 +11,8 @@
 
 
 
-class Entity : public GameObject
+class Entity : public GameObject, public IObservable
 {
-	//friend class Moving_Entity;
-
 protected:
 	float health;
 	float maxHealth;
@@ -23,13 +22,15 @@ protected:
 	float magnitude;
 	sf::Vector2f direction;
 
+	//addresses of observers that need to be notified when this entity does a thing
+	std::list<IObserver*> observers;
+
 	//states
 	bool GoingToDestination;
 	bool Idling;
 
 	std::map<std::string, Script*> states;
 	Script* currentState = nullptr;
-	
 
 	virtual void HandleState();
 	inline bool checkState(const std::string &x) { return x.compare(currentState->getName()) == 0; }
@@ -38,6 +39,20 @@ public:
 	Entity(std::string ID);
 	~Entity();
 	virtual void Update() override;
+
+	template <class T>
+	void ChangeState(T state) { addState(T); setState(dynamic_cast<Script>(state)); }
+
+	void AddObserver(IObserver* observer) override { observers.push_back(observer); }
+	void Remove(IObserver* observer) override { observers.remove(observer); }
+	void Notify(GameEvent e) override {
+		for (IObserver * observer : observers)
+		{
+			observer->ObservableEvent(e);
+		}
+	}
+
+
 	void MoveTo(sf::Vector2f destination_);
 
 	inline void setMaxSpeed(float speed_) { speed = speed_; }

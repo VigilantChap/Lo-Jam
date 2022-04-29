@@ -2,15 +2,20 @@
 #define MENU_H
 
 #include "Scene.h"
+#include "InterfaceButton.h"
 
 class Menu : public Scene
 {
 private:
 	sf::RenderWindow * window;
 	sf::RectangleShape backdrop;
-	sf::RectangleShape playButton, quitButton;
 	sf::Font font;
 	sf::Text title, playText, quitText;
+
+	InterfaceButton * playButton, * quitButton;
+
+	void PlayButtonPressed();
+	void QuitButtonPressed();
 
 public:
 	Menu(sf::RenderWindow * window_);

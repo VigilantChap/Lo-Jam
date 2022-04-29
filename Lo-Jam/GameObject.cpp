@@ -17,7 +17,9 @@ GameObject::~GameObject()
 }
 
 void GameObject::Update() {
-
+	//for (Script* script : scripts) {
+	//	script->Update();
+	//}
 }
 
 bool GameObject::Collided(const GameObject* g) {
@@ -29,7 +31,7 @@ bool GameObject::Collided(const GameObject* g) {
 }
 
 void GameObject::LoadTexture(std::string filename) {
-	if (!texture.loadFromFile(filename)) printf("Failed to load image of ", m_ID); 
+	if (!texture.loadFromFile(filename)) printf("Failed to load image of %s", m_ID); 
 	else setTexture(texture);
 
 	setOrigin(texture.getSize().x / 2.0f, texture.getSize().y / 2.0f);

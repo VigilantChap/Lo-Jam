@@ -5,7 +5,6 @@ Entity::Entity(std::string ID) : GameObject::GameObject(ID) {
 	maxHealth = 100.0f;
 	maxSpeed = 30.0f;
 
-	states = std::map<std::string, Script*>();
 
 	addState(Moving_Entity(this));
 	addState(Idle_Entity());

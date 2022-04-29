@@ -34,6 +34,9 @@ GameManager::~GameManager()
 }
 
 void GameManager::Destroy() {
+	delete scene;
+	scene = nullptr;
+
 	delete window;
 	window = nullptr;
 }
@@ -67,9 +70,11 @@ void GameManager::Run() {
 		if (scene->changeScene) {
 			scene->Destroy();
 			if (!scene->sceneName.compare("Menu")) {
+				delete scene;
 				scene = new GameScene(window->getRenderWindow(), "Assets/backgroundv2.png");
 			}
 			else if (!scene->sceneName.compare("GameScene")) {
+				delete scene;
 				scene = new Menu(window->getRenderWindow());
 			}
 
@@ -86,4 +91,5 @@ void GameManager::Run() {
 		}
 		
 	}
+
 }

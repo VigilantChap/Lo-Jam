@@ -2,6 +2,7 @@
 #define GAMESCENE_H
 
 #include "Scene.h"
+#include "IObserver.h"
 
 class GameScene : public Scene
 {
@@ -28,6 +29,9 @@ private:
 
 	bool triggered;
 	bool dead;
+
+	std::map<std::string, GameObject*> objectsInScene;
+
 	
 public:
 	GameScene(sf::RenderWindow * window_);

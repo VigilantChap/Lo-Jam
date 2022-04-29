@@ -8,7 +8,30 @@
 #include <iostream>
 #include <vector>
 #include <random>
+#include <list>
 #include "MusicPlayer.h"
+#include "DoorMachine.h"
+
+//------Example of Observer
+//struct observerObject1 : public GameObject, public IObserver {
+//	observerObject1(std::string ID) : GameObject(ID) {};
+//
+//	void ObservableEvent(GameEvent& e) override {
+//		
+//		auto sourceName = dynamic_cast<GameObject*>(e.source)->getID();
+//		if (e.type == GameEvent::Thing1) {
+//			if (sourceName.compare("player") == 0) {
+//				printf("ObserverObject1 says: The player sent a Thing1 event. I'm responding to that now.\n");
+//			}
+//			//else if another observed entity
+//			//else a default response for any other entity
+//		}
+//
+//		else printf("ObserverObect1 says: I was notified of an event type that I'm not concerned about.\n");
+//	}
+//};
+//------ End observer
+
 
 GameScene::GameScene(sf::RenderWindow * window_) : GameScene(window, "")
 {
@@ -96,9 +119,6 @@ bool GameScene::Initialize() {
 		}
 	}
 
-	
-	
-	
 	return true;
 }
 
@@ -137,6 +157,7 @@ void GameScene::HandleEvents(const sf::Event event) {
 		if (event.key.code == sf::Keyboard::Backspace) {
 			changeScene = true;
 		}
+
 	}
 	
 }
@@ -188,7 +209,6 @@ void GameScene::Update() {
 			for (Enemy* enemy : enemies) {
 				enemy->isTriggered = true;
 			}
-			printf("Triggered!!\n");
 			SetBackground("Assets/backgroundv4.png");
 			triggered = true;
 		}
@@ -211,16 +231,18 @@ void GameScene::Update() {
 	remainingHealth.setPosition(healthBar.getPosition());
 	UpdateHealthBar();
 
+	//for (auto object : objectsInScene) {
+	//	object.second->Update();
+	//}
+
 	camera->Update();
 	player->Update();
 
 	for (Enemy* enemy : enemies) {
 		enemy->SetPlayerPosition(player->getPosition());
 
-		enemy->Update();
+		//enemy->Update();
 	}
-	/*tempEnemy->SetPlayerPosition(player->getPosition());
-	tempEnemy->Update();*/
 }
 
 void GameScene::Render() {
@@ -230,7 +252,6 @@ void GameScene::Render() {
 	window->draw(backgroundSprite);
 	window->draw(*player->getDog());
 	window->draw(*player);
-	//window->draw(*tempEnemy);
 	for (Enemy* enemy : enemies) {
 		window->draw(*enemy);
 	}
