@@ -8,6 +8,7 @@ Entity::Entity(std::string ID) : GameObject::GameObject(ID) {
 
 	addState(Moving_Entity(this));
 	addState(Idle_Entity());
+	addState(Dead_Entity());
 	setState("idle");
 }
 
@@ -26,7 +27,10 @@ void Entity::MoveTo(sf::Vector2f destination_) {
 
 void Entity::HandleState() {
 
-	if (health <= 0) setState("idle");
+	if (health <= 0) {
+		setState("dead");
+		Notify(GameEvent(GameEvent::HasDied, this));
+	}
 	
 	updateState;
 	
@@ -37,6 +41,7 @@ void Entity::HandleState() {
 }
 
 void Entity::Update() {
+	GameObject::Update();
 
 	HandleState(); 
 

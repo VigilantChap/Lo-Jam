@@ -1,10 +1,9 @@
 #include "Player.h"
 #include <math.h>
 #include "Dog.h"
+#include "Animator.h"
 
 
-sf::Clock Player::playerAnimTimer;
-bool Player::flipped = true;
 
 
 Player::Player(std::string ID) : Entity::Entity(ID)
@@ -15,13 +14,17 @@ Player::Player(std::string ID) : Entity::Entity(ID)
 	dog->updateCentre();
 	dog->setPosition(200, 200);
 
-	sourceRectImg = sf::IntRect(0, 0, 100, 100);
-	setTextureRect(sourceRectImg);
-	isUp = false;
-	isLeftRight = false;
-	flipped = true;
-
+	//sourceRectImg = sf::IntRect(0, 0, 100, 100);
+	//setTextureRect(sourceRectImg);
+	//LoadTexture("Assets/PlayerSpriteSheet.png"); //old sprite
+	scale(3, 3);
+	LoadTexture("Assets/NewPlayerSpriteSheet.png");
+	
 	addState(Dead_Player());
+
+	animator = new Animator(this);
+	observers.push_back(animator);
+	updateCentre();
 }
 
 Player::~Player()
@@ -33,110 +36,19 @@ Player::~Player()
 void Player::Update() {
 	Entity::Update();
 
-	AnimateMovement();
-	HandleHorizontalFlipping();
-	//MakeDogFollow();
-	dog->Update();
-	//destination = direction;
-}
+	animator->Animate();
 
-void Player::AnimateMovement()
-{
-		//idle
-		if (checkState("idle")) {
-			
-			//facing down
-			if (isDown) sourceRectImg.top = 0;
-			//facing up
-			if (isUp) sourceRectImg.top = 200;
-			//facing left or right
-			if (isLeftRight) sourceRectImg.top = 400;
-			if (sourceRectImg.left >= 300)
-				sourceRectImg.left = 0;
-			else {
-				if (playerAnimTimer.getElapsedTime().asSeconds() >= 0.5f) {
-					sourceRectImg.left += 100;
-					playerAnimTimer.restart();
-				}
-
-			}
-				
-			setTextureRect(sourceRectImg);
+	projectiles.shrink_to_fit();
+	for (int i = 0; i < projectiles.size(); i++) {
+		if (projectiles[i].killMe) {
+			printf("Killing projectile.\n");
+			projectiles.erase(projectiles.begin() + i);
 		}
-
-		//moving
-		else {
-			//  left/right movement 
-			if (direction.x != 0.0f && std::abs(direction.x) > std::abs(direction.y)) {
-				isUp = false;
-				isLeftRight = true;
-				isDown = false;
-				sourceRectImg.top = 500;
-				if (sourceRectImg.left >= 500) sourceRectImg.left = 0;
-				else {
-					if (playerAnimTimer.getElapsedTime().asSeconds() >= 0.25f) {
-						sourceRectImg.left += 100;
-						playerAnimTimer.restart();
-					}
-				}
-
-				setTextureRect(sourceRectImg);
-			} 
-			
-			//  up movement
-			if (direction.y < 0.0f && std::abs(direction.y) > std::abs(direction.x)) {
-				isUp = true;
-				isLeftRight = false;
-				isDown = false;
-				sourceRectImg.top = 300;
-				if (sourceRectImg.left >= 800) sourceRectImg.left = 0;
-				else {
-					if (playerAnimTimer.getElapsedTime().asSeconds() >= 0.25f) {
-						sourceRectImg.left += 100;
-						playerAnimTimer.restart();
-					}
-				}
-
-				setTextureRect(sourceRectImg);
-			}
-
-			//  down movement
-			else if (direction.y > 0.0f && std::abs(direction.y) > std::abs(direction.x)) {
-				isUp = false;
-				isLeftRight = false;
-				isDown = true;
-				sourceRectImg.top = 100;
-				if (sourceRectImg.left >= 800) sourceRectImg.left = 0;
-				else {
-					if (playerAnimTimer.getElapsedTime().asSeconds() >= 0.25f) {
-						sourceRectImg.left += 100;
-						playerAnimTimer.restart();
-					}
-				}
-
-
-				setTextureRect(sourceRectImg);
-			}
-			
-		}
-}
-
-void Player::HandleHorizontalFlipping()
-{
-	//if moving, flip image
-	if (magnitude > 0) {
-		if (direction.x > 0.0f && !flipped) {
-			scale(-1.0f, 1.0f);
-			flipped = true;
-		}
-
-		else if (direction.x < 0.0f && flipped) {
-			scale(-1.0f, 1.0f);
-			flipped = false;
-		}
-
+		else projectiles[i].Update();
 	}
 
+
+	dog->Update();
 }
 
 

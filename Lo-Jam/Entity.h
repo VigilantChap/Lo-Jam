@@ -13,6 +13,8 @@
 
 class Entity : public GameObject, public IObservable
 {
+	friend class Animator;
+
 protected:
 	float health;
 	float maxHealth;
@@ -33,7 +35,7 @@ protected:
 	Script* currentState = nullptr;
 
 	virtual void HandleState();
-	inline bool checkState(const std::string &x) { return x.compare(currentState->getName()) == 0; }
+	
 
 public:
 	Entity(std::string ID);
@@ -52,6 +54,7 @@ public:
 		}
 	}
 
+	inline bool checkState(const std::string& x) { return x.compare(currentState->getName()) == 0; }
 
 	void MoveTo(sf::Vector2f destination_);
 
@@ -65,6 +68,8 @@ public:
 		}
 
 		else health = 0;	
+
+		printf("%s took damage! Health is now %f %\n", m_ID.c_str(), health);
 	}
 
 	virtual inline void heal(float value) {
@@ -75,6 +80,16 @@ public:
 		else health = maxHealth;
 		printf("%s healed!\n", m_ID.c_str());
 	}
+
+	struct Dead_Entity : Script {
+		Dead_Entity() {}
+
+		inline const std::string getName() override { return "dead"; }
+
+		inline void Update() override {
+
+		}
+	};
 
 	struct Moving_Entity : Script
 	{

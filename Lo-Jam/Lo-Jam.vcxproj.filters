@@ -69,6 +69,9 @@
     <ClCompile Include="Door.cpp">
       <Filter>State Machine</Filter>
     </ClCompile>
+    <ClCompile Include="IObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">

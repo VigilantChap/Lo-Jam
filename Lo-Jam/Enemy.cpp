@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include "Camera.h"
 #include <cstdlib>
+#include "Animator.h"
 
 #ifndef ENEMYSTATICVARIABLES
 #define ENEMYSTATICVARIABLES
@@ -9,12 +10,16 @@
 
 Enemy::Enemy(std::string ID) : Entity::Entity(ID)
 {
+	LoadTexture("Assets/EnemySpriteSheet.png");
 	sourceRectImage = sf::IntRect(0, 0, 100, 100);
 	setTextureRect(sourceRectImage);
 	maxSpeed = 30;
 	speed = 30;
-	isTriggered = false;
 	isVisible = false;
+	health = 100;
+	maxHealth = 100;
+	//animator = new Animator(this);
+	//observers.push_back(animator);
 }
 
 Enemy::~Enemy()
@@ -30,12 +35,10 @@ void Enemy::Update()
 
 void Enemy::HandleState() {
 	Entity::HandleState();
-	if (isTriggered && AIdelay.getElapsedTime().asSeconds() >= 0.5f) {
+	if (AIdelay.getElapsedTime().asSeconds() >= 0.5f) {
 		StartPatrolMovementTowardsTarget();
 		AIdelay.restart();
 	}
-
-	if (!isTriggered) MoveTo(getPosition());
 }
 
 void Enemy::SetPlayerPosition(sf::Vector2f position)
@@ -47,8 +50,8 @@ void Enemy::StartPatrolMovementTowardsTarget()
 {
 
 	//Distributes Values
-	std::normal_distribution<float> distributionX(playerPosition.x, 500);
-	std::normal_distribution<float> distributionY(playerPosition.y, 500);
+	std::normal_distribution<float> distributionX(playerPosition.x, 1500);
+	std::normal_distribution<float> distributionY(playerPosition.y, 1500);
 
 	//Ensures that destination is always towards target
 	destination.x = distributionX(pgenerator) + playerPosition.x - getPosition().x;
@@ -86,9 +89,9 @@ void Enemy::StartPatrolMovementTowardsTarget()
 
 void Enemy::Animate()
 {
-	if (timelapse.getElapsedTime().asSeconds() > 0.5f)
+	if (timelapse.getElapsedTime().asSeconds() > 0.15f)
 	{
-		if (isTriggered) //Evil Mode
+		 //Evil Mode
 		{
 			sourceRectImage.top = 0;
 
@@ -99,17 +102,18 @@ void Enemy::Animate()
 
 			setTextureRect(sourceRectImage);
 		}
-		else // Good Mode 
-		{
-			sourceRectImage.top = 100;
-			if (sourceRectImage.left >= 300)
-				sourceRectImage.left = 0;
-			else
-				sourceRectImage.left += 100;
 
-			setTextureRect(sourceRectImage);
-			
-		}//--end if(isTriggered)
+		//else // Good Mode 
+		//{
+		//	sourceRectImage.top = 100;
+		//	if (sourceRectImage.left >= 300)
+		//		sourceRectImage.left = 0;
+		//	else
+		//		sourceRectImage.left += 100;
+
+		//	setTextureRect(sourceRectImage);
+		//	
+		//}//--end if(isTriggered)
 
 		timelapse.restart(); //Restart Clock for Frame Count
 	}

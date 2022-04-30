@@ -12,7 +12,7 @@ class GameObject: public sf::Sprite
 protected:
 	std::string m_ID;
 	sf::Texture texture;
-
+	std::string textureFilePath;
 
 
 	//std::list<Script*> scripts;
@@ -30,6 +30,7 @@ public:
 	void LoadTexture(std::string filename);
 	inline void updateCentre() { setOrigin(getTextureRect().width / 2.0f, getTextureRect().height / 2.0f); }
 	bool Collided(const GameObject* g);
+	virtual void OnTriggerEnter(GameObject* g) {}
 };
 
 #endif

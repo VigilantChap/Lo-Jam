@@ -3,6 +3,7 @@
 
 #include "Scene.h"
 #include "IObserver.h"
+#include "InterfaceButton.h"
 
 class GameScene : public Scene
 {
@@ -21,6 +22,8 @@ private:
 	sf::RectangleShape healthBar, remainingHealth, deathNotif;
 	sf::Font font;
 	sf::Text deathNotifText;
+	InterfacePanel *score;
+	int intScore;
 	void UpdateHealthBar();
 
 	sf::RenderWindow* window;
@@ -32,7 +35,8 @@ private:
 
 	std::map<std::string, GameObject*> objectsInScene;
 
-	
+	void spawnEnemy();
+
 public:
 	GameScene(sf::RenderWindow * window_);
 	GameScene(sf::RenderWindow * window_, std::string backgroundTexture);

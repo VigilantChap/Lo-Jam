@@ -33,6 +33,17 @@
 //------ End observer
 
 
+void GameScene::spawnEnemy()
+{
+	std::default_random_engine rgenerator(time(nullptr));
+	std::normal_distribution<float> distributionX(player->getPosition().x, 1600);
+	std::normal_distribution<float> distributionY(player->getPosition().y, 1600);
+	enemies.push_back(new Enemy("enemy"));
+	enemies.back()->scale(3, 3);
+	enemies.back()->setPosition(distributionX(rgenerator), distributionY(rgenerator));
+	enemies.back()->SetPlayerPosition(player->getPosition());
+}
+
 GameScene::GameScene(sf::RenderWindow * window_) : GameScene(window, "")
 {
 
@@ -61,23 +72,9 @@ bool GameScene::Initialize() {
 	MusicPlayer::PlayBackgroundMusic();
 
 	player = new Player("player");
-	player->LoadTexture("Assets/PlayerSpriteSheet.png");
 	player->scale(3, 3);
-	player->updateCentre();
-	
-	enemies.reserve(6);
-	std::default_random_engine rgenerator(time(nullptr));
-	std::normal_distribution<float> distributionX(player->getPosition().x, 600);
-	std::normal_distribution<float> distributionY(player->getPosition().y, 600);
-	
-	for (int i = 0; i < enemies.capacity(); i++) {
-		enemies.push_back(new Enemy("enemy" + i));
-		enemies[i]->LoadTexture("Assets/EnemySpriteSheet.png");
-		enemies[i]->scale(3, 3);
-		enemies[i]->updateCentre();
-		enemies[i]->setPosition(distributionX(rgenerator), distributionY(rgenerator));
-		enemies[i]->SetPlayerPosition(player->getPosition());
-	}
+
+	spawnEnemy();
 	
 
 	camera = new Camera(window);
@@ -106,11 +103,15 @@ bool GameScene::Initialize() {
 	if (!font.loadFromFile("arial.ttf")) printf("Error: cannot load font\n");
 
 	deathNotifText = sf::Text("You died!", font);
-	deathNotifText.setCharacterSize(50);
+	deathNotifText.setCharacterSize(150);
 	deathNotifText.setStyle(sf::Text::Bold);
 	deathNotifText.setFillColor(sf::Color::Black);
 	deathNotifText.setOrigin(deathNotifText.getLocalBounds().width / 2.0f, deathNotifText.getLocalBounds().height / 2.0f);
 	//-- End death notif 
+
+	score = new InterfacePanel("0", 350, 350, 1500, 200);
+	score->SetFontSize(250);
+	intScore = 0;
 	
 	if (backgroundTextureName != "") {
 		if (!SetBackground(backgroundTextureName)) {
@@ -147,7 +148,7 @@ void GameScene::HandleEvents(const sf::Event event) {
 
 	if (event.type == sf::Event::MouseButtonPressed) {
 		if (event.mouseButton.button == sf::Mouse::Left && !dead) {
-			sf::Vector2i pixelPos = sf::Mouse::getPosition(*window);
+			const sf::Vector2i pixelPos = sf::Mouse::getPosition(*window);
 			player->MoveTo(window->mapPixelToCoords(pixelPos));
 		}
 
@@ -158,6 +159,10 @@ void GameScene::HandleEvents(const sf::Event event) {
 			changeScene = true;
 		}
 
+		if (event.key.code == sf::Keyboard::Space) {
+			const sf::Vector2i pixelPos = sf::Mouse::getPosition(*window);
+			player->fire(window->mapPixelToCoords(pixelPos));
+		}
 	}
 	
 }
@@ -181,44 +186,27 @@ void GameScene::Update() {
 
 	if (collisionTimer.getElapsedTime().asSeconds() >= 0.5f) {
 		for (Enemy * enemy : enemies) {
-			if (player->Collided(enemy) && triggered && player->getHealth() > 0) {
-				//testing player health --TEMPORARY--
+			if (player->Collided(enemy) && player->getHealth() > 0) {
 				player->takeDamage(10);
 				MusicPlayer::PlayHurtSound();
 				collisionTimer.restart();
-				//-- end test code
 			}
 		}
 		
 	}
 	if (collisionTimer.getElapsedTime().asSeconds() >= 1.0f) {
-		if (player->Collided(player->getDog()) && !triggered && !dead && player->getHealth() < player->getMaxHealth()) {
-			//testing player health --TEMPORARY--
+		if (player->Collided(player->getDog()) && !dead && player->getHealth() < player->getMaxHealth()) {
 			player->heal(7);
 			MusicPlayer::PlayPewSound();
 			collisionTimer.restart();
-			//-- end test code
 		}
 	}
 
 
-	//every 10 seconds the world changes states between triggered(aggressive creatures) and peaceful
-	if (worldTimer.getElapsedTime().asSeconds() >= 10) {
+	if (worldTimer.getElapsedTime().asSeconds() >= 5) {
 
-		if (!triggered) {
-			for (Enemy* enemy : enemies) {
-				enemy->isTriggered = true;
-			}
-			SetBackground("Assets/backgroundv4.png");
-			triggered = true;
-		}
-
-		else {
-			for (Enemy* enemy : enemies) {
-				enemy->isTriggered = false;
-			}
-			SetBackground("Assets/backgroundv2.png");
-			triggered = false;
+		if (enemies.size() < 6) {
+			spawnEnemy();
 		}
 
 		worldTimer.restart();
@@ -236,13 +224,32 @@ void GameScene::Update() {
 	//}
 
 	camera->Update();
-	player->Update();
+	
 
-	for (Enemy* enemy : enemies) {
-		enemy->SetPlayerPosition(player->getPosition());
+	static sf::Clock cooldown;
 
-		//enemy->Update();
+	for (int i = 0; i < enemies.size(); i++) {
+		enemies[i]->SetPlayerPosition(player->getPosition());
+
+		for (int j = 0; j < player->projectiles.size(); j++) {
+			if (player->projectiles[j].Collided(enemies[i]) && cooldown.getElapsedTime().asSeconds() > 1) {
+				player->projectiles[j].OnTriggerEnter(enemies[i]);
+				player->projectiles.erase(player->projectiles.begin() + j);
+				cooldown.restart();
+			}
+
+		}
+
+		enemies[i]->Update();
+		if (enemies[i]->checkState("dead")) {
+			enemies.erase(enemies.begin() + i);
+			intScore++;
+		}
 	}
+
+	std::string newScore = std::to_string(intScore);
+	score->SetText(newScore);
+	player->Update();
 }
 
 void GameScene::Render() {
@@ -255,11 +262,19 @@ void GameScene::Render() {
 	for (Enemy* enemy : enemies) {
 		window->draw(*enemy);
 	}
+
+	for (auto projectile : player->projectiles) {
+		window->draw(projectile);
+	}
+
+
+
 	//UI
 	window->draw(remainingHealth);
 	window->draw(healthBar);
 	window->draw(deathNotif);
 	window->draw(deathNotifText);
+	score->Draw(window, camera->GetView());
 	//------ end of UI
 
 	window->display();
@@ -269,7 +284,7 @@ void GameScene::Render() {
 bool GameScene::SetBackground(std::string textureName)
 {
 	if (!backgroundTexture.loadFromFile(textureName)) {
-		std::cout << "Could not load background image.";
+		std::cout << "Could not load background image.\n";
 		return false;
 	}
 

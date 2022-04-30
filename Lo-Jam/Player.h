@@ -1,42 +1,74 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "Entity.h"
+#include "MusicPlayer.h"
 
 class Player : public Entity
 {
 	friend class Dog;
 
+	struct Projectile : public GameObject {
+		sf::Vector2f fireDirection;
+		sf::Clock lifetime;
+		bool killMe;
+
+		Projectile(sf::Vector2f spawnLocation, sf::Vector2f ptarget, sf::Texture &t) : GameObject("projectile") {
+			//this->LoadTexture("Assets/NewPlayerSpriteSheet.png");
+			this->setTexture(t);
+			this->setTextureRect(sf::IntRect(32, 288, 32, 32));
+			this->scale(6, 6);
+			killMe = false;
+			const auto mag = sqrt(powf((ptarget - spawnLocation).x, 2.0f) + powf((ptarget - spawnLocation).y, 2.0f));
+			fireDirection = (ptarget - spawnLocation) / mag;
+			setPosition(spawnLocation);
+			lifetime.restart();
+		}
+
+		void Update() override {
+			if (!killMe) {
+				GameObject::Update();
+				this->move(fireDirection.x * 12, fireDirection.y * 12);
+			}
+
+			if (lifetime.getElapsedTime().asSeconds() >= 3.5f && !killMe) killMe = true;
+			
+		}
+
+		void OnTriggerEnter(GameObject* g) override {
+			if (g->getID().compare("enemy") == 0) {
+				dynamic_cast<Entity*>(g)->takeDamage(50);
+			}
+		}
+
+		~Projectile() {
+
+		}
+
+	};
+
+
 public:
 
-
-	static bool flipped;
 	Player(std::string ID);
 	~Player();
 
 	void Update();
 	inline const Entity* getDog() { return dog; }
+
+	std::vector<Projectile> projectiles;
 	
-	inline void doThing(int x) { 
-		if (x == 1) {
-			printf("Player says: I'm doing Thing1\n");
-			Notify(GameEvent(GameEvent::Thing1).makeWithSource(this));
-		}
-
-		else if (x == 2) {
-			printf("Player says: I'm doing Thing2\n");
-			Notify(GameEvent(GameEvent::Thing2).makeWithSource(this));
-		}
-
+	inline void fire(const sf::Vector2f & position) { 
+		projectiles.push_back(Projectile(this->getPosition(), position, texture));
+		MusicPlayer::PlayPewSound();
+		printf("Fire!\n");
 	}
 
 private:
 	class Entity* dog;
 	sf::IntRect sourceRectImg;
-	static sf::Clock playerAnimTimer;
 
-	void AnimateMovement();
-	void HandleHorizontalFlipping();
-	bool isUp, isLeftRight, isDown;
+	class Animator* animator;
+
 };
 #endif // !PLAYER_H
 

@@ -20,10 +20,16 @@ void GameObject::Update() {
 	//for (Script* script : scripts) {
 	//	script->Update();
 	//}
+
+	updateCentre();
 }
 
 bool GameObject::Collided(const GameObject* g) {
-	if (sqrtf(powf((getPosition().x - g->getPosition().x), 2.0f) + powf((getPosition().y - g->getPosition().y), 2.0f)) < 100.0f) {
+
+	const sf::FloatRect collider1 = this->getGlobalBounds();
+	const sf::FloatRect collider2 = g->getGlobalBounds();
+
+	if (collider1.intersects(collider2)) {
 		return true;
 	}
 
@@ -31,8 +37,9 @@ bool GameObject::Collided(const GameObject* g) {
 }
 
 void GameObject::LoadTexture(std::string filename) {
-	if (!texture.loadFromFile(filename)) printf("Failed to load image of %s", m_ID); 
+	if (!texture.loadFromFile(filename)) printf("Failed to load image of %s", m_ID.c_str()); 
 	else setTexture(texture);
-
-	setOrigin(texture.getSize().x / 2.0f, texture.getSize().y / 2.0f);
+	
+	updateCentre();
+	textureFilePath = filename;
 }

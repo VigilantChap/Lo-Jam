@@ -9,8 +9,10 @@ public:
 
 	enum EventType
 	{
-		Thing1,
-		Thing2
+		HasDied,
+		IsAttacking,
+		IsInjured
+
 	};
 
 	EventType type;
@@ -18,10 +20,8 @@ public:
 	class GameObject* source;
 
 
-	
-	GameEvent(EventType t) : type(t) { source = nullptr; }
 	template <class T>
-	GameEvent &makeWithSource(T* ref) { source = ref; return *this; }
+	GameEvent(EventType _type, T* ref) : type(_type) { source = ref; }
 	~GameEvent() {}
 
 
