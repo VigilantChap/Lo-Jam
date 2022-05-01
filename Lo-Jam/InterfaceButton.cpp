@@ -9,23 +9,13 @@ InterfaceButton::~InterfaceButton()
 }
 
 InterfaceButton::InterfaceButton(std::string pText, Callback pPressCallback, float pX, float pY, Anchor pAnchor) :
-	InterfacePanel(pText, 800, 100, pX, pY, pAnchor),
 	focused(false),
 	focusedColor(sf::Color::Cyan),
-	pressCallback(pPressCallback)
+	pressCallback(pPressCallback),
+	InterfacePanel(pText, 800, 100, pX, pY, pAnchor)
 {
 	background.setOutlineColor(sf::Color::Yellow);
 	SetFontSize(40);
-}
-
-void InterfaceButton::SetText(std::string& pText)
-{
-	InterfacePanel::SetText(pText);
-}
-
-void InterfaceButton::Draw(sf::RenderWindow* pWindow, sf::View pCamView)
-{
-	InterfacePanel::Draw(pWindow, pCamView);
 }
 
 void InterfaceButton::HandleEvents(const sf::Event pEvent)

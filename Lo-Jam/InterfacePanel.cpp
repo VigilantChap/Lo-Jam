@@ -1,111 +1,53 @@
 #include "InterfacePanel.h"
-#include <algorithm>
-#include <iostream>
 
 #pragma warning (disable: 26812)
 
 InterfacePanel::~InterfacePanel()
 {
+	delete panelText;
+	panelText = nullptr;
 }
 
-InterfacePanel::InterfacePanel(std::string pText, float pWidth, float pHeight, float pX, float pY, Anchor pAnchor) :
-	anchor(pAnchor),
+InterfacePanel::InterfacePanel(std::string pText, float pWidth, float pHeight, float pX, float pY, Anchor pAnchor, Anchor pTextAnchor) :
 	fillColor(sf::Color::White),
-	fontStyle(sf::Text::Bold),
-	fontSize(50),
-	hPadding(8),
-	scaleX(0.5),
-	scaleY(0.5),
-	plainText("")
+	padding(8),
+	Interface(pX, pY, pAnchor)
 {
-	if(!font.loadFromFile("arial.ttf"))
-	{
-		printf("Error: cannot load font\n");
-	}
-
-	setPosition(sf::Vector2f(pX, pY));
-	SetAnchor(pAnchor);
-
 	background.setSize(sf::Vector2f(pWidth, pHeight));
-	background.setOrigin(pWidth * scaleX, pHeight * scaleY);
+	background.setOrigin(pWidth * scaleWidth, pHeight * scaleHeight);
 	background.setOutlineColor(sf::Color::Black);
 	background.setOutlineThickness(2);
 	background.setFillColor(fillColor);
 
-	text = sf::Text(pText, font);
-	SetText(pText);
-	text.setCharacterSize(fontSize);
-	text.setStyle(fontStyle);
-	text.setFillColor(sf::Color::Black);
+	panelText = new InterfaceText(pText, padding, padding, pWidth - (padding * 2), pHeight - (padding * 2), pTextAnchor);
+}
+
+void InterfacePanel::Draw(sf::RenderWindow* pWindow, sf::View pCamView, sf::FloatRect* pParentRect)
+{
+	Interface::Draw(pWindow, pCamView);
+
+	background.setPosition(worldPos);
+	pWindow->draw(background);
+	
+	if(panelText)
+	{
+		sf::FloatRect parentRect = background.getGlobalBounds();
+		panelText->Draw(pWindow, pCamView, &parentRect);
+	}
 }
 
 void InterfacePanel::SetText(std::string& pText)
 {
-	plainText = pText;
-	uint lastSpace = 0;
-	float lineWidth = 0;
-	float lineHeight = 0;
-	float wordWidth = 0;
-	float advance = 0;
-	float maxWidth = background.getSize().x - (hPadding * 2);
-	
-	for(uint i = 0; i <= pText.size(); i++)
+	if(panelText)
 	{
-		if(lineWidth < maxWidth)
-		{
-			sf::Glyph glyph = font.getGlyph(uint(pText[i]), fontSize, fontStyle);
-			advance = glyph.advance;
-			wordWidth += advance;
-			lineWidth += advance;
-			lineHeight = std::max(lineHeight, -glyph.bounds.top);
-			
-			//std::cout << pText[i] << " " << -glyph.bounds.top << " " << glyph.bounds.height << std::endl;
-		}
-		else
-		{
-			i--; //we were too wide, need to try to add this character again
-			if(wordWidth < maxWidth) //we have spaces so can wrap text normally
-			{
-				pText.replace(lastSpace, 1, "\n");
-				lineWidth = wordWidth;
-			}
-			else //no spaces in a single line of text, add new line once we reach max width
-			{
-				pText.insert(i, 1, '\n');
-				lineWidth = 0;
-			}
-		}
-		if(pText[i] == ' ')
-		{
-			lastSpace = i;
-			wordWidth = 0;
-		}
+		panelText->SetText(pText);
 	}
-	
-	text.setString(pText);
-	text.setOrigin(text.getLocalBounds().width * scaleX, fontSize - lineHeight * scaleY);
-}
-
-void InterfacePanel::Draw(sf::RenderWindow* pWindow, sf::View pCamView)
-{
-	const sf::Vector2f newPos = pCamView.getCenter() - (sf::Vector2f(pCamView.getSize().x / 2, pCamView.getSize().y / 2)) + getPosition();
-	background.setPosition(newPos);
-	pWindow->draw(background);
-
-	text.setPosition(newPos);
-	pWindow->draw(text);
 }
 
 void InterfacePanel::SetFontSize(uint pFontSize)
 {
-	fontSize = pFontSize;
-	text.setCharacterSize(fontSize);
-	SetText(plainText);
-}
-
-void InterfacePanel::SetAnchor(Anchor pAnchor)
-{
-	anchor = pAnchor;
-	scaleX = fmodf(anchor, 3) / 2;
-	scaleY = floor(anchor / 3) / 2;
+	if(panelText)
+	{
+		panelText->SetFontSize(pFontSize);
+	}
 }
