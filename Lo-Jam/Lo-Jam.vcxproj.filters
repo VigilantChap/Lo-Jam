@@ -72,6 +72,12 @@
     <ClCompile Include="IObserver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InterfaceText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -142,6 +148,12 @@
     </ClInclude>
     <ClInclude Include="DoorState.h">
       <Filter>State Machine</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceText.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
