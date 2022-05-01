@@ -8,9 +8,10 @@ class Menu : public Scene
 {
 private:
 	sf::RenderWindow * window;
-	sf::RectangleShape backdrop;
+	class GameObject* backdrop;
 	sf::Font font;
 	sf::Text title, playText, quitText;
+	InterfaceText * titleText;
 
 	InterfaceButton * playButton, * quitButton;
 

@@ -20,6 +20,7 @@ InterfacePanel::InterfacePanel(std::string pText, float pWidth, float pHeight, f
 	background.setFillColor(fillColor);
 
 	panelText = new InterfaceText(pText, padding, padding, pWidth - (padding * 2), pHeight - (padding * 2), pTextAnchor);
+	panelText->SetColor(sf::Color::Black);
 }
 
 void InterfacePanel::Draw(sf::RenderWindow* pWindow, sf::View pCamView, sf::FloatRect* pParentRect)
@@ -49,5 +50,13 @@ void InterfacePanel::SetFontSize(uint pFontSize)
 	if(panelText)
 	{
 		panelText->SetFontSize(pFontSize);
+	}
+}
+
+void InterfacePanel::SetTextColor(sf::Color pColor)
+{
+	if(panelText)
+	{
+		panelText->SetColor(pColor);
 	}
 }

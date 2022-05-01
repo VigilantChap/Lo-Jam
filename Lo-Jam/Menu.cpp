@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include "MusicPlayer.h"
+#include "GameObject.h"
 
 Menu::Menu(sf::RenderWindow * window_) : window(window_)
 {
@@ -14,22 +15,33 @@ bool Menu::Initialize() {
 	sceneName = "Menu";
 	changeScene = false;
 
-	if (!font.loadFromFile("arial.ttf")) printf("Error: cannot load font\n");
+	//if (!font.loadFromFile("arial.ttf")) printf("Error: cannot load font\n");
 
 	auto centre = window->getView().getCenter();
-	auto size = window->getView().getSize();
+	//auto size = window->getView().getSize();
 
 	// Create title text
-	title = sf::Text("Symptomania", font);
-	title.setCharacterSize(75);
-	title.setStyle(sf::Text::Bold);
-	title.setFillColor(sf::Color::Cyan);
-	title.setOrigin(title.getGlobalBounds().width / 2.0f, title.getGlobalBounds().height / 2.0f);
-	title.setPosition(centre.x, centre.y / 3.0f);
+	//title = sf::Text("Planet Jamlo", font);
+	//title.setCharacterSize(120);
+	//title.setStyle(sf::Text::Bold);
+	//title.setFillColor(sf::Color::Cyan);
+	//title.setOrigin(title.getGlobalBounds().width / 2.0f, title.getGlobalBounds().height / 2.0f);
+	//title.setPosition(centre.x, centre.y / 3.0f);
+	//title.setOutlineThickness(5);
+	//sf::Color outlineColour;
+	//outlineColour.a = 75;
+	//title.setOutlineColor(outlineColour);
 
-	backdrop = sf::RectangleShape(sf::Vector2f(window->getSize()));
-	backdrop.setPosition(0, 0);
-	backdrop.setFillColor(sf::Color::Black);
+	titleText = new InterfaceText("Planet Jamlo", centre.x, 210);
+	titleText->SetColor(sf::Color::Cyan, sf::Color(0, 0, 0, 75));
+
+	
+	//sf::Texture s;
+	//if (!s.loadFromFile("Assets/title_Background.png")) printf("Could not load menu background image.\n");
+	backdrop = new GameObject("menuBackground");
+	backdrop->LoadTexture("Assets/title_Background.png");
+	backdrop->scale(1.25, 1.25);
+	backdrop->setPosition(window->getView().getCenter());
 	
 	//Create playButton
 	//playButton = sf::RectangleShape(sf::Vector2f(centre.x, window->getView().getSize().y / 10.0f));
@@ -37,13 +49,13 @@ bool Menu::Initialize() {
 	//playButton.setPosition(centre.x, centre.y - playButton.getSize().y);
 	//playButton.setFillColor(sf::Color::Cyan);
 	//playButton text
-	playText = sf::Text("Play", font);
-	playText.setCharacterSize(40);
-	playText.setStyle(sf::Text::Bold);
-	playText.setFillColor(sf::Color::Black);
-	playText.setOrigin(playText.getGlobalBounds().width / 2.0f, playText.getGlobalBounds().height);
+	//playText = sf::Text("Play", font);
+	//playText.setCharacterSize(40);
+	//playText.setStyle(sf::Text::Bold);
+	//playText.setFillColor(sf::Color::Black);
+	//playText.setOrigin(playText.getGlobalBounds().width / 2.0f, playText.getGlobalBounds().height);
 
-	playButton = new InterfaceButton("Play", [&]() {PlayButtonPressed(); }, centre.x, 525);
+	playButton = new InterfaceButton("Play", [&]() {PlayButtonPressed(); }, centre.x, 525, Interface::BOT_CENTER);
 
 	//Create quitButton
 	//quitButton = sf::RectangleShape(sf::Vector2f(window->getView().getSize().x / 2.0f, window->getView().getSize().y / 10.0f));
@@ -51,19 +63,20 @@ bool Menu::Initialize() {
 	//quitButton.setPosition(centre.x, centre.y + quitButton.getSize().y);
 	//quitButton.setFillColor(sf::Color::Cyan);
 	//quitButton text
-	quitText = sf::Text("Quit", font);
-	quitText.setCharacterSize(40);
-	quitText.setStyle(sf::Text::Bold);
-	quitText.setFillColor(sf::Color::Black);
-	quitText.setOrigin(quitText.getLocalBounds().width / 2.0f, quitText.getLocalBounds().height);
+	//quitText = sf::Text("Quit", font);
+	//quitText.setCharacterSize(40);
+	//quitText.setStyle(sf::Text::Bold);
+	//quitText.setFillColor(sf::Color::Black);
+	//quitText.setOrigin(quitText.getLocalBounds().width / 2.0f, quitText.getLocalBounds().height);
 
-	quitButton = new InterfaceButton("Quit", [&]() {QuitButtonPressed(); }, centre.x, playButton->getPosition().y + 100 + 50);
+	quitButton = new InterfaceButton("Quit", [&]() {QuitButtonPressed(); }, centre.x, playButton->getPosition().y + 50, Interface::TOP_CENTER);
 
 	return true;
 }
 
 void Menu::Destroy() {
-
+	delete backdrop;
+	backdrop = nullptr;
 }
 
 void Menu::PlayButtonPressed(){
@@ -104,18 +117,17 @@ void Menu::HandleEvents(const sf::Event event) {
 }
 
 void Menu::Update() {
-
+	backdrop->Update();
 }
 
 void Menu::Render() {
 	window->clear();
 
-	window->draw(backdrop);
-	
+	window->draw(*backdrop);
+
+	titleText->Draw(window, window->getView());
 	playButton->Draw(window, window->getView());
 	quitButton->Draw(window, window->getView());
-	
-	window->draw(title);
 
 	window->display();
 }

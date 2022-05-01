@@ -14,6 +14,7 @@ public:
 
 	void SetText(std::string& pText);
 	void SetFontSize(uint pFontSize);
+	void SetTextColor(sf::Color pColor);
 
 protected:
 	InterfaceText* panelText;

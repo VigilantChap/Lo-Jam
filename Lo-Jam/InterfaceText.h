@@ -13,14 +13,14 @@ public:
 	virtual void SetText(std::string& pText);
 
 	void SetFontSize(uint pFontSize);
+	void SetColor(sf::Color pColor, sf::Color pOutlineColor = sf::Color::Transparent);
 
-	void Draw(sf::RenderWindow* pWindow, sf::View pCamView, sf::FloatRect* pParentRect) override;
+	void Draw(sf::RenderWindow* pWindow, sf::View pCamView, sf::FloatRect* pParentRect = nullptr) override;
 
 protected:
 	sf::RectangleShape background;
 	sf::Font font;
 	sf::Text text;
-	sf::Color fontColor;
 	sf::Text::Style fontStyle;
 	uint fontSize;
 	float textWidth;
