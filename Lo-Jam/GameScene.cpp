@@ -226,16 +226,14 @@ void GameScene::Update() {
 	camera->Update();
 	
 
-	static sf::Clock cooldown;
 
 	for (int i = 0; i < enemies.size(); i++) {
 		enemies[i]->SetPlayerPosition(player->getPosition());
 
 		for (int j = 0; j < player->projectiles.size(); j++) {
-			if (player->projectiles[j].Collided(enemies[i]) && cooldown.getElapsedTime().asSeconds() > 1) {
+			if (player->projectiles[j].Collided(enemies[i])) {
 				player->projectiles[j].OnTriggerEnter(enemies[i]);
 				player->projectiles.erase(player->projectiles.begin() + j);
-				cooldown.restart();
 			}
 
 		}
@@ -292,7 +290,7 @@ bool GameScene::SetBackground(std::string textureName)
 	sf::FloatRect fBoundary(0.0f, 0.0f, camera->GetView().getSize().x, camera->GetView().getSize().y);
 	sf::IntRect iBoundary(fBoundary);
 	backgroundSprite = sf::Sprite(backgroundTexture, iBoundary);
-backgroundSprite.scale(12, 12);
+backgroundSprite.scale(9, 9);
 	backgroundSprite.setOrigin(backgroundSprite.getLocalBounds().width / 2.0f, backgroundSprite.getLocalBounds().height / 2.0f);
 	
 	

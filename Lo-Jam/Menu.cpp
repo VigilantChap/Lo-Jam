@@ -34,7 +34,6 @@ bool Menu::Initialize() {
 
 	titleText = new InterfaceText("Planet Jamlo", centre.x, 210);
 	titleText->SetColor(sf::Color::Cyan, sf::Color(0, 0, 0, 75));
-
 	
 	//sf::Texture s;
 	//if (!s.loadFromFile("Assets/title_Background.png")) printf("Could not load menu background image.\n");
