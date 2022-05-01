@@ -14,7 +14,7 @@ public:
 
 	void SetFontSize(uint pFontSize);
 
-	void Draw(sf::RenderWindow* pWindow, sf::View pCamView, sf::FloatRect* pParentRect) override;
+	void Draw(sf::RenderWindow* pWindow, sf::View pCamView, sf::FloatRect* pParentRect = nullptr) override;
 
 protected:
 	sf::RectangleShape background;

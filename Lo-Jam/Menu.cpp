@@ -20,12 +20,14 @@ bool Menu::Initialize() {
 	auto size = window->getView().getSize();
 
 	// Create title text
-	title = sf::Text("Symptomania", font);
-	title.setCharacterSize(75);
+	title = sf::Text("Planet Jamlo", font);
+	title.setCharacterSize(120);
 	title.setStyle(sf::Text::Bold);
 	title.setFillColor(sf::Color::Cyan);
 	title.setOrigin(title.getGlobalBounds().width / 2.0f, title.getGlobalBounds().height / 2.0f);
 	title.setPosition(centre.x, centre.y / 3.0f);
+
+	titleText = new InterfaceText("Planet Jamlo", centre.x, centre.y / 3.0f);
 
 	backdrop = sf::RectangleShape(sf::Vector2f(window->getSize()));
 	backdrop.setPosition(0, 0);
@@ -43,7 +45,7 @@ bool Menu::Initialize() {
 	playText.setFillColor(sf::Color::Black);
 	playText.setOrigin(playText.getGlobalBounds().width / 2.0f, playText.getGlobalBounds().height);
 
-	playButton = new InterfaceButton("Play", [&]() {PlayButtonPressed(); }, centre.x, 525);
+	playButton = new InterfaceButton("Play", [&]() {PlayButtonPressed(); }, centre.x, 525, Interface::BOT_CENTER);
 
 	//Create quitButton
 	//quitButton = sf::RectangleShape(sf::Vector2f(window->getView().getSize().x / 2.0f, window->getView().getSize().y / 10.0f));
@@ -57,7 +59,7 @@ bool Menu::Initialize() {
 	quitText.setFillColor(sf::Color::Black);
 	quitText.setOrigin(quitText.getLocalBounds().width / 2.0f, quitText.getLocalBounds().height);
 
-	quitButton = new InterfaceButton("Quit", [&]() {QuitButtonPressed(); }, centre.x, playButton->getPosition().y + 100 + 50);
+	quitButton = new InterfaceButton("Quit", [&]() {QuitButtonPressed(); }, centre.x, playButton->getPosition().y + 50, Interface::TOP_CENTER);
 
 	return true;
 }
@@ -116,6 +118,7 @@ void Menu::Render() {
 	quitButton->Draw(window, window->getView());
 	
 	window->draw(title);
+	//titleText->Draw(window, window->getView());
 
 	window->display();
 }

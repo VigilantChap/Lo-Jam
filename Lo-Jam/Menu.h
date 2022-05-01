@@ -11,6 +11,7 @@ private:
 	sf::RectangleShape backdrop;
 	sf::Font font;
 	sf::Text title, playText, quitText;
+	InterfaceText * titleText;
 
 	InterfaceButton * playButton, * quitButton;
 
