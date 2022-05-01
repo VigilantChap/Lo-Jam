@@ -15,25 +15,25 @@ bool Menu::Initialize() {
 	sceneName = "Menu";
 	changeScene = false;
 
-	if (!font.loadFromFile("arial.ttf")) printf("Error: cannot load font\n");
+	//if (!font.loadFromFile("arial.ttf")) printf("Error: cannot load font\n");
 
 	auto centre = window->getView().getCenter();
-	auto size = window->getView().getSize();
+	//auto size = window->getView().getSize();
 
 	// Create title text
-	title = sf::Text("Planet Jamlo", font);
-	title.setCharacterSize(120);
-	title.setStyle(sf::Text::Bold);
-	title.setFillColor(sf::Color::Cyan);
-	title.setOrigin(title.getGlobalBounds().width / 2.0f, title.getGlobalBounds().height / 2.0f);
-	title.setPosition(centre.x, centre.y / 3.0f);
-	title.setOutlineThickness(5);
-	sf::Color outlineColour;
-	outlineColour.a = 75;
-	title.setOutlineColor(outlineColour);
+	//title = sf::Text("Planet Jamlo", font);
+	//title.setCharacterSize(120);
+	//title.setStyle(sf::Text::Bold);
+	//title.setFillColor(sf::Color::Cyan);
+	//title.setOrigin(title.getGlobalBounds().width / 2.0f, title.getGlobalBounds().height / 2.0f);
+	//title.setPosition(centre.x, centre.y / 3.0f);
+	//title.setOutlineThickness(5);
+	//sf::Color outlineColour;
+	//outlineColour.a = 75;
+	//title.setOutlineColor(outlineColour);
 
-	titleText = new InterfaceText("Planet Jamlo", centre.x, centre.y / 3.0f);
-
+	titleText = new InterfaceText("Planet Jamlo", centre.x, 210);
+	titleText->SetColor(sf::Color::Cyan, sf::Color(0, 0, 0, 75));
 	
 	//sf::Texture s;
 	//if (!s.loadFromFile("Assets/title_Background.png")) printf("Could not load menu background image.\n");
@@ -48,11 +48,11 @@ bool Menu::Initialize() {
 	//playButton.setPosition(centre.x, centre.y - playButton.getSize().y);
 	//playButton.setFillColor(sf::Color::Cyan);
 	//playButton text
-	playText = sf::Text("Play", font);
-	playText.setCharacterSize(40);
-	playText.setStyle(sf::Text::Bold);
-	playText.setFillColor(sf::Color::Black);
-	playText.setOrigin(playText.getGlobalBounds().width / 2.0f, playText.getGlobalBounds().height);
+	//playText = sf::Text("Play", font);
+	//playText.setCharacterSize(40);
+	//playText.setStyle(sf::Text::Bold);
+	//playText.setFillColor(sf::Color::Black);
+	//playText.setOrigin(playText.getGlobalBounds().width / 2.0f, playText.getGlobalBounds().height);
 
 	playButton = new InterfaceButton("Play", [&]() {PlayButtonPressed(); }, centre.x, 525, Interface::BOT_CENTER);
 
@@ -62,11 +62,11 @@ bool Menu::Initialize() {
 	//quitButton.setPosition(centre.x, centre.y + quitButton.getSize().y);
 	//quitButton.setFillColor(sf::Color::Cyan);
 	//quitButton text
-	quitText = sf::Text("Quit", font);
-	quitText.setCharacterSize(40);
-	quitText.setStyle(sf::Text::Bold);
-	quitText.setFillColor(sf::Color::Black);
-	quitText.setOrigin(quitText.getLocalBounds().width / 2.0f, quitText.getLocalBounds().height);
+	//quitText = sf::Text("Quit", font);
+	//quitText.setCharacterSize(40);
+	//quitText.setStyle(sf::Text::Bold);
+	//quitText.setFillColor(sf::Color::Black);
+	//quitText.setOrigin(quitText.getLocalBounds().width / 2.0f, quitText.getLocalBounds().height);
 
 	quitButton = new InterfaceButton("Quit", [&]() {QuitButtonPressed(); }, centre.x, playButton->getPosition().y + 50, Interface::TOP_CENTER);
 
@@ -123,12 +123,10 @@ void Menu::Render() {
 	window->clear();
 
 	window->draw(*backdrop);
-	
+
+	titleText->Draw(window, window->getView());
 	playButton->Draw(window, window->getView());
 	quitButton->Draw(window, window->getView());
-	
-	window->draw(title);
-	//titleText->Draw(window, window->getView());
 
 	window->display();
 }

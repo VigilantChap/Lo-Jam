@@ -7,9 +7,8 @@ InterfaceText::~InterfaceText()
 }
 
 InterfaceText::InterfaceText(std::string pText, float pX, float pY, float pWidth, float pHeight, Anchor pAnchor) :
-	fontColor(sf::Color::Black),
 	fontStyle(sf::Text::Bold),
-	fontSize(50),
+	fontSize(120),
 	textWidth(pWidth),
 	textHeight(pHeight),
 	plainText(""),
@@ -21,10 +20,10 @@ InterfaceText::InterfaceText(std::string pText, float pX, float pY, float pWidth
 	}
 
 	text = sf::Text(pText, font);
-	SetText(pText);
 	text.setCharacterSize(fontSize);
 	text.setStyle(fontStyle);
-	text.setFillColor(fontColor);
+	text.setFillColor(sf::Color::Cyan);
+	SetText(pText);
 }
 
 void InterfaceText::SetText(std::string& pText)
@@ -36,39 +35,36 @@ void InterfaceText::SetText(std::string& pText)
 	float wordWidth = 0;
 	float advance = 0;
 
-	if(textWidth > 0)
+	for(uint i = 0; i <= pText.size(); i++)
 	{
-		for(uint i = 0; i <= pText.size(); i++)
+		if(lineWidth < textWidth || textWidth == 0)
 		{
-			if(lineWidth < textWidth)
-			{
-				sf::Glyph glyph = font.getGlyph(uint(pText[i]), fontSize, fontStyle);
-				advance = glyph.advance;
-				wordWidth += advance;
-				lineWidth += advance;
-				lineHeight = std::max(lineHeight, -glyph.bounds.top);
+			sf::Glyph glyph = font.getGlyph(uint(pText[i]), fontSize, fontStyle);
+			advance = glyph.advance;
+			wordWidth += advance;
+			lineWidth += advance;
+			lineHeight = std::max(lineHeight, -glyph.bounds.top);
 
-				//std::cout << pText[i] << " " << -glyph.bounds.top << " " << glyph.bounds.height << std::endl;
-			}
-			else
+			//std::cout << pText[i] << " " << -glyph.bounds.top << " " << glyph.bounds.height << std::endl;
+		}
+		else
+		{
+			i--; //we were too wide, need to try to add this character again
+			if(wordWidth < textWidth) //we have spaces so can wrap text normally
 			{
-				i--; //we were too wide, need to try to add this character again
-				if(wordWidth < textWidth) //we have spaces so can wrap text normally
-				{
-					pText.replace(lastSpace, 1, "\n");
-					lineWidth = wordWidth;
-				}
-				else //no spaces in a single line of text, add new line once we reach max width
-				{
-					pText.insert(i, 1, '\n');
-					lineWidth = 0;
-				}
+				pText.replace(lastSpace, 1, "\n");
+				lineWidth = wordWidth;
 			}
-			if(pText[i] == ' ')
+			else //no spaces in a single line of text, add new line once we reach max width
 			{
-				lastSpace = i;
-				wordWidth = 0;
+				pText.insert(i, 1, '\n');
+				lineWidth = 0;
 			}
+		}
+		if(pText[i] == ' ')
+		{
+			lastSpace = i;
+			wordWidth = 0;
 		}
 	}
 
@@ -95,4 +91,19 @@ void InterfaceText::SetFontSize(uint pFontSize)
 	fontSize = pFontSize;
 	text.setCharacterSize(fontSize);
 	SetText(plainText);
+}
+
+void InterfaceText::SetColor(sf::Color pColor, sf::Color pOutlineColor)
+{
+	text.setFillColor(pColor);
+
+	if(pOutlineColor != sf::Color::Transparent)
+	{
+		text.setOutlineThickness(1 + std::floor(fontSize / 30));
+		text.setOutlineColor(pOutlineColor);
+	}
+	else
+	{
+		text.setOutlineThickness(0);
+	}
 }
