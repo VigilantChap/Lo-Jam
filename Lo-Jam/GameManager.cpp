@@ -71,7 +71,7 @@ void GameManager::Run() {
 			scene->Destroy();
 			if (!scene->sceneName.compare("Menu")) {
 				delete scene;
-				scene = new GameScene(window->getRenderWindow(), "Assets/backgroundv2.png");
+				scene = new GameScene(window->getRenderWindow(), "Assets/backgroundv1.png");
 			}
 			else if (!scene->sceneName.compare("GameScene")) {
 				delete scene;

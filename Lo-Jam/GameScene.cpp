@@ -289,10 +289,12 @@ bool GameScene::SetBackground(std::string textureName)
 	}
 
 	backgroundTexture.setRepeated(true);
-	sf::FloatRect fBoundary(0.0f, 0.0f, camera->GetView().getSize().x * 3.0f, camera->GetView().getSize().y * 3.0f);
+	sf::FloatRect fBoundary(0.0f, 0.0f, camera->GetView().getSize().x, camera->GetView().getSize().y);
 	sf::IntRect iBoundary(fBoundary);
 	backgroundSprite = sf::Sprite(backgroundTexture, iBoundary);
+backgroundSprite.scale(12, 12);
 	backgroundSprite.setOrigin(backgroundSprite.getLocalBounds().width / 2.0f, backgroundSprite.getLocalBounds().height / 2.0f);
+	
 	
 	return true;
 }

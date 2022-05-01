@@ -13,7 +13,6 @@ class Player : public Entity
 		bool killMe;
 
 		Projectile(sf::Vector2f spawnLocation, sf::Vector2f ptarget, sf::Texture &t) : GameObject("projectile") {
-			//this->LoadTexture("Assets/NewPlayerSpriteSheet.png");
 			this->setTexture(t);
 			this->setTextureRect(sf::IntRect(32, 288, 32, 32));
 			this->scale(6, 6);
@@ -27,7 +26,7 @@ class Player : public Entity
 		void Update() override {
 			if (!killMe) {
 				GameObject::Update();
-				this->move(fireDirection.x * 12, fireDirection.y * 12);
+				this->move(fireDirection.x * 20, fireDirection.y * 20);
 			}
 
 			if (lifetime.getElapsedTime().asSeconds() >= 3.5f && !killMe) killMe = true;
