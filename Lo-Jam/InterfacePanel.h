@@ -1,46 +1,26 @@
 #ifndef INTERFACE_PANEL_H
 #define INTERFACE_PANEL_H
 
-#include "SFML.h"
+#include "Interface.h"
+#include "InterfaceText.h"
 
-class InterfacePanel : public sf::Sprite
+class InterfacePanel : public Interface
 {
 public:
-	enum Anchor
-	{
-		TOP_LEFT,
-		TOP_CENTER,
-		TOP_RIGHT,
-		MID_LEFT,
-		MID_CENTER,
-		MID_RIGHT,
-		BOT_LEFT,
-		BOT_CENTER,
-		BOT_RIGHT
-	};
-
-	InterfacePanel(std::string pText, float pWidth, float pHeight, float pX = 0, float pY = 0, Anchor pAnchor = Anchor::MID_CENTER);
+	InterfacePanel(std::string pText, float pWidth, float pHeight, float pX = 0, float pY = 0, Anchor pAnchor = Anchor::MID_CENTER, Anchor pTextAnchor = Anchor::MID_CENTER);
 	~InterfacePanel();
 
-	virtual void SetText(std::string& pText);
-	virtual void Draw(sf::RenderWindow* pWindow, sf::View pCamView);
+	void Draw(sf::RenderWindow* pWindow, sf::View pCamView, sf::FloatRect* pParentRect = nullptr) override;
 
+	void SetText(std::string& pText);
 	void SetFontSize(uint pFontSize);
-	void SetAnchor(Anchor pAnchor);
 
 protected:
-	Anchor anchor;
-	//sf::Vector2f position;
+	InterfaceText* panelText;
+
 	sf::RectangleShape background;
-	sf::Font font;
-	sf::Text text;
 	sf::Color fillColor;
-	sf::Text::Style fontStyle;
-	uint fontSize;
-	int hPadding; //horizontal spacing between a container and its contents
-	float scaleX;
-	float scaleY;
-	std::string plainText;
+	int padding; //spacing between a container and its contents
 };
 
 #endif // INTERFACE_PANEL_H
