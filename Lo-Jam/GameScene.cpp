@@ -226,16 +226,14 @@ void GameScene::Update() {
 	camera->Update();
 	
 
-	static sf::Clock cooldown;
 
 	for (int i = 0; i < enemies.size(); i++) {
 		enemies[i]->SetPlayerPosition(player->getPosition());
 
 		for (int j = 0; j < player->projectiles.size(); j++) {
-			if (player->projectiles[j].Collided(enemies[i]) && cooldown.getElapsedTime().asSeconds() > 1) {
+			if (player->projectiles[j].Collided(enemies[i])) {
 				player->projectiles[j].OnTriggerEnter(enemies[i]);
 				player->projectiles.erase(player->projectiles.begin() + j);
-				cooldown.restart();
 			}
 
 		}

@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include "MusicPlayer.h"
+#include "GameObject.h"
 
 Menu::Menu(sf::RenderWindow * window_) : window(window_)
 {
@@ -26,12 +27,20 @@ bool Menu::Initialize() {
 	title.setFillColor(sf::Color::Cyan);
 	title.setOrigin(title.getGlobalBounds().width / 2.0f, title.getGlobalBounds().height / 2.0f);
 	title.setPosition(centre.x, centre.y / 3.0f);
+	title.setOutlineThickness(5);
+	sf::Color outlineColour;
+	outlineColour.a = 75;
+	title.setOutlineColor(outlineColour);
 
 	titleText = new InterfaceText("Planet Jamlo", centre.x, centre.y / 3.0f);
 
-	backdrop = sf::RectangleShape(sf::Vector2f(window->getSize()));
-	backdrop.setPosition(0, 0);
-	backdrop.setFillColor(sf::Color::Black);
+	
+	//sf::Texture s;
+	//if (!s.loadFromFile("Assets/title_Background.png")) printf("Could not load menu background image.\n");
+	backdrop = new GameObject("menuBackground");
+	backdrop->LoadTexture("Assets/title_Background.png");
+	backdrop->scale(1.25, 1.25);
+	backdrop->setPosition(window->getView().getCenter());
 	
 	//Create playButton
 	//playButton = sf::RectangleShape(sf::Vector2f(centre.x, window->getView().getSize().y / 10.0f));
@@ -65,7 +74,8 @@ bool Menu::Initialize() {
 }
 
 void Menu::Destroy() {
-
+	delete backdrop;
+	backdrop = nullptr;
 }
 
 void Menu::PlayButtonPressed(){
@@ -106,13 +116,13 @@ void Menu::HandleEvents(const sf::Event event) {
 }
 
 void Menu::Update() {
-
+	backdrop->Update();
 }
 
 void Menu::Render() {
 	window->clear();
 
-	window->draw(backdrop);
+	window->draw(*backdrop);
 	
 	playButton->Draw(window, window->getView());
 	quitButton->Draw(window, window->getView());
