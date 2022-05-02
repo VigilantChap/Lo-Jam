@@ -12,7 +12,7 @@ public:
 
 	void Draw(sf::RenderWindow* pWindow, sf::View pCamView, sf::FloatRect* pParentRect = nullptr) override;
 
-	void SetText(std::string& pText);
+	void SetText(std::string pText);
 	void SetFontSize(uint pFontSize);
 	void SetTextColor(sf::Color pColor);
 
@@ -20,7 +20,7 @@ protected:
 	InterfaceText* panelText;
 
 	sf::RectangleShape background;
-	sf::Color fillColor;
+	sf::Color backgroundColor;
 	int padding; //spacing between a container and its contents
 };
 

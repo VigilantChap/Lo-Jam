@@ -8,7 +8,7 @@ InterfaceText::~InterfaceText()
 
 InterfaceText::InterfaceText(std::string pText, float pX, float pY, float pWidth, float pHeight, Anchor pAnchor) :
 	fontStyle(sf::Text::Bold),
-	fontSize(120),
+	fontSize(180),
 	textWidth(pWidth),
 	textHeight(pHeight),
 	plainText(""),
@@ -26,51 +26,66 @@ InterfaceText::InterfaceText(std::string pText, float pX, float pY, float pWidth
 	SetText(pText);
 }
 
-void InterfaceText::SetText(std::string& pText)
+void InterfaceText::SetText(std::string pText)
 {
 	plainText = pText;
+	sf::Glyph glyph;
 	uint lastSpace = 0;
+	uint lineChars = 0;
+	float lastLineWidth = 0;
+	float maxLineWidth = 0;
 	float lineWidth = 0;
 	float lineHeight = 0;
+	float lineOffset = 0;
 	float wordWidth = 0;
 	float advance = 0;
 
-	for(uint i = 0; i <= pText.size(); i++)
+	for(uint i = 0; i < pText.size() + 1; i++) //need to loop one extra time in case the last character is outside bounds
 	{
-		if(lineWidth < textWidth || textWidth == 0)
+		//only wrap if width limit is set, and we are over it, and at least a single character has been added to the line (to prevent infinite loops)
+		if(textWidth > 0 && lineWidth > textWidth && lineChars > 1)
 		{
-			sf::Glyph glyph = font.getGlyph(uint(pText[i]), fontSize, fontStyle);
+			if(wordWidth < textWidth) //we have spaces so can wrap text normally
+			{
+				pText.replace(lastSpace, 1, "\n"); //because we replace a space character rather than inserting new, i does not need to be incremented
+				lineWidth = wordWidth;
+				lineChars = i - 1 - lastSpace;
+			}
+			else //no spaces in a single line of text, add new line once we reach max width
+			{
+				pText.insert(i - 1, 1, '\n');
+				lastLineWidth = lineWidth - advance;
+				wordWidth = advance;
+				lineWidth = wordWidth;
+				lineChars = 1;
+				i++; //our last character got dropped to a new line by adding a new line character in front, process the next character
+			}
+			maxLineWidth = std::max(maxLineWidth, lastLineWidth);
+		}
+
+		if(i < pText.size())
+		{
+			glyph = font.getGlyph(uint(pText[i]), fontSize, fontStyle);
 			advance = glyph.advance;
 			wordWidth += advance;
 			lineWidth += advance;
 			lineHeight = std::max(lineHeight, -glyph.bounds.top);
+			lineOffset = std::min(glyph.bounds.left, lineOffset);
+			lineChars++;
 
-			//std::cout << pText[i] << " " << -glyph.bounds.top << " " << glyph.bounds.height << std::endl;
-		}
-		else
-		{
-			i--; //we were too wide, need to try to add this character again
-			if(wordWidth < textWidth) //we have spaces so can wrap text normally
+			if(pText[i] == ' ')
 			{
-				pText.replace(lastSpace, 1, "\n");
-				lineWidth = wordWidth;
+				lastSpace = i;
+				wordWidth = 0;
+				lastLineWidth = lineWidth - advance;
 			}
-			else //no spaces in a single line of text, add new line once we reach max width
-			{
-				pText.insert(i, 1, '\n');
-				lineWidth = 0;
-			}
-		}
-		if(pText[i] == ' ')
-		{
-			lastSpace = i;
-			wordWidth = 0;
 		}
 	}
+	maxLineWidth = std::max(maxLineWidth, lineWidth);
 
 	text.setString(pText);
-	text.setOrigin(text.getLocalBounds().width * scaleWidth, fontSize - lineHeight * (1-scaleHeight));
-	//printf("%f\t%f\n", GetTextWidth(), text.getLocalBounds().width);
+	text.setOrigin((maxLineWidth - lineOffset) * scaleWidth, fontSize - lineHeight * (1 - scaleHeight));
+	//printf("%f\t%f\n", maxLineWidth, text.getLocalBounds().width);
 }
 
 void InterfaceText::Draw(sf::RenderWindow* pWindow, sf::View pCamView, sf::FloatRect* pParentRect)

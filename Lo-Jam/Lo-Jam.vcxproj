@@ -138,6 +138,7 @@
     <ClCompile Include="Interface.cpp" />
     <ClCompile Include="InterfaceButton.cpp" />
     <ClCompile Include="InterfacePanel.cpp" />
+    <ClCompile Include="InterfaceProgressBar.cpp" />
     <ClCompile Include="InterfaceText.cpp" />
     <ClCompile Include="IObserver.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="Interface.h" />
     <ClInclude Include="InterfaceButton.h" />
     <ClInclude Include="InterfacePanel.h" />
+    <ClInclude Include="InterfaceProgressBar.h" />
     <ClInclude Include="InterfaceText.h" />
     <ClInclude Include="IObservable.h" />
     <ClInclude Include="IObserver.h" />

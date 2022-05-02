@@ -21,6 +21,8 @@ bool Menu::Initialize() {
 	//auto size = window->getView().getSize();
 
 	// Create title text
+	titleText = new InterfaceText("Planet Jamlo", centre.x, 210);
+	titleText->SetColor(sf::Color::Cyan, sf::Color(0, 0, 0, 75));
 	//title = sf::Text("Planet Jamlo", font);
 	//title.setCharacterSize(120);
 	//title.setStyle(sf::Text::Bold);
@@ -32,17 +34,16 @@ bool Menu::Initialize() {
 	//outlineColour.a = 75;
 	//title.setOutlineColor(outlineColour);
 
-	titleText = new InterfaceText("Planet Jamlo", centre.x, 210);
-	titleText->SetColor(sf::Color::Cyan, sf::Color(0, 0, 0, 75));
 	
 	//sf::Texture s;
 	//if (!s.loadFromFile("Assets/title_Background.png")) printf("Could not load menu background image.\n");
 	backdrop = new GameObject("menuBackground");
 	backdrop->LoadTexture("Assets/title_Background.png");
 	backdrop->scale(1.25, 1.25);
-	backdrop->setPosition(window->getView().getCenter());
+	backdrop->setPosition(centre);
 	
 	//Create playButton
+	playButton = new InterfaceButton("Play", [&]() { PlayButtonPressed(); }, centre.x, 525, Interface::BOT_CENTER);
 	//playButton = sf::RectangleShape(sf::Vector2f(centre.x, window->getView().getSize().y / 10.0f));
 	//playButton.setOrigin(playButton.getSize().x / 2.0f, playButton.getSize().y / 2.0f);
 	//playButton.setPosition(centre.x, centre.y - playButton.getSize().y);
@@ -54,9 +55,8 @@ bool Menu::Initialize() {
 	//playText.setFillColor(sf::Color::Black);
 	//playText.setOrigin(playText.getGlobalBounds().width / 2.0f, playText.getGlobalBounds().height);
 
-	playButton = new InterfaceButton("Play", [&]() {PlayButtonPressed(); }, centre.x, 525, Interface::BOT_CENTER);
-
 	//Create quitButton
+	quitButton = new InterfaceButton("Quit", [&]() { QuitButtonPressed(); }, centre.x, playButton->getPosition().y + 50, Interface::TOP_CENTER);
 	//quitButton = sf::RectangleShape(sf::Vector2f(window->getView().getSize().x / 2.0f, window->getView().getSize().y / 10.0f));
 	//quitButton.setOrigin(quitButton.getSize().x / 2.0f, quitButton.getSize().y / 2.0f);
 	//quitButton.setPosition(centre.x, centre.y + quitButton.getSize().y);
@@ -68,14 +68,21 @@ bool Menu::Initialize() {
 	//quitText.setFillColor(sf::Color::Black);
 	//quitText.setOrigin(quitText.getLocalBounds().width / 2.0f, quitText.getLocalBounds().height);
 
-	quitButton = new InterfaceButton("Quit", [&]() {QuitButtonPressed(); }, centre.x, playButton->getPosition().y + 50, Interface::TOP_CENTER);
-
 	return true;
 }
 
 void Menu::Destroy() {
 	delete backdrop;
 	backdrop = nullptr;
+
+	delete titleText;
+	titleText = nullptr;
+
+	delete playButton;
+	playButton = nullptr;
+
+	delete quitButton;
+	quitButton = nullptr;
 }
 
 void Menu::PlayButtonPressed(){

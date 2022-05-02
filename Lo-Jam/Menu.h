@@ -11,8 +11,8 @@ private:
 	class GameObject* backdrop;
 	sf::Font font;
 	sf::Text title, playText, quitText;
-	InterfaceText * titleText;
 
+	InterfaceText * titleText;
 	InterfaceButton * playButton, * quitButton;
 
 	void PlayButtonPressed();
