@@ -12,10 +12,10 @@ InterfaceButton::InterfaceButton(std::string pText, Callback pPressCallback, flo
 	focused(false),
 	focusedColor(sf::Color::Cyan),
 	pressCallback(pPressCallback),
-	InterfacePanel(pText, 800, 100, pX, pY, pAnchor)
+	InterfacePanel(pText, 600, 100, pX, pY, pAnchor)
 {
 	background.setOutlineColor(sf::Color::Yellow);
-	SetFontSize(40);
+	SetFontSize(80);
 }
 
 void InterfaceButton::HandleEvents(const sf::Event pEvent)
@@ -47,5 +47,5 @@ void InterfaceButton::SetFocused(bool pFocused)
 	}
 
 	focused = pFocused;
-	background.setFillColor(focused ? focusedColor : fillColor);
+	background.setFillColor(focused ? focusedColor : backgroundColor);
 }

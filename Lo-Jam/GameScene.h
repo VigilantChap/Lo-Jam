@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "IObserver.h"
 #include "InterfaceButton.h"
+#include "InterfaceProgressBar.h"
 
 class GameScene : public Scene
 {
@@ -13,23 +14,22 @@ private:
 	class Player* player;
 	std::vector<class Enemy*> enemies;
 
-
-	sf::Texture backgroundTexture;
-	sf::Sprite backgroundSprite;
-	std::string	backgroundTextureName;
-
 	//UI
-	sf::RectangleShape healthBar, remainingHealth, deathNotif;
+	sf::RectangleShape remainingHealth;
 	sf::Font font;
-	sf::Text deathNotifText;
-	InterfacePanel *score;
-	int intScore;
-	void UpdateHealthBar();
+
+	InterfaceProgressBar* healthBar;
+	InterfacePanel* deathPopup;
+	InterfacePanel* score;
 
 	sf::RenderWindow* window;
 	sf::Clock worldTimer;
 	sf::Clock collisionTimer;
+	sf::Texture backgroundTexture;
+	sf::Sprite backgroundSprite;
+	std::string	backgroundTextureName;
 
+	int intScore;
 	bool triggered;
 	bool dead;
 

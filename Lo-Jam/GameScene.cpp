@@ -82,34 +82,40 @@ bool GameScene::Initialize() {
 	camera->SetFollowTarget(player);
 
 	//Health
-	healthBar.setSize(sf::Vector2f(camera->GetView().getSize().x / 2.0f, 100.0f));
-	healthBar.setOrigin(healthBar.getSize().x / 2.0f, healthBar.getSize().y / 2.0f);
-	healthBar.setOutlineColor(sf::Color::Black);
-	healthBar.setOutlineThickness(15);
-	healthBar.setFillColor(sf::Color::Transparent);
+	//healthBar.setSize(sf::Vector2f(camera->GetView().getSize().x / 2.0f, 100.0f));
+	//healthBar.setOrigin(healthBar.getSize().x / 2.0f, healthBar.getSize().y / 2.0f);
+	//healthBar.setOutlineColor(sf::Color::Black);
+	//healthBar.setOutlineThickness(15);
+	//healthBar.setFillColor(sf::Color::Transparent);
 
-	remainingHealth.setSize(healthBar.getSize());
-	remainingHealth.setOrigin(remainingHealth.getSize().x / 2.0f, remainingHealth.getSize().y / 2.0f);
-	remainingHealth.setFillColor(sf::Color::Red);
+	//remainingHealth.setSize(healthBar.getSize());
+	//remainingHealth.setOrigin(remainingHealth.getSize().x / 2.0f, remainingHealth.getSize().y / 2.0f);
+	//remainingHealth.setFillColor(sf::Color::Red);
+
+	sf::Vector2f viewSize = camera->GetView().getSize();
+
+	healthBar = new InterfaceProgressBar(0, viewSize.x / 2, 100, viewSize.x / 2, viewSize.y * 0.95, Interface::BOT_CENTER);
+	//healthBar->SetProgressText("Health: %d%%");
 	//-- End health
 
 	//Death Notification Box
-	deathNotif.setSize(sf::Vector2f(camera->GetView().getSize().x / 3.0f, camera->GetView().getSize().y / 3.0f));
-	deathNotif.setOrigin(deathNotif.getSize().x / 2.0f, deathNotif.getSize().y / 2.0f);
-	deathNotif.setOutlineColor(sf::Color::Black);
-	deathNotif.setOutlineThickness(15);
-	deathNotif.setFillColor(sf::Color::White);
+	deathPopup = new InterfacePanel("You died!", viewSize.x / 3, viewSize.y / 3, viewSize.x / 2, viewSize.y / 2);
+	//deathNotif.setSize(sf::Vector2f(viewSize.x / 3.0f, viewSize.y / 3.0f));
+	//deathNotif.setOrigin(deathNotif.getSize().x / 2.0f, deathNotif.getSize().y / 2.0f);
+	//deathNotif.setOutlineColor(sf::Color::Black);
+	//deathNotif.setOutlineThickness(15);
+	//deathNotif.setFillColor(sf::Color::White);
 
-	if (!font.loadFromFile("arial.ttf")) printf("Error: cannot load font\n");
+	//if (!font.loadFromFile("arial.ttf")) printf("Error: cannot load font\n");
 
-	deathNotifText = sf::Text("You died!", font);
-	deathNotifText.setCharacterSize(150);
-	deathNotifText.setStyle(sf::Text::Bold);
-	deathNotifText.setFillColor(sf::Color::Black);
-	deathNotifText.setOrigin(deathNotifText.getLocalBounds().width / 2.0f, deathNotifText.getLocalBounds().height / 2.0f);
+	//deathNotifText = sf::Text("You died!", font);
+	//deathNotifText.setCharacterSize(150);
+	//deathNotifText.setStyle(sf::Text::Bold);
+	//deathNotifText.setFillColor(sf::Color::Black);
+	//deathNotifText.setOrigin(deathNotifText.getLocalBounds().width / 2.0f, deathNotifText.getLocalBounds().height / 2.0f);
 	//-- End death notif 
 
-	score = new InterfacePanel("0", 350, 350, 1500, 200);
+	score = new InterfacePanel("0", 350, 350, viewSize.x * 0.05, viewSize.y * 0.05, Interface::TOP_LEFT);
 	score->SetFontSize(250);
 	intScore = 0;
 	
@@ -137,6 +143,15 @@ void GameScene::Destroy() {
 
 	delete player;
 	player = nullptr;
+
+	delete deathPopup;
+	deathPopup = nullptr;
+
+	delete score;
+	score = nullptr;
+
+	delete healthBar;
+	healthBar = nullptr;
 
 	MusicPlayer::StopBackgroundMusic();
 
@@ -167,19 +182,20 @@ void GameScene::HandleEvents(const sf::Event event) {
 	
 }
 
-void GameScene::UpdateHealthBar() {
-	remainingHealth.setSize(sf::Vector2f(player->getHealth() / 100.0f * healthBar.getSize().x, remainingHealth.getSize().y));
-}
+//void GameScene::UpdateHealthBar() {
+//	remainingHealth.setSize(sf::Vector2f(player->getHealth() / 100.0f * healthBar.getSize().x, remainingHealth.getSize().y));
+//}
 
 void GameScene::Update() {
 
-	if (player->getHealth() > 0 && !dead) {
-		deathNotif.setPosition(-1 * (window->getSize().x), 0);
-		deathNotifText.setPosition(deathNotif.getPosition());
-	}
-	else if (player->getHealth() <= 0 && !dead)  {
-		deathNotif.setPosition(camera->GetView().getCenter());
-		deathNotifText.setPosition(deathNotif.getPosition());
+	//if (player->getHealth() > 0 && !dead) {
+		//deathNotif.setPosition(-1 * (window->getSize().x), 0);
+		//deathNotifText.setPosition(deathNotif.getPosition());
+	//}
+	//else
+	if (player->getHealth() <= 0 && !dead)  {
+		//deathNotif.setPosition(camera->GetView().getCenter());
+		//deathNotifText.setPosition(deathNotif.getPosition());
 		printf("You died!");
 		dead = true;
 	}
@@ -212,12 +228,14 @@ void GameScene::Update() {
 		worldTimer.restart();
 	}
 
-	healthBar.setPosition(
-		camera->GetView().getCenter().x,
-		camera->GetView().getCenter().y + camera->GetView().getSize().y / 3.5);
+	//healthBar.setPosition(
+	//	camera->GetView().getCenter().x,
+	//	camera->GetView().getCenter().y + camera->GetView().getSize().y / 3.5);
 
-	remainingHealth.setPosition(healthBar.getPosition());
-	UpdateHealthBar();
+	//remainingHealth.setPosition(healthBar.getPosition());
+	//UpdateHealthBar();
+
+	healthBar->SetProgress(player->getHealth() / 100);
 
 	//for (auto object : objectsInScene) {
 	//	object.second->Update();
@@ -245,8 +263,7 @@ void GameScene::Update() {
 		}
 	}
 
-	std::string newScore = std::to_string(intScore);
-	score->SetText(newScore);
+	score->SetText(std::to_string(intScore));
 	player->Update();
 }
 
@@ -268,11 +285,17 @@ void GameScene::Render() {
 
 
 	//UI
-	window->draw(remainingHealth);
-	window->draw(healthBar);
-	window->draw(deathNotif);
-	window->draw(deathNotifText);
+	//window->draw(remainingHealth);
+	//window->draw(healthBar);
+	//window->draw(deathNotif);
+	//window->draw(deathNotifText);
+	healthBar->Draw(window, camera->GetView());
 	score->Draw(window, camera->GetView());
+
+	if(dead)
+	{
+		deathPopup->Draw(window, camera->GetView());
+	}
 	//------ end of UI
 
 	window->display();
@@ -290,7 +313,7 @@ bool GameScene::SetBackground(std::string textureName)
 	sf::FloatRect fBoundary(0.0f, 0.0f, camera->GetView().getSize().x, camera->GetView().getSize().y);
 	sf::IntRect iBoundary(fBoundary);
 	backgroundSprite = sf::Sprite(backgroundTexture, iBoundary);
-backgroundSprite.scale(9, 9);
+	backgroundSprite.scale(9, 9);
 	backgroundSprite.setOrigin(backgroundSprite.getLocalBounds().width / 2.0f, backgroundSprite.getLocalBounds().height / 2.0f);
 	
 	

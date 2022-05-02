@@ -10,7 +10,7 @@ public:
 	InterfaceText(std::string pText, float pX, float pY, float pWidth = 0, float pHeight = 0, Anchor pAnchor = Anchor::MID_CENTER);
 	~InterfaceText();
 
-	virtual void SetText(std::string& pText);
+	virtual void SetText(std::string pText);
 
 	void SetFontSize(uint pFontSize);
 	void SetColor(sf::Color pColor, sf::Color pOutlineColor = sf::Color::Transparent);

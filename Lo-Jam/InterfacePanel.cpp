@@ -9,15 +9,15 @@ InterfacePanel::~InterfacePanel()
 }
 
 InterfacePanel::InterfacePanel(std::string pText, float pWidth, float pHeight, float pX, float pY, Anchor pAnchor, Anchor pTextAnchor) :
-	fillColor(sf::Color::White),
+	backgroundColor(sf::Color::White),
 	padding(8),
 	Interface(pX, pY, pAnchor)
 {
 	background.setSize(sf::Vector2f(pWidth, pHeight));
 	background.setOrigin(pWidth * scaleWidth, pHeight * scaleHeight);
 	background.setOutlineColor(sf::Color::Black);
-	background.setOutlineThickness(2);
-	background.setFillColor(fillColor);
+	background.setOutlineThickness(4);
+	background.setFillColor(backgroundColor);
 
 	panelText = new InterfaceText(pText, padding, padding, pWidth - (padding * 2), pHeight - (padding * 2), pTextAnchor);
 	panelText->SetColor(sf::Color::Black);
@@ -37,7 +37,7 @@ void InterfacePanel::Draw(sf::RenderWindow* pWindow, sf::View pCamView, sf::Floa
 	}
 }
 
-void InterfacePanel::SetText(std::string& pText)
+void InterfacePanel::SetText(std::string pText)
 {
 	if(panelText)
 	{
