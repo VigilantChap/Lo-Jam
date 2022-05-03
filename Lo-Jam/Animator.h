@@ -11,7 +11,7 @@ class Animator : public IObserver
 private:
 	sf::Image* TextureImage;
 	sf::IntRect animFrame;
-	static sf::Clock AnimTimer;
+	sf::Clock AnimTimer;
 
 	struct Animation {
 		int up, down, left, right;

@@ -10,7 +10,6 @@ public:
 	bool isTriggered;
 
 private:
-	sf::IntRect sourceRectImage;
 	sf::Clock timelapse;
 	sf::Clock AIdelay;
 	sf::Vector2f playerPosition;

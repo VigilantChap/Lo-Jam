@@ -1,7 +1,6 @@
 #include "Animator.h"
 #include "Entity.h"
 
-sf::Clock Animator::AnimTimer;
 
 void Animator::ObservableEvent(GameEvent& e)
 {
