@@ -6,42 +6,48 @@ sf::Clock Animator::AnimTimer;
 void Animator::ObservableEvent(GameEvent& e)
 {
 	const auto sourceID = e.source->getID();
-			
-	//if (e.type == GameEvent::Thing1) {
-	//		if (sourceID.compare(AnimatedEntity->getID()) == 0) {
-	//				printf("Animator is responding to changeState event.\n");
-	//				EntityState = AnimatedEntity->currentState->getName();
-	//		}
-	//}
+
+	if (e.type == GameEvent::SateChange) {
+		std::string s = dynamic_cast<Entity*>(e.source)->currentState->getName();
+		if (animations.find(s) != animations.end()) {
+			currentAnimation = animations.find(s)->second;
+			/*printf("Changing %s animator state.\n", sourceID.c_str());*/
+		}
+	}
 }
 
 
 void Animator::setAnimCoords()
 {
-	idleCoords.down = idleCoords.up = idleCoords.left = idleCoords.right = 32;
-	idleCoords.up += 32;
-	idleCoords.right += (32 * 2);
-	idleCoords.left += (32 * 3);
+	idleAnim.down = idleAnim.up = idleAnim.left = idleAnim.right = frameWidth;
+	idleAnim.up += frameWidth;
+	idleAnim.right += (frameWidth * 2);
+	idleAnim.left += (frameWidth * 3);
 
-	walkCoords.down = walkCoords.up = walkCoords.left = walkCoords.right = 160;
-	walkCoords.up += 32;
-	walkCoords.right += (32 * 2);
-	walkCoords.left += (32 * 3);
+	walkAnim.down = walkAnim.up = walkAnim.left = walkAnim.right = 160;
+	walkAnim.up += frameWidth;
+	walkAnim.right += (frameWidth * 2);
+	walkAnim.left += (frameWidth * 3);
 
-	attackCoords.down = attackCoords.up = attackCoords.left = attackCoords.right = 320;
-	attackCoords.up += 32;
-	attackCoords.right += (32 * 2);
-	attackCoords.left += (32 * 3);
+	attackAnim.down = attackAnim.up = attackAnim.left = attackAnim.right = 320;
+	attackAnim.up += frameWidth;
+	attackAnim.right += (frameWidth * 2);
+	attackAnim.left += (frameWidth * 3);
 
-	projectileCoords.down = projectileCoords.up  = projectileCoords.right = projectileCoords.left = 288;
+	projectileAnim.down = projectileAnim.up  = projectileAnim.right = projectileAnim.left = 288;
 
-	calculateFrames(idleCoords);
-	calculateFrames(walkCoords);
-	calculateFrames(attackCoords);
-	calculateFrames(projectileCoords);
+	animations.emplace("idle", idleAnim);
+	animations.emplace("moving", walkAnim);
+	animations.emplace("attacking", attackAnim);
+	animations.emplace("projectile", projectileAnim);
+
+	for (auto anim : animations) {
+		calculateFrames(anim.second);
+		printf("%s frameCount: %i \n", anim.first.c_str(), anim.second.frameCount);
+	}
 }
 
-void Animator::calculateFrames(animCoords& n) {
+void Animator::calculateFrames(Animation& n) {
 	sf::Vector2i frameCoords(frameWidth, n.down);
 
 	while (true) {
@@ -53,8 +59,6 @@ void Animator::calculateFrames(animCoords& n) {
 
 		else break;
 	}
-
-	printf("anim frameCount: %i \n", n.frameCount);
 }
 
 
@@ -70,8 +74,20 @@ bool Animator::isValidFrame(sf::Vector2i framePos)
 }
 Animator::Animator(Entity* p_animated_entity) : AnimatedEntity(p_animated_entity)
 {
+
+}
+
+Animator::~Animator()
+{
+}
+
+bool Animator::Instantiate()
+{	
 	TextureImage = new sf::Image();
-	if(!TextureImage->loadFromFile(AnimatedEntity->textureFilePath)) printf("animator's entity has no texture\n");
+	if (!TextureImage->loadFromFile(AnimatedEntity->textureFilePath)) {
+		printf("Animator's entity has no texture\n");
+		return false;
+	}
 
 	isUp = false;
 	isDown = true;
@@ -80,79 +96,118 @@ Animator::Animator(Entity* p_animated_entity) : AnimatedEntity(p_animated_entity
 	animFrame = sf::IntRect(32, 32, 32, 32);
 	AnimatedEntity->setTextureRect(animFrame);
 	setAnimCoords();
-}
 
-Animator::~Animator()
-{
+
+	return true;
 }
 
 void Animator::Animate()
 {
-	//idle
-	if (AnimatedEntity->checkState("idle")) {
 
-		//facing down
-		if (isDown) animFrame.top = idleCoords.down; //y = 32
-		//facing up
-		if (isUp) animFrame.top = idleCoords.up; //y = 64
-		//facing left or right
-		if (isRight) animFrame.top = idleCoords.right; //y = 96
-		if (isLeft) animFrame.top = idleCoords.left; //y = 128
+	//  left/right movement 
+	if (AnimatedEntity->direction.x != 0.0f && std::abs(AnimatedEntity->direction.x) > std::abs(AnimatedEntity->direction.y)) {
 
+		//right
+		if (AnimatedEntity->direction.x > 0) {
+			animFrame.top = currentAnimation.right;
+		}
 
-		if (animFrame.left >= 159)
-			animFrame.left = frameWidth; // x = 32
+		//left
+		else if (AnimatedEntity->direction.x < 0) {
+			animFrame.top = currentAnimation.left;
+		}
 	}
 
-	//moving
-	else if (AnimatedEntity->checkState("moving")) {
-		//  left/right movement 
-		if (AnimatedEntity->direction.x != 0.0f && std::abs(AnimatedEntity->direction.x) > std::abs(AnimatedEntity->direction.y)) {
-			isUp = false;
-			isDown = false;
+	//  up movement
+	if (AnimatedEntity->direction.y < 0.0f && std::abs(AnimatedEntity->direction.y) > std::abs(AnimatedEntity->direction.x)) {
 
-			//right
-			if (AnimatedEntity->direction.x > 0) {
-				isRight = true;
-				isLeft = false;
-				animFrame.top = walkCoords.right;
-			}
-
-			//left
-			else if (AnimatedEntity->direction.x < 0) {
-				isLeft = true;
-				isRight = false;
-				animFrame.top = walkCoords.left;
-			}
-		}
-
-		//  up movement
-		if (AnimatedEntity->direction.y < 0.0f && std::abs(AnimatedEntity->direction.y) > std::abs(AnimatedEntity->direction.x)) {
-			isUp = true;
-			isDown = false;
-			isRight = isLeft = false;
-			animFrame.top = walkCoords.up;
-		}
-
-		//  down movement
-		else if (AnimatedEntity->direction.y > 0.0f && std::abs(AnimatedEntity->direction.y) > std::abs(AnimatedEntity->direction.x)) {
-			isUp = false;
-			isDown = true;
-			isRight = isLeft = false;
-			animFrame.top = walkCoords.down;
-		}
-
-
-
-		if (animFrame.left >= textureWidth) animFrame.left = frameWidth;
+		animFrame.top = currentAnimation.up;
 	}
+
+	//  down movement
+	else if (AnimatedEntity->direction.y > 0.0f && std::abs(AnimatedEntity->direction.y) > std::abs(AnimatedEntity->direction.x)) {
+
+		animFrame.top = currentAnimation.down;
+	}
+	
 
 	if (AnimTimer.getElapsedTime().asSeconds() >= 0.15f) {
+		//animFrame.left = (animFrame.left % (frameWidth * currentAnimation.frameCount)) + frameWidth;
 		animFrame.left += frameWidth;
+		if (animFrame.left > (frameWidth * currentAnimation.frameCount)) animFrame.left = frameWidth;
 		AnimTimer.restart();
 	}
 
 	AnimatedEntity->setTextureRect(animFrame);
 }
+
+//----- OLD ANIMATE
+//{
+//	//idle
+//	if (AnimatedEntity->checkState("idle")) {
+//
+//		//facing down
+//		if (isDown) animFrame.top = idleAnim.down; //y = 32
+//		//facing up
+//		if (isUp) animFrame.top = idleAnim.up; //y = 64
+//		//facing left or right
+//		if (isRight) animFrame.top = idleAnim.right; //y = 96
+//		if (isLeft) animFrame.top = idleAnim.left; //y = 128
+//
+//
+//		if (animFrame.left >= 159)
+//			animFrame.left = frameWidth; // x = 32
+//	}
+//
+//	//moving
+//	else if (AnimatedEntity->checkState("moving")) {
+//		//  left/right movement 
+//		if (AnimatedEntity->direction.x != 0.0f && std::abs(AnimatedEntity->direction.x) > std::abs(AnimatedEntity->direction.y)) {
+//			isUp = false;
+//			isDown = false;
+//
+//			//right
+//			if (AnimatedEntity->direction.x > 0) {
+//				isRight = true;
+//				isLeft = false;
+//				animFrame.top = walkAnim.right;
+//			}
+//
+//			//left
+//			else if (AnimatedEntity->direction.x < 0) {
+//				isLeft = true;
+//				isRight = false;
+//				animFrame.top = walkAnim.left;
+//			}
+//		}
+//
+//		//  up movement
+//		if (AnimatedEntity->direction.y < 0.0f && std::abs(AnimatedEntity->direction.y) > std::abs(AnimatedEntity->direction.x)) {
+//			isUp = true;
+//			isDown = false;
+//			isRight = isLeft = false;
+//			animFrame.top = walkAnim.up;
+//		}
+//
+//		//  down movement
+//		else if (AnimatedEntity->direction.y > 0.0f && std::abs(AnimatedEntity->direction.y) > std::abs(AnimatedEntity->direction.x)) {
+//			isUp = false;
+//			isDown = true;
+//			isRight = isLeft = false;
+//			animFrame.top = walkAnim.down;
+//		}
+//
+//
+//
+//		if (animFrame.left >= textureWidth) animFrame.left = frameWidth;
+//	}
+//
+//	if (AnimTimer.getElapsedTime().asSeconds() >= 0.15f) {
+//		animFrame.left += frameWidth;
+//		AnimTimer.restart();
+//	}
+//
+//	AnimatedEntity->setTextureRect(animFrame);
+//}
 
 

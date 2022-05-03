@@ -11,8 +11,8 @@ public:
 	{
 		HasDied,
 		IsAttacking,
-		IsInjured
-
+		IsInjured,
+		SateChange
 	};
 
 	EventType type;

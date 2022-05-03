@@ -23,7 +23,14 @@ Player::Player(std::string ID) : Entity::Entity(ID)
 	addState(Dead_Player());
 
 	animator = new Animator(this);
-	observers.push_back(animator);
+	if (!animator->Instantiate()) {
+		printf("Could not instantiate %s animator.\n", ID.c_str());
+		delete animator;
+		animator = nullptr;
+	}
+
+	else observers.push_back(animator);
+
 	updateCentre();
 }
 
@@ -36,7 +43,7 @@ Player::~Player()
 void Player::Update() {
 	Entity::Update();
 
-	animator->Animate();
+	//animator->Animate();
 
 	projectiles.shrink_to_fit();
 	for (int i = 0; i < projectiles.size(); i++) {

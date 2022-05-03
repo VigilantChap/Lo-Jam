@@ -182,20 +182,9 @@ void GameScene::HandleEvents(const sf::Event event) {
 	
 }
 
-//void GameScene::UpdateHealthBar() {
-//	remainingHealth.setSize(sf::Vector2f(player->getHealth() / 100.0f * healthBar.getSize().x, remainingHealth.getSize().y));
-//}
-
 void GameScene::Update() {
 
-	//if (player->getHealth() > 0 && !dead) {
-		//deathNotif.setPosition(-1 * (window->getSize().x), 0);
-		//deathNotifText.setPosition(deathNotif.getPosition());
-	//}
-	//else
 	if (player->getHealth() <= 0 && !dead)  {
-		//deathNotif.setPosition(camera->GetView().getCenter());
-		//deathNotifText.setPosition(deathNotif.getPosition());
 		printf("You died!");
 		dead = true;
 	}
@@ -227,13 +216,6 @@ void GameScene::Update() {
 
 		worldTimer.restart();
 	}
-
-	//healthBar.setPosition(
-	//	camera->GetView().getCenter().x,
-	//	camera->GetView().getCenter().y + camera->GetView().getSize().y / 3.5);
-
-	//remainingHealth.setPosition(healthBar.getPosition());
-	//UpdateHealthBar();
 
 	healthBar->SetProgress(player->getHealth() / 100);
 

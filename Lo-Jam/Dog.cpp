@@ -7,7 +7,7 @@ Dog::Dog(std::string ID, Entity *owner_) : Entity::Entity(ID), owner(owner_)
 	maxSpeed = 15.0f; 
 	sourceRectImg = sf::IntRect(0, 0, 100, 100);
 	setTextureRect(sourceRectImg);
-	following = false;
+	following = true;
 	flipped = false;
 }
 

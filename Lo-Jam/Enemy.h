@@ -17,8 +17,6 @@ private:
 	static std::default_random_engine pgenerator;
 	bool isVisible;
 
-	class Animator* animator;
-
 	/*Methods*/
 public:
 	Enemy(std::string ID);
@@ -30,7 +28,7 @@ public:
 	
 
 private:
-	void Animate();
+
 	void HandleState();
 };
 

@@ -10,16 +10,27 @@
 
 Enemy::Enemy(std::string ID) : Entity::Entity(ID)
 {
-	LoadTexture("Assets/EnemySpriteSheet.png");
-	sourceRectImage = sf::IntRect(0, 0, 100, 100);
-	setTextureRect(sourceRectImage);
+	//LoadTexture("Assets/EnemySpriteSheet.png");
+	LoadTexture("Assets/NewEnemySpriteSheet.png");
+	//sourceRectImage = sf::IntRect(0, 0, 100, 100);
+	//setTextureRect(sourceRectImage);
+
+	this->scale(2, 2);
+
+	animator = new Animator(this);
+	if (!animator->Instantiate()) {
+		printf("Could not instantiate %s animator.\n", ID.c_str());
+		delete animator;
+		animator = nullptr;
+	}
+
+	else observers.push_back(animator);
+
 	maxSpeed = 30;
 	speed = 30;
 	isVisible = false;
 	health = 100;
 	maxHealth = 100;
-	//animator = new Animator(this);
-	//observers.push_back(animator);
 }
 
 Enemy::~Enemy()
@@ -30,7 +41,6 @@ void Enemy::Update()
 {
 	Entity::Update();
 
-	Animate();
 }
 
 void Enemy::HandleState() {
@@ -87,34 +97,34 @@ void Enemy::StartPatrolMovementTowardsTarget()
 //	return isVisible;
 //}//--end InView()
 
-void Enemy::Animate()
-{
-	if (timelapse.getElapsedTime().asSeconds() > 0.15f)
-	{
-		 //Evil Mode
-		{
-			sourceRectImage.top = 0;
-
-			if (sourceRectImage.left >= 500)
-				sourceRectImage.left = 0;
-			else
-				sourceRectImage.left += 100;
-
-			setTextureRect(sourceRectImage);
-		}
-
-		//else // Good Mode 
-		//{
-		//	sourceRectImage.top = 100;
-		//	if (sourceRectImage.left >= 300)
-		//		sourceRectImage.left = 0;
-		//	else
-		//		sourceRectImage.left += 100;
-
-		//	setTextureRect(sourceRectImage);
-		//	
-		//}//--end if(isTriggered)
-
-		timelapse.restart(); //Restart Clock for Frame Count
-	}
-}
+//void Enemy::Animate()
+//{
+//	if (timelapse.getElapsedTime().asSeconds() > 0.15f)
+//	{
+//		 //Evil Mode
+//		{
+//			sourceRectImage.top = 0;
+//
+//			if (sourceRectImage.left >= 500)
+//				sourceRectImage.left = 0;
+//			else
+//				sourceRectImage.left += 100;
+//
+//			setTextureRect(sourceRectImage);
+//		}
+//
+//		//else // Good Mode 
+//		//{
+//		//	sourceRectImage.top = 100;
+//		//	if (sourceRectImage.left >= 300)
+//		//		sourceRectImage.left = 0;
+//		//	else
+//		//		sourceRectImage.left += 100;
+//
+//		//	setTextureRect(sourceRectImage);
+//		//	
+//		//}//--end if(isTriggered)
+//
+//		timelapse.restart(); //Restart Clock for Frame Count
+//	}
+//}

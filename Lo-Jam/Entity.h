@@ -6,7 +6,7 @@
 #include <list>
 
 #define addState(x) states.insert_or_assign(x.getName(), new x)
-#define setState(x) currentState = states.find(x)->second
+//#define setState(x) currentState = states.find(x)->second
 #define updateState currentState->Update();
 
 
@@ -36,6 +36,9 @@ protected:
 
 	virtual void HandleState();
 	
+	class Animator* animator;
+
+	void setState(std::string s) { currentState = states.find(s)->second; Notify(GameEvent(GameEvent::SateChange, this)); }
 
 public:
 	Entity(std::string ID);

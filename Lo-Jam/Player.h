@@ -64,9 +64,9 @@ public:
 
 private:
 	class Entity* dog;
-	sf::IntRect sourceRectImg;
+	//sf::IntRect sourceRectImg;
 
-	class Animator* animator;
+
 
 };
 #endif // !PLAYER_H
