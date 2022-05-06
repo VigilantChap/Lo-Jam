@@ -10,7 +10,7 @@ void Animator::ObservableEvent(GameEvent& e)
 		std::string s = dynamic_cast<Entity*>(e.source)->currentState->getName();
 		if (animations.find(s) != animations.end()) {
 			currentAnimation = animations.find(s)->second;
-			/*printf("Changing %s animator state.\n", sourceID.c_str());*/
+			printf("Changing %s animator state to %s.\n", sourceID.c_str(), s.c_str());
 		}
 	}
 }
@@ -42,7 +42,7 @@ void Animator::setAnimCoords()
 
 	for (auto anim : animations) {
 		calculateFrames(anim.second);
-		printf("%s frameCount: %i \n", anim.first.c_str(), anim.second.frameCount);
+		/*printf("%s frameCount: %i \n", anim.first.c_str(), anim.second.frameCount);*/
 	}
 }
 
@@ -96,6 +96,7 @@ bool Animator::Instantiate()
 	AnimatedEntity->setTextureRect(animFrame);
 	setAnimCoords();
 
+	currentAnimation = animations.find("idle")->second;
 
 	return true;
 }
@@ -103,7 +104,7 @@ bool Animator::Instantiate()
 void Animator::Animate()
 {
 
-	//  left/right movement 
+	//  left/right 
 	if (AnimatedEntity->direction.x != 0.0f && std::abs(AnimatedEntity->direction.x) > std::abs(AnimatedEntity->direction.y)) {
 
 		//right
@@ -117,13 +118,13 @@ void Animator::Animate()
 		}
 	}
 
-	//  up movement
+	//  up
 	if (AnimatedEntity->direction.y < 0.0f && std::abs(AnimatedEntity->direction.y) > std::abs(AnimatedEntity->direction.x)) {
 
 		animFrame.top = currentAnimation.up;
 	}
 
-	//  down movement
+	//  down
 	else if (AnimatedEntity->direction.y > 0.0f && std::abs(AnimatedEntity->direction.y) > std::abs(AnimatedEntity->direction.x)) {
 
 		animFrame.top = currentAnimation.down;
@@ -131,82 +132,9 @@ void Animator::Animate()
 	
 
 	if (AnimTimer.getElapsedTime().asSeconds() >= 0.15f) {
-		//animFrame.left = (animFrame.left % (frameWidth * currentAnimation.frameCount)) + frameWidth;
-		animFrame.left += frameWidth;
-		if (animFrame.left > (frameWidth * currentAnimation.frameCount)) animFrame.left = frameWidth;
+		animFrame.left = (animFrame.left % (frameWidth * currentAnimation.frameCount)) + frameWidth;
 		AnimTimer.restart();
 	}
 
 	AnimatedEntity->setTextureRect(animFrame);
 }
-
-//----- OLD ANIMATE
-//{
-//	//idle
-//	if (AnimatedEntity->checkState("idle")) {
-//
-//		//facing down
-//		if (isDown) animFrame.top = idleAnim.down; //y = 32
-//		//facing up
-//		if (isUp) animFrame.top = idleAnim.up; //y = 64
-//		//facing left or right
-//		if (isRight) animFrame.top = idleAnim.right; //y = 96
-//		if (isLeft) animFrame.top = idleAnim.left; //y = 128
-//
-//
-//		if (animFrame.left >= 159)
-//			animFrame.left = frameWidth; // x = 32
-//	}
-//
-//	//moving
-//	else if (AnimatedEntity->checkState("moving")) {
-//		//  left/right movement 
-//		if (AnimatedEntity->direction.x != 0.0f && std::abs(AnimatedEntity->direction.x) > std::abs(AnimatedEntity->direction.y)) {
-//			isUp = false;
-//			isDown = false;
-//
-//			//right
-//			if (AnimatedEntity->direction.x > 0) {
-//				isRight = true;
-//				isLeft = false;
-//				animFrame.top = walkAnim.right;
-//			}
-//
-//			//left
-//			else if (AnimatedEntity->direction.x < 0) {
-//				isLeft = true;
-//				isRight = false;
-//				animFrame.top = walkAnim.left;
-//			}
-//		}
-//
-//		//  up movement
-//		if (AnimatedEntity->direction.y < 0.0f && std::abs(AnimatedEntity->direction.y) > std::abs(AnimatedEntity->direction.x)) {
-//			isUp = true;
-//			isDown = false;
-//			isRight = isLeft = false;
-//			animFrame.top = walkAnim.up;
-//		}
-//
-//		//  down movement
-//		else if (AnimatedEntity->direction.y > 0.0f && std::abs(AnimatedEntity->direction.y) > std::abs(AnimatedEntity->direction.x)) {
-//			isUp = false;
-//			isDown = true;
-//			isRight = isLeft = false;
-//			animFrame.top = walkAnim.down;
-//		}
-//
-//
-//
-//		if (animFrame.left >= textureWidth) animFrame.left = frameWidth;
-//	}
-//
-//	if (AnimTimer.getElapsedTime().asSeconds() >= 0.15f) {
-//		animFrame.left += frameWidth;
-//		AnimTimer.restart();
-//	}
-//
-//	AnimatedEntity->setTextureRect(animFrame);
-//}
-
-

@@ -5,7 +5,6 @@
 
 class Player : public Entity
 {
-	friend class Dog;
 
 	struct Projectile : public GameObject {
 		sf::Vector2f fireDirection;
@@ -52,7 +51,6 @@ public:
 	~Player();
 
 	void Update();
-	inline const Entity* getDog() { return dog; }
 
 	std::vector<Projectile> projectiles;
 	
@@ -61,12 +59,6 @@ public:
 		MusicPlayer::PlayPewSound();
 		printf("Fire!\n");
 	}
-
-private:
-	class Entity* dog;
-	//sf::IntRect sourceRectImg;
-
-
 
 };
 #endif // !PLAYER_H
