@@ -29,7 +29,7 @@ public:
 	inline std::string getID() { return m_ID; }
 	void LoadTexture(std::string filename);
 	inline void updateCentre() { setOrigin(getTextureRect().width / 2.0f, getTextureRect().height / 2.0f); }
-	bool Collided(const GameObject* g);
+	virtual bool Collided(const GameObject* g);
 	virtual void OnTriggerEnter(GameObject* g) {}
 };
 

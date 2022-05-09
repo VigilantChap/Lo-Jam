@@ -127,7 +127,6 @@
   <ItemGroup>
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Dog.cpp" />
     <ClCompile Include="Door.cpp" />
     <ClCompile Include="DoorMachine.cpp" />
     <ClCompile Include="Enemy.cpp" />
@@ -140,7 +139,6 @@
     <ClCompile Include="InterfacePanel.cpp" />
     <ClCompile Include="InterfaceProgressBar.cpp" />
     <ClCompile Include="InterfaceText.cpp" />
-    <ClCompile Include="IObserver.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="MusicPlayer.cpp" />
@@ -150,7 +148,6 @@
   <ItemGroup>
     <ClInclude Include="Animator.h" />
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="Dog.h" />
     <ClInclude Include="Door.h" />
     <ClInclude Include="DoorMachine.h" />
     <ClInclude Include="DoorState.h" />

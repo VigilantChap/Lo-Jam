@@ -11,26 +11,31 @@ class Animator : public IObserver
 private:
 	sf::Image* TextureImage;
 	sf::IntRect animFrame;
-	static sf::Clock AnimTimer;
+	sf::Clock AnimTimer;
 
-	struct animCoords {
+	struct Animation {
 		int up, down, left, right;
 		int frameCount = 0;
-	} idleCoords, walkCoords, attackCoords, projectileCoords;
+	} idleAnim, walkAnim, attackAnim, projectileAnim;
 
 	class Entity* AnimatedEntity;
-	std::string EntityState;
 
+	std::map<std::string, Animation&> animations;
+	Animation currentAnimation;
 
 	void setAnimCoords();
-	void calculateFrames(animCoords &n);	
+	void calculateFrames(Animation &n);	
 	bool isValidFrame(sf::Vector2i framePos);
 
 	bool isUp, isLeft, isRight, isDown;
+
+
 public:
 
 	Animator(Entity* animated_entity);
 	~Animator();
+
+	bool Instantiate();
 
 	void ObservableEvent(GameEvent& e) override;
 	void Animate();

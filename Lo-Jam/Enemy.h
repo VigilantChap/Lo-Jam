@@ -10,14 +10,11 @@ public:
 	bool isTriggered;
 
 private:
-	sf::IntRect sourceRectImage;
 	sf::Clock timelapse;
 	sf::Clock AIdelay;
 	sf::Vector2f playerPosition;
 	static std::default_random_engine pgenerator;
 	bool isVisible;
-
-	class Animator* animator;
 
 	/*Methods*/
 public:
@@ -30,7 +27,7 @@ public:
 	
 
 private:
-	void Animate();
+
 	void HandleState();
 };
 

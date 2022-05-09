@@ -6,7 +6,7 @@
 #include <list>
 
 #define addState(x) states.insert_or_assign(x.getName(), new x)
-#define setState(x) currentState = states.find(x)->second
+//#define setState(x) currentState = states.find(x)->second
 #define updateState currentState->Update();
 
 
@@ -36,6 +36,9 @@ protected:
 
 	virtual void HandleState();
 	
+	class Animator* animator;
+
+	void setState(std::string s) { currentState = states.find(s)->second; Notify(GameEvent(GameEvent::SateChange, this)); }
 
 public:
 	Entity(std::string ID);
@@ -73,12 +76,14 @@ public:
 	}
 
 	virtual inline void heal(float value) {
-		if (health <= maxHealth - value) {
-			health += value;
-		}
+		if (!this->checkState("dead")) {
+			if (health <= maxHealth - value) {
+				health += value;
+			}
 
-		else health = maxHealth;
-		printf("%s healed!\n", m_ID.c_str());
+			else health = maxHealth;
+			printf("%s healed!\n", m_ID.c_str());
+		}
 	}
 
 	struct Dead_Entity : Script {
