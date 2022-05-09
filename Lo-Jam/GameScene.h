@@ -21,17 +21,16 @@ private:
 	InterfaceProgressBar* healthBar;
 	InterfacePanel* deathPopup;
 	InterfacePanel* score;
+	InterfaceText* kills;
 
 	sf::RenderWindow* window;
 	sf::Clock worldTimer;
 	sf::Clock collisionTimer;
 	sf::Texture backgroundTexture;
 	sf::Sprite backgroundSprite;
-	std::string	backgroundTextureName;
 
 	int intScore;
-	bool triggered;
-	bool dead;
+	//bool dead;
 
 	std::map<std::string, GameObject*> objectsInScene;
 
@@ -39,7 +38,6 @@ private:
 
 public:
 	GameScene(sf::RenderWindow * window_);
-	GameScene(sf::RenderWindow * window_, std::string backgroundTexture);
 	~GameScene();
 
 	bool Initialize();

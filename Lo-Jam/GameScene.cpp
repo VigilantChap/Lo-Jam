@@ -60,13 +60,9 @@ void GameScene::spawnEnemy()
 	enemies.back()->SetPlayerPosition(player->getPosition());
 }
 
-GameScene::GameScene(sf::RenderWindow * window_) : GameScene(window, "")
+GameScene::GameScene(sf::RenderWindow* window_) : window(window_)
 {
 
-}
-
-GameScene::GameScene(sf::RenderWindow * window_, std::string backgroundTexture) : window(window_), backgroundTextureName(backgroundTexture)
-{	
 }
 
 
@@ -82,8 +78,6 @@ bool GameScene::Initialize() {
 	window->setVerticalSyncEnabled(true);
 
 	changeScene = false;
-	dead = false;
-	triggered = false;
 
 	MusicPlayer::PlayBackgroundMusic();
 
@@ -91,7 +85,6 @@ bool GameScene::Initialize() {
 	player->scale(3, 3);
 
 	spawnEnemy();
-	
 
 	camera = new Camera(window);
 	camera->SetAsMainView();
@@ -113,11 +106,9 @@ bool GameScene::Initialize() {
 	score->SetFontSize(250);
 	intScore = 0;
 	
-	if (backgroundTextureName != "") {
-		if (!SetBackground(backgroundTextureName)) {
-			Destroy();
-			return false;
-		}
+	if (!SetBackground("Assets/ground.png")) {
+		Destroy();
+		return false;
 	}
 
 	return true;
@@ -157,7 +148,7 @@ void GameScene::HandleEvents(const sf::Event event) {
 	camera->HandleEvents(event);
 
 	if (event.type == sf::Event::MouseButtonPressed) {
-		if (event.mouseButton.button == sf::Mouse::Left && !dead) {
+		if (event.mouseButton.button == sf::Mouse::Left) {
 			const sf::Vector2i pixelPos = sf::Mouse::getPosition(*window);
 			player->MoveTo(window->mapPixelToCoords(pixelPos));
 		}
@@ -179,11 +170,6 @@ void GameScene::HandleEvents(const sf::Event event) {
 
 void GameScene::Update() {
 
-	if (player->getHealth() <= 0 && !dead)  {
-		printf("You died!");
-		dead = true;
-	}
-
 	if (collisionTimer.getElapsedTime().asSeconds() >= 0.5f) {
 		for (Enemy * enemy : enemies) {
 			if (player->Collided(enemy) && player->getHealth() > 0) {
@@ -198,7 +184,7 @@ void GameScene::Update() {
 
 	if (worldTimer.getElapsedTime().asSeconds() >= 5) {
 
-		if (enemies.size() < 6) {
+		if (enemies.size() < 20) {
 			spawnEnemy();
 		}
 
@@ -270,7 +256,7 @@ void GameScene::Render() {
 	healthBar->Draw(window, camera->GetView());
 	score->Draw(window, camera->GetView());
 
-	if(dead)
+	if(player->checkState("dead"))
 	{
 		deathPopup->Draw(window, camera->GetView());
 	}

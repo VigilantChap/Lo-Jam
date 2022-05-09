@@ -55,9 +55,11 @@ public:
 	std::vector<Projectile> projectiles;
 	
 	inline void fire(const sf::Vector2f & position) { 
-		projectiles.push_back(Projectile(this->getPosition(), position, texture));
-		MusicPlayer::PlayPewSound();
-		printf("Fire!\n");
+		if (!this->checkState("dead")) {
+			projectiles.push_back(Projectile(this->getPosition(), position, texture));
+			MusicPlayer::PlayPewSound();
+			printf("Fire!\n");
+		}
 	}
 
 };

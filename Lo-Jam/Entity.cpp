@@ -23,15 +23,16 @@ Entity::~Entity()
 }
 
 void Entity::MoveTo(sf::Vector2f destination_) {
-	destination = destination_;
-	setState("moving");
+	if (!this->checkState("dead")) {
+		destination = destination_;
+		setState("moving");
+	}
 }
 
 void Entity::HandleState() {
 
 	if (health <= 0) {
 		setState("dead");
-		/*Notify(GameEvent(GameEvent::HasDied, this));*/
 	}
 	
 	updateState;

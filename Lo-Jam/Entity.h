@@ -76,12 +76,14 @@ public:
 	}
 
 	virtual inline void heal(float value) {
-		if (health <= maxHealth - value) {
-			health += value;
-		}
+		if (!this->checkState("dead")) {
+			if (health <= maxHealth - value) {
+				health += value;
+			}
 
-		else health = maxHealth;
-		printf("%s healed!\n", m_ID.c_str());
+			else health = maxHealth;
+			printf("%s healed!\n", m_ID.c_str());
+		}
 	}
 
 	struct Dead_Entity : Script {

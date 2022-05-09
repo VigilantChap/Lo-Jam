@@ -13,7 +13,7 @@ GameManager::GameManager()
 
 bool GameManager::Initialize() {
 	
-	window = new SFWindow(1920, 1080, "WIP");
+	window = new SFWindow(1920, 1080, "Planet Jamlo");
 
 	if (!window->Initialize()) {
 		Destroy();
@@ -71,7 +71,7 @@ void GameManager::Run() {
 			scene->Destroy();
 			if (!scene->sceneName.compare("Menu")) {
 				delete scene;
-				scene = new GameScene(window->getRenderWindow(), "Assets/backgroundv1.png");
+				scene = new GameScene(window->getRenderWindow());
 			}
 			else if (!scene->sceneName.compare("GameScene")) {
 				delete scene;
