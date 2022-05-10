@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Door.cpp">
+      <Filter>State Machine</Filter>
+    </ClCompile>
+    <ClCompile Include="DoorMachine.cpp">
+      <Filter>State Machine</Filter>
+    </ClCompile>
+    <ClCompile Include="Interface.cpp">
+      <Filter>Game Loop\Scene\UI Component</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfaceButton.cpp">
+      <Filter>Game Loop\Scene\UI Component</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfacePanel.cpp">
+      <Filter>Game Loop\Scene\UI Component</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfaceProgressBar.cpp">
+      <Filter>Game Loop\Scene\UI Component</Filter>
+    </ClCompile>
+    <ClCompile Include="InterfaceText.cpp">
+      <Filter>Game Loop\Scene\UI Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameScene.cpp">
+      <Filter>Game Loop\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Game Loop\Game\Objects/Entitites</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Game Loop\Game\Objects/Entitites</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Game Loop\Game\Objects/Entitites</Filter>
+    </ClCompile>
+    <ClCompile Include="Enemy.cpp">
+      <Filter>Game Loop\Game\Objects/Entitites</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Game Loop\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="MusicPlayer.cpp">
+      <Filter>Game Loop\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Animator.cpp">
+      <Filter>Game Loop\Game\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Game Loop\Game\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="SFWindow.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Door.h">
+      <Filter>State Machine</Filter>
+    </ClInclude>
+    <ClInclude Include="DoorState.h">
+      <Filter>State Machine</Filter>
+    </ClInclude>
+    <ClInclude Include="DoorMachine.h">
+      <Filter>State Machine</Filter>
+    </ClInclude>
+    <ClInclude Include="Interface.h">
+      <Filter>Game Loop\Scene\UI Component</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceButton.h">
+      <Filter>Game Loop\Scene\UI Component</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfacePanel.h">
+      <Filter>Game Loop\Scene\UI Component</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceProgressBar.h">
+      <Filter>Game Loop\Scene\UI Component</Filter>
+    </ClInclude>
+    <ClInclude Include="InterfaceText.h">
+      <Filter>Game Loop\Scene\UI Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameScene.h">
+      <Filter>Game Loop\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Game Loop\Game\Objects/Entitites</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Game Loop\Game\Objects/Entitites</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Game Loop\Game\Objects/Entitites</Filter>
+    </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Game Loop\Game\Objects/Entitites</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Game Loop\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="MusicPlayer.h">
+      <Filter>Game Loop\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Game Loop\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Animator.h">
+      <Filter>Game Loop\Game\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Game Loop\Game\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameEvent.h">
+      <Filter>Game Loop\Game\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="IObservable.h">
+      <Filter>Game Loop\Game\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="IObserver.h">
+      <Filter>Game Loop\Game\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Script.h">
+      <Filter>Game Loop\Game\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="SFML.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="SFWindow.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="State Machine">
+      <UniqueIdentifier>{9aa7a9f5-5c4d-4046-93b7-f213bef34fc6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Loop">
+      <UniqueIdentifier>{0d6328f6-64cd-43f6-a6c5-99b82439f6aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Loop\Game">
+      <UniqueIdentifier>{dddf614a-d62d-4b93-aec5-101739e4c9ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Loop\Game\Objects/Entitites">
+      <UniqueIdentifier>{e5c731b5-247e-4932-9125-e1304419f9ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Loop\Menu">
+      <UniqueIdentifier>{4a27ccc4-cc5d-4ec2-9cde-0f525c12a11d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Loop\Scene">
+      <UniqueIdentifier>{51a1e5da-715f-419b-a56d-14dd9a4e0614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Loop\Scene\UI Component">
+      <UniqueIdentifier>{2f95177d-d3c3-4158-bfb9-33e3d4bc9765}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Loop\Game\Components">
+      <UniqueIdentifier>{d3c1644d-e847-4c7e-914d-956e691e4f96}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application">
+      <UniqueIdentifier>{d0955166-ad01-4223-a1a0-2d8534e6138a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
