@@ -33,7 +33,7 @@ void Animator::setAnimCoords()
 	attackAnim.right += (frameWidth * 2);
 	attackAnim.left += (frameWidth * 3);
 
-	projectileAnim.down = projectileAnim.up  = projectileAnim.right = projectileAnim.left = 288;
+	projectileAnim.down = projectileAnim.up = projectileAnim.right = projectileAnim.left = 288;
 
 	animations.emplace("idle", idleAnim);
 	animations.emplace("moving", walkAnim);
@@ -134,7 +134,9 @@ void Animator::Animate()
 	if (AnimTimer.getElapsedTime().asSeconds() >= 0.15f) {
 		animFrame.left = (animFrame.left % (frameWidth * currentAnimation.frameCount)) + frameWidth;
 		AnimTimer.restart();
+		
 	}
 
-	AnimatedEntity->setTextureRect(animFrame);
+	if (isValidFrame(sf::Vector2i(animFrame.left, animFrame.top)))
+		AnimatedEntity->setTextureRect(animFrame);
 }

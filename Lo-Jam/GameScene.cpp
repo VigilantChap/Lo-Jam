@@ -147,7 +147,9 @@ void GameScene::HandleEvents(const sf::Event event) {
 
 	camera->HandleEvents(event);
 
+	//Mouse input
 	if (event.type == sf::Event::MouseButtonPressed) {
+		//Movement input
 		if (event.mouseButton.button == sf::Mouse::Left) {
 			const sf::Vector2i pixelPos = sf::Mouse::getPosition(*window);
 			player->MoveTo(window->mapPixelToCoords(pixelPos));
@@ -155,16 +157,26 @@ void GameScene::HandleEvents(const sf::Event event) {
 
 	}	
 
+	//Keyboard input
 	if (event.type == sf::Event::KeyPressed) {
+		//Quit to menu
 		if (event.key.code == sf::Keyboard::Backspace) {
 			changeScene = true;
 		}
 
+		//Fire weapon
 		if (event.key.code == sf::Keyboard::Space) {
 			const sf::Vector2i pixelPos = sf::Mouse::getPosition(*window);
 			player->fire(window->mapPixelToCoords(pixelPos));
 		}
+
+
+
+
+
+		
 	}
+
 	
 }
 
