@@ -1,5 +1,5 @@
 
-<i>This is a personal work in progress project that was started with the goal of using everything I've learned to create my own framework and eventually a fully fleshed-out game using it. All code has been written by me, aside from Interface classes (UI).</i>
+<i>This is a personal work in progress that was started with the goal of using everything I've learned to create my own framework and eventually a fully fleshed-out game using it. All code has been written by me, aside from Interface classes (UI).</i>
 
 
 <h1><u>Game Design Document: Planet Jamlo</u></h1>
